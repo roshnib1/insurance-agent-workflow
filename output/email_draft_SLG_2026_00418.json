@@ -1,0 +1,16 @@
+{
+  "action": "REQUEST_MORE_INFORMATION",
+  "trigger": "incomplete_submission",
+  "recipient": "Applicant",
+  "missing_fields": [
+    "Applicant Signature",
+    "Declared Annual Income",
+    "Existing Medical Conditions",
+    "Family Medical History",
+    "Hospitalization History",
+    "Requested Sum Insured"
+  ],
+  "subject": "Additional Information Required for Insurance Proposal SLG/2026/00418",
+  "body": "Dear Meera Krishnamurthy,\n\nThank you for submitting proposal SLG/2026/00418 for Meera Krishnamurthy.\n\nOur underwriting review process has identified that the following mandatory information is missing or incomplete:\n\n  - Applicant Signature\n  - Declared Annual Income\n  - Existing Medical Conditions\n  - Family Medical History\n  - Hospitalization History\n  - Requested Sum Insured\n\nKindly provide the above details at your earliest convenience so we can continue the underwriting assessment. The proposal will remain on hold until this information is received.\n\nRegards,\nUnderwriting Operations Team\nSuryodaya Life & General Insurance Co. Ltd.",
+  "status": "DRAFT_NOT_SENT"
+}

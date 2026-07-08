@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Proposal Form - Disclosure Mismatch</title>
+<style>
+@page { size: A4; margin: 18mm 16mm; }
+* { box-sizing: border-box; }
+body {
+  font-family: 'Segoe UI', Arial, sans-serif;
+  color: #1f2937;
+  font-size: 12.5px;
+  line-height: 1.45;
+  margin: 0;
+  padding: 24px 32px;
+  background: #ffffff;
+}
+.letterhead {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  border-bottom: 3px solid #0b3d61;
+  padding-bottom: 10px;
+  margin-bottom: 4px;
+}
+.company-name {
+  font-size: 20px;
+  font-weight: 700;
+  color: #0b3d61;
+  letter-spacing: 0.3px;
+}
+.company-sub {
+  font-size: 10.5px;
+  color: #5b6b79;
+  margin-top: 2px;
+}
+.form-meta {
+  text-align: right;
+  font-size: 10.5px;
+  color: #5b6b79;
+}
+.form-title {
+  text-align: center;
+  font-size: 15px;
+  font-weight: 700;
+  color: #0b3d61;
+  margin: 14px 0 2px 0;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.form-subtitle {
+  text-align: center;
+  font-size: 10.5px;
+  color: #7a8794;
+  margin-bottom: 16px;
+}
+.banner {
+  padding: 8px 14px;
+  border-radius: 4px;
+  font-size: 10.5px;
+  font-weight: 600;
+  margin-bottom: 16px;
+  text-align: center;
+}
+.banner.demo {
+  background: #fff8e1;
+  border: 1px solid #e8c34a;
+  color: #7a5b00;
+}
+.section {
+  margin-bottom: 14px;
+  break-inside: avoid;
+}
+.section-title {
+  background: #0b3d61;
+  color: #ffffff;
+  font-size: 11.5px;
+  font-weight: 700;
+  padding: 5px 10px;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+}
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border: 1px solid #d3dbe2;
+  border-top: none;
+}
+.grid.single {
+  grid-template-columns: 1fr;
+}
+.field {
+  padding: 6px 10px;
+  border-bottom: 1px solid #e7ebee;
+  border-right: 1px solid #e7ebee;
+}
+.grid > .field:nth-child(2n) {
+  border-right: none;
+}
+.field.full {
+  grid-column: 1 / -1;
+}
+.field .label {
+  font-size: 9.5px;
+  color: #6b7885;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  margin-bottom: 1px;
+}
+.field .value {
+  font-size: 12px;
+  color: #1f2937;
+  font-weight: 500;
+}
+.field .value.missing {
+  color: #b23b3b;
+  font-style: italic;
+  font-weight: 700;
+}
+.field .value.flag {
+  color: #b23b3b;
+  font-weight: 700;
+}
+table.claims {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid #d3dbe2;
+  border-top: none;
+}
+table.claims th {
+  background: #eef2f6;
+  font-size: 9.5px;
+  text-transform: uppercase;
+  color: #4a5560;
+  padding: 6px 8px;
+  text-align: left;
+  border-bottom: 1px solid #d3dbe2;
+}
+table.claims td {
+  padding: 6px 8px;
+  font-size: 11.5px;
+  border-bottom: 1px solid #e7ebee;
+}
+.declaration-box {
+  border: 1px solid #d3dbe2;
+  border-top: none;
+  padding: 10px 12px;
+  font-size: 10.5px;
+  color: #3a4550;
+}
+.sign-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  border: 1px solid #d3dbe2;
+  border-top: none;
+}
+.sign-row .field { border-right: 1px solid #e7ebee; border-bottom: none; }
+.sign-row .field:last-child { border-right: none; }
+.attach-note {
+  margin-top: 18px;
+  border: 1.5px dashed #b23b3b;
+  border-radius: 4px;
+  padding: 10px 14px;
+  background: #fdf3f2;
+}
+.attach-note .attach-title {
+  font-size: 11px;
+  font-weight: 700;
+  color: #8a2c2c;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+}
+.attach-note table.claims { border: 1px solid #e0b8b8; }
+.attach-note table.claims th { background: #f6e2e2; }
+footer.pagefoot {
+  margin-top: 18px;
+  font-size: 9px;
+  color: #9aa5ae;
+  text-align: center;
+  border-top: 1px solid #e7ebee;
+  padding-top: 8px;
+}
+
+</style>
+</head>
+<body>
+
+<div class="letterhead">
+  <div>
+    <div class="company-name">Suryodaya Life &amp; General Insurance Co. Ltd.</div>
+    <div class="company-sub">Regd. Office: 4th Floor, Prestige Towers, Residency Road, Bengaluru, Karnataka 560025 | IRDAI Regn. No. 512</div>
+  </div>
+  <div class="form-meta">
+    Proposal No: <strong>SLG/2026/00420</strong><br>
+    Form Type: Individual Life &amp; Health Proposal<br>
+    Page 1 of 1
+  </div>
+</div>
+
+<div class="form-title">Insurance Proposal Form</div>
+<div class="form-subtitle">Individual Life &amp; Health Cover — To be completed in full by the Proposer</div>
+
+<div class="banner demo">SYNTHETIC TEST DATA — For AI Underwriting Workflow Demonstration Only — Not a Real Applicant</div>
+
+<div class="section">
+  <div class="section-title">1. Application Information</div>
+  <div class="grid">
+    <div class="field"><div class="label">Proposal Number</div><div class="value">SLG/2026/00420</div></div>
+    <div class="field"><div class="label">Application Date</div><div class="value">07 July 2026</div></div>
+    <div class="field"><div class="label">Insurance Product</div><div class="value">SuryaSuraksha Comprehensive Life &amp; Health Plan</div></div>
+    <div class="field"><div class="label">Distribution Channel</div><div class="value">Broker</div></div>
+    <div class="field"><div class="label">Broker / Agent Name</div><div class="value">Anitha Fernandes, Coastal Insurance Brokers Pvt. Ltd.</div></div>
+    <div class="field"><div class="label">Broker Licence Code</div><div class="value">IRDAI-BRK-63315</div></div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-title">2. Applicant Information</div>
+  <div class="grid">
+    <div class="field"><div class="label">Full Name</div><div class="value">Vikram Chandrashekar Rao</div></div>
+    <div class="field"><div class="label">Date of Birth</div><div class="value">02 November 1985 (Age 40)</div></div>
+    <div class="field"><div class="label">Gender</div><div class="value">Male</div></div>
+    <div class="field"><div class="label">Marital Status</div><div class="value">Married</div></div>
+    <div class="field"><div class="label">Nationality</div><div class="value">Indian</div></div>
+    <div class="field"><div class="label">PAN</div><div class="value">EQJPR2287M</div></div>
+    <div class="field full"><div class="label">Residential Address</div><div class="value">Villa 12, Palm Meadows Layout, Whitefield, Bengaluru, Karnataka 560066</div></div>
+    <div class="field"><div class="label">Mobile Number</div><div class="value">+91 99860 74215</div></div>
+    <div class="field"><div class="label">Email Address</div><div class="value">vikram.rao85@rediffmail.com</div></div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-title">3. Occupation &amp; Financial Information</div>
+  <div class="grid">
+    <div class="field"><div class="label">Employer Name</div><div class="value">Meridian Consulting Group India Pvt. Ltd.</div></div>
+    <div class="field"><div class="label">Designation</div><div class="value">Associate Director — Strategy Consulting</div></div>
+    <div class="field"><div class="label">Nature of Work</div><div class="value">Office-based, management consulting</div></div>
+    <div class="field"><div class="label">Years in Current Employment</div><div class="value">5 years</div></div>
+    <div class="field"><div class="label">Declared Annual Income</div><div class="value">₹18,00,000</div></div>
+    <div class="field"><div class="label">Additional Income Sources</div><div class="value">None</div></div>
+    <div class="field full"><div class="label">Existing Insurance Policies</div><div class="value">1 — Term Life Policy with Amara Life Insurance, Sum Assured ₹40,00,000, active since 2019</div></div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-title">4. Insurance Request</div>
+  <div class="grid">
+    <div class="field"><div class="label">Requested Sum Insured</div><div class="value">₹1,50,00,000</div></div>
+    <div class="field"><div class="label">Policy Term</div><div class="value">20 Years</div></div>
+    <div class="field"><div class="label">Premium Payment Frequency</div><div class="value">Annual</div></div>
+    <div class="field"><div class="label">Plan Variant</div><div class="value">SuryaSuraksha Comprehensive — Life + Critical Illness Rider</div></div>
+    <div class="field"><div class="label">Nominee Name</div><div class="value">Shalini Rao</div></div>
+    <div class="field"><div class="label">Nominee Relationship</div><div class="value">Spouse</div></div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-title">5. Medical Information</div>
+  <div class="grid">
+    <div class="field"><div class="label">Height</div><div class="value">173 cm</div></div>
+    <div class="field"><div class="label">Weight</div><div class="value">79 kg (BMI 26.4 — Overweight)</div></div>
+    <div class="field"><div class="label">Existing Medical Conditions</div><div class="value">None reported</div></div>
+    <div class="field"><div class="label">Current Medications</div><div class="value">None</div></div>
+    <div class="field"><div class="label">Family Medical History</div><div class="value">Mother — Hypertension (controlled)</div></div>
+    <div class="field"><div class="label">Last Medical Checkup Date</div><div class="value">15 June 2026 — Employer wellness checkup, parameters within normal range</div></div>
+    <div class="field full"><div class="label">Hospitalization History</div><div class="value">None in the last 10 years</div></div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-title">6. Lifestyle &amp; Risk Information</div>
+  <div class="grid">
+    <div class="field"><div class="label">Smoking Status</div><div class="value">Non-smoker</div></div>
+    <div class="field"><div class="label">Alcohol Consumption</div><div class="value">Occasional, social</div></div>
+    <div class="field"><div class="label">Hazardous Hobbies / Sports</div><div class="value">Weekend golf</div></div>
+    <div class="field"><div class="label">Frequent Travel to High-Risk Regions</div><div class="value">No</div></div>
+    <div class="field"><div class="label">Criminal History / Litigation</div><div class="value">None</div></div>
+    <div class="field"><div class="label">Aviation / Hazardous Occupation Exposure</div><div class="value">None</div></div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-title">7. Previous Claims</div>
+  <div class="grid single">
+    <div class="field"><div class="label">Previous Insurance Claims Filed</div><div class="value">No</div></div>
+  </div>
+  <table class="claims">
+    <thead><tr><th>Insurer</th><th>Policy Type</th><th>Date of Claim</th><th>Claim Amount</th><th>Status</th></tr></thead>
+    <tbody><tr><td colspan="5" style="text-align:center;color:#7a8794;">— No previous claims declared by applicant —</td></tr></tbody>
+  </table>
+</div>
+
+<div class="section">
+  <div class="section-title">8. Declaration &amp; Signature</div>
+  <div class="declaration-box">
+    I, the undersigned, declare that the information provided in this proposal form is true and complete to the best of my knowledge and belief. I understand that any misrepresentation or non-disclosure of material facts may render the policy voidable. I consent to the insurer verifying the above information with third parties, including medical practitioners and previous insurers, as required for underwriting.
+  </div>
+  <div class="sign-row">
+    <div class="field"><div class="label">Applicant Signature</div><div class="value">Vikram C. Rao</div></div>
+    <div class="field"><div class="label">Place</div><div class="value">Bengaluru</div></div>
+    <div class="field"><div class="label">Date</div><div class="value">07 July 2026</div></div>
+  </div>
+</div>
+
+<div class="attach-note">
+  <div class="attach-title">Attached Supporting Documents (as submitted with proposal)</div>
+
+  <table class="claims" style="margin-bottom:8px;">
+    <thead><tr><th colspan="2">Medical Examination Report — Apex Diagnostics &amp; Health Check Centre, dated 01 July 2026</th></tr></thead>
+    <tbody>
+      <tr><td style="width:38%;"><strong>Smoking Status (per examining physician)</strong></td><td>Current smoker — patient reports smoking approx. 8-10 cigarettes/day, confirmed on clinical examination (nicotine staining noted, respiratory auscultation consistent with smoker's history)</td></tr>
+      <tr><td><strong>Examining Physician</strong></td><td>Dr. Nagesh Pattabhiraman, MBBS, MD (Apex Diagnostics &amp; Health Check Centre, Bengaluru)</td></tr>
+    </tbody>
+  </table>
+
+  <table class="claims" style="margin-bottom:8px;">
+    <thead><tr><th colspan="2">Claim History Report — Insurance Information Bureau of India (IIB) Database Extract, dated 02 July 2026</th></tr></thead>
+    <tbody>
+      <tr><td style="width:38%;"><strong>Record 1</strong></td><td>Amara Life Insurance — Health Rider Claim, 14 September 2023, ₹2,10,000, Settled (Cardiac investigation)</td></tr>
+      <tr><td><strong>Record 2</strong></td><td>Amara Life Insurance — Health Rider Claim, 09 January 2025, ₹85,000, Settled (Orthopedic surgery — knee)</td></tr>
+    </tbody>
+  </table>
+
+  <table class="claims">
+    <thead><tr><th colspan="2">Salary Proof — Form 16 &amp; Bank Salary Certificate, Meridian Consulting Group India Pvt. Ltd., FY 2025-26</th></tr></thead>
+    <tbody>
+      <tr><td style="width:38%;"><strong>Gross Annual Salary (per Form 16)</strong></td><td>₹9,00,000</td></tr>
+      <tr><td><strong>Issuing Authority</strong></td><td>HR &amp; Payroll Department, Meridian Consulting Group India Pvt. Ltd.</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<footer class="pagefoot">This is a synthetically generated demo proposal form created for testing an AI underwriting workflow. No real individual or entity is represented.</footer>
+
+</body>
+</html>

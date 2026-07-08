@@ -1,0 +1,38 @@
+{
+  "application_id": "SLG/2026/00418",
+  "status": "STOPPED_INCOMPLETE",
+  "risk_category": null,
+  "risk_score": null,
+  "recommendation": "REQUEST_MORE_INFORMATION",
+  "premium": null,
+  "confidence": null,
+  "decision_evidence": [
+    "Missing mandatory field: Applicant Signature",
+    "Missing mandatory field: Declared Annual Income",
+    "Missing mandatory field: Existing Medical Conditions",
+    "Missing mandatory field: Family Medical History",
+    "Missing mandatory field: Hospitalization History",
+    "Missing mandatory field: Requested Sum Insured"
+  ],
+  "audit_trail": [
+    "Submission received, parsed, and evaluated by Submission Intake Agent.",
+    "Mandatory fields missing: ['Applicant Signature', 'Declared Annual Income', 'Existing Medical Conditions', 'Family Medical History', 'Hospitalization History', 'Requested Sum Insured']",
+    "Draft communication prepared and saved to C:\\Users\\roshni\\Downloads\\insurance_agent_adk\\insurance_agent_adk\\output\\email_draft_SLG_2026_00418.json (not sent)."
+  ],
+  "communication": {
+    "action": "REQUEST_MORE_INFORMATION",
+    "trigger": "incomplete_submission",
+    "recipient": "Applicant",
+    "missing_fields": [
+      "Applicant Signature",
+      "Declared Annual Income",
+      "Existing Medical Conditions",
+      "Family Medical History",
+      "Hospitalization History",
+      "Requested Sum Insured"
+    ],
+    "subject": "Additional Information Required for Insurance Proposal SLG/2026/00418",
+    "body": "Dear Meera Krishnamurthy,\n\nThank you for submitting proposal SLG/2026/00418 for Meera Krishnamurthy.\n\nOur underwriting review process has identified that the following mandatory information is missing or incomplete:\n\n  - Applicant Signature\n  - Declared Annual Income\n  - Existing Medical Conditions\n  - Family Medical History\n  - Hospitalization History\n  - Requested Sum Insured\n\nKindly provide the above details at your earliest convenience so we can continue the underwriting assessment. The proposal will remain on hold until this information is received.\n\nRegards,\nUnderwriting Operations Team\nSuryodaya Life & General Insurance Co. Ltd.",
+    "status": "DRAFT_NOT_SENT"
+  }
+}

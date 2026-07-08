@@ -1,0 +1,13 @@
+{
+  "action": "REQUEST_MORE_INFORMATION",
+  "trigger": "incomplete_submission",
+  "recipient": "Broker",
+  "missing_fields": [
+    "Existing Medical Conditions",
+    "Family Medical History",
+    "Hospitalization History"
+  ],
+  "subject": "Additional Information Required for Insurance Proposal SLG/2026/00420",
+  "body": "Dear Anitha Fernandes, Coastal Insurance Brokers Pvt. Ltd.,\n\nThank you for submitting proposal SLG/2026/00420 for Vikram Chandrashekar Rao.\n\nOur underwriting review process has identified that the following mandatory information is missing or incomplete:\n\n  - Existing Medical Conditions\n  - Family Medical History\n  - Hospitalization History\n\nKindly provide the above details at your earliest convenience so we can continue the underwriting assessment. The proposal will remain on hold until this information is received.\n\nRegards,\nUnderwriting Operations Team\nSuryodaya Life & General Insurance Co. Ltd.",
+  "status": "DRAFT_NOT_SENT"
+}
