@@ -1,38 +1,27 @@
 {
-  "application_id": "SLG/2026/00418",
-  "status": "STOPPED_INCOMPLETE",
-  "risk_category": null,
-  "risk_score": null,
-  "recommendation": "REQUEST_MORE_INFORMATION",
+  "application_id": "SLG/2026/00419",
+  "status": "STOPPED_HUMAN_REVIEW",
+  "risk_category": "HIGH",
+  "risk_score": 100,
+  "recommendation": "ESCALATE",
   "premium": null,
   "confidence": null,
   "decision_evidence": [
-    "Missing mandatory field: Applicant Signature",
-    "Missing mandatory field: Declared Annual Income",
-    "Missing mandatory field: Existing Medical Conditions",
-    "Missing mandatory field: Family Medical History",
-    "Missing mandatory field: Hospitalization History",
-    "Missing mandatory field: Requested Sum Insured"
+    "Existing medical conditions reported: Hypertension (diagnosed 2018, on medication); Type 2 Diabetes Mellitus (diagnosed 2021, on medication)",
+    "Hospitalization history reported: Hospitalized for 4 days in March 2024 at Fortis Escorts Hospital, Faridabad, for hypertensive crisis and management of uncontrolled blood sugar",
+    "BMI 30.04 indicates obesity.",
+    "Current smoker: Current smoker \u2014 approx. 12 cigarettes/day for 20 years",
+    "Hazardous occupation exposure: Yes \u2014 regular exposure to blasting sites and heavy mining equipment as part of job duties",
+    "Sum insured is 14.1x declared annual income (10-15x is moderate).",
+    "Previous claim(s) on record.",
+    "1 claim record(s) found in claim history."
   ],
   "audit_trail": [
-    "Submission received, parsed, and evaluated by Submission Intake Agent.",
-    "Mandatory fields missing: ['Applicant Signature', 'Declared Annual Income', 'Existing Medical Conditions', 'Family Medical History', 'Hospitalization History', 'Requested Sum Insured']",
-    "Draft communication prepared and saved to C:\\Users\\roshni\\Downloads\\insurance_agent_adk\\insurance_agent_adk\\output\\email_draft_SLG_2026_00418.json (not sent)."
+    "Submission received and parsed (DocumentParserTool).",
+    "Submission validated as complete by Submission Intake Agent.",
+    "Document Intelligence Agent found no disclosure mismatches.",
+    "Risk assessed: score=100, category=HIGH, confidence=0.95.",
+    "Material risk identified -- routed to Human Review. Action: ESCALATE. Reason: Material risk identified with high confidence (0.95). The risk profile is high due to the intersection of chronic medical conditions (hypertension and diabetes), obesity, active smoking habit, recent hospitalization for a hypertensive crisis, and a hazardous occupation in mining/blasting."
   ],
-  "communication": {
-    "action": "REQUEST_MORE_INFORMATION",
-    "trigger": "incomplete_submission",
-    "recipient": "Applicant",
-    "missing_fields": [
-      "Applicant Signature",
-      "Declared Annual Income",
-      "Existing Medical Conditions",
-      "Family Medical History",
-      "Hospitalization History",
-      "Requested Sum Insured"
-    ],
-    "subject": "Additional Information Required for Insurance Proposal SLG/2026/00418",
-    "body": "Dear Meera Krishnamurthy,\n\nThank you for submitting proposal SLG/2026/00418 for Meera Krishnamurthy.\n\nOur underwriting review process has identified that the following mandatory information is missing or incomplete:\n\n  - Applicant Signature\n  - Declared Annual Income\n  - Existing Medical Conditions\n  - Family Medical History\n  - Hospitalization History\n  - Requested Sum Insured\n\nKindly provide the above details at your earliest convenience so we can continue the underwriting assessment. The proposal will remain on hold until this information is received.\n\nRegards,\nUnderwriting Operations Team\nSuryodaya Life & General Insurance Co. Ltd.",
-    "status": "DRAFT_NOT_SENT"
-  }
+  "communication": null
 }

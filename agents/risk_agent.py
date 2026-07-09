@@ -15,9 +15,16 @@ business logic -- it isn't inventing its own risk model from scratch.
 
 from dataclasses import asdict
 
+from pydantic import ValidationError
+
 from google.adk.agents import LlmAgent
 
 from schemas.models import ApplicantData, RiskAssessmentOutput
+from tools.medical_risk_tool import assess_medical_risk
+from tools.lifestyle_risk_tool import assess_lifestyle_risk
+from tools.financial_risk_tool import assess_financial_risk
+from tools.claims_tool import assess_claims_risk
+from tools.scoring_tool import compute_overall_risk_score
 from workflow.model_config import get_model
 from workflow.adk_runtime import call_agent
 
@@ -26,39 +33,41 @@ MATERIAL_RISK_THRESHOLD = 45
 INSTRUCTION = f"""
 You are the Risk Assessment Agent in an insurance underwriting workflow.
 
-You receive normalized applicant data. Assess risk across four dimensions
-and produce an overall risk_score (0-100):
+You receive normalized applicant data. You have five tools -- call the
+first four, then the fifth to aggregate their results:
 
-MEDICAL (up to ~45 pts):
-- Existing medical conditions reported -> add weight
-- Hospitalization history in the last ~10 years -> add weight
-- BMI >= 30 (obesity) -> add weight; BMI 25-30 (overweight) -> smaller weight
+1. assess_medical_risk(medical_conditions, hospitalization_history, bmi)
+2. assess_lifestyle_risk(smoking_status, hazardous_occupation, hazardous_hobbies)
+3. assess_financial_risk(sum_insured, annual_income)
+4. assess_claims_risk(previous_claims_filed, claims_details)
+5. compute_overall_risk_score(medical_result, lifestyle_result,
+   financial_result, claims_result) -- pass it the exact dicts returned by
+   tools 1-4. It returns risk_score, risk_category, material_risk, and the
+   four per-dimension risk labels (medical_risk, lifestyle_risk,
+   financial_risk, claims_risk). Use its output directly for those fields
+   -- do not recompute them yourself.
 
-LIFESTYLE (up to ~45 pts):
-- Current smoker -> add weight
-- Hazardous occupation exposure (e.g. aviation) -> add weight
-- Genuinely hazardous hobbies (skydiving, scuba, motor racing) -> add weight
-  (benign hobbies like badminton, golf, running, trekking do NOT count)
-
-FINANCIAL (up to ~15 pts):
-- Sum insured as a multiple of declared annual income: >15x is high,
-  10-15x is moderate, <10x is normal
-
-CLAIMS (up to ~15 pts):
-- Any previous claim on record -> add weight
-
-Then:
-- risk_category: HIGH if risk_score >= {MATERIAL_RISK_THRESHOLD}, MEDIUM if
-  risk_score >= 20, else LOW.
-- material_risk: true if risk_score >= {MATERIAL_RISK_THRESHOLD}.
+Your own judgment is only needed for:
 - confidence: reflect how complete the underlying data was (more populated
   fields = higher confidence), roughly in the 0.6-0.97 range.
-- reasoning: a short bullet per dimension explaining what drove the score.
 - summary: one or two plain-language sentences a human underwriter could
   read at a glance.
+- reasoning: you can use the combined "reasoning" list from
+  compute_overall_risk_score's output as-is, or lightly tidy it.
 
-Respond ONLY with JSON matching the required schema. Do not add commentary
-outside the JSON.
+Respond ONLY with a JSON object of this exact shape, and no other text:
+{{
+  "risk_score": <int 0-100>,
+  "risk_category": "LOW"|"MEDIUM"|"HIGH",
+  "medical_risk": "LOW"|"MEDIUM"|"HIGH",
+  "financial_risk": "LOW"|"MEDIUM"|"HIGH",
+  "lifestyle_risk": "LOW"|"MEDIUM"|"HIGH",
+  "claims_risk": "LOW"|"MEDIUM"|"HIGH",
+  "material_risk": <bool, true if risk_score >= {MATERIAL_RISK_THRESHOLD}>,
+  "confidence": <float 0.0-1.0>,
+  "summary": <string>,
+  "reasoning": [<string>, ...]
+}}
 """
 
 
@@ -67,7 +76,13 @@ def build_agent() -> LlmAgent:
         name="RiskAssessmentAgent",
         model=get_model(),
         instruction=INSTRUCTION,
-        output_schema=RiskAssessmentOutput,
+        tools=[
+            assess_medical_risk,
+            assess_lifestyle_risk,
+            assess_financial_risk,
+            assess_claims_risk,
+            compute_overall_risk_score,
+        ],
     )
 
 
@@ -83,6 +98,15 @@ def run(applicant: ApplicantData) -> dict:
 
     agent = build_agent()
     result = call_agent(agent, payload)
+
+    try:
+        result = RiskAssessmentOutput(**result).model_dump()
+    except ValidationError:
+        pass  # fall through with the raw dict; defaults below still apply
+
+    result.setdefault("confidence", 0.7)
+    result.setdefault("summary", "")
+    result.setdefault("reasoning", [])
 
     # Keep the material-risk flag/category anchored to the stated threshold
     # even if the model's own categorical labels drift slightly.

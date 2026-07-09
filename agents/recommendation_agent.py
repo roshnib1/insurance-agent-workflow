@@ -11,9 +11,13 @@ result it's given.
 
 from dataclasses import asdict
 
+from pydantic import ValidationError
+
 from google.adk.agents import LlmAgent
 
 from schemas.models import ApplicantData, RiskAssessmentOutput, UnderwritingRecommendationOutput  # noqa: F401
+from tools.premium_tool import recommend_premium
+from tools.coverage_condition_tool import determine_coverage_conditions
 from workflow.model_config import get_model
 from workflow.adk_runtime import call_agent
 
@@ -24,25 +28,32 @@ workflow.
 You receive normalized applicant data plus a completed risk assessment
 (risk_score, risk_category, per-dimension risk labels, reasoning).
 
-Decide:
+You have two tools:
+1. recommend_premium(risk_category) -- call this with the risk assessment's
+   risk_category to get premium guidance. Use its "premium" value directly.
+2. determine_coverage_conditions(medical_risk, lifestyle_risk, claims_risk)
+   -- call this with the risk assessment's per-dimension labels to get
+   coverage_conditions. Use its output as your starting point; you may add
+   further conditions if you judge them relevant.
+
+Decide for yourself:
 - recommendation: APPROVE (risk_category LOW), APPROVE_WITH_CONDITIONS
   (risk_category MEDIUM), or REFER (risk_category HIGH -- always require
   senior underwriter sign-off for HIGH, never auto-approve or auto-decline
   a HIGH risk case yourself).
-- premium: brief guidance -- LOW: standard rate, no loading. MEDIUM:
-  standard + 15-25% risk loading. HIGH: standard + 40%+ loading or refer
-  to specialist pricing.
-- coverage_conditions: add specific conditions when relevant, e.g. medical
-  exclusion/loading for HIGH medical_risk, lifestyle exclusion (e.g.
-  smoker loading) for HIGH lifestyle_risk, claims history review for
-  MEDIUM/HIGH claims_risk.
 - rationale: carry forward the key evidence from the risk assessment plus
   your own reasoning for the recommendation.
 - confidence: generally mirror the risk assessment's confidence unless you
   have a specific reason to adjust it.
 
-Respond ONLY with JSON matching the required schema. Do not add commentary
-outside the JSON.
+Respond ONLY with a JSON object of this exact shape, and no other text:
+{
+  "recommendation": "APPROVE"|"APPROVE_WITH_CONDITIONS"|"DECLINE"|"REFER",
+  "premium": <string>,
+  "coverage_conditions": [<string>, ...],
+  "rationale": [<string>, ...],
+  "confidence": <float 0.0-1.0>
+}
 """
 
 
@@ -51,7 +62,7 @@ def build_agent() -> LlmAgent:
         name="UnderwritingRecommendationAgent",
         model=get_model(),
         instruction=INSTRUCTION,
-        output_schema=UnderwritingRecommendationOutput,
+        tools=[recommend_premium, determine_coverage_conditions],
     )
 
 
@@ -67,4 +78,15 @@ def run(applicant: ApplicantData, risk_result: dict) -> dict:
     }
 
     agent = build_agent()
-    return call_agent(agent, payload)
+    result = call_agent(agent, payload)
+
+    try:
+        result = UnderwritingRecommendationOutput(**result).model_dump()
+    except ValidationError:
+        pass  # fall through with the raw dict
+
+    result.setdefault("coverage_conditions", [])
+    result.setdefault("rationale", [])
+    result.setdefault("confidence", 0.5)
+
+    return result

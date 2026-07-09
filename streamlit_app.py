@@ -1,12 +1,18 @@
 """
 Streamlit frontend for the AI Underwriting Workflow.
 
-Drop this file in the project root (same level as app.py) and run:
+Run from the project root:
 
     streamlit run streamlit_app.py
 
-It reuses workflow/controller.py exactly as app.py does -- no duplicated
-business logic, this is purely a presentation layer over run_workflow().
+Purely a presentation layer -- no duplicated business logic. It calls
+whichever controller's run_workflow() you pick in the sidebar:
+
+  - v1 (workflow/controller.py): hand-rolled Python orchestration
+  - v2 (workflow/adk_controller.py): real google.adk.workflow.Workflow graph
+
+Both return the same decision.json shape, so the UI below doesn't care
+which one produced it.
 """
 
 import glob
@@ -15,8 +21,9 @@ import os
 import tempfile
 
 import streamlit as st
+from dotenv import load_dotenv
 
-from workflow.controller import run_workflow
+load_dotenv()
 
 st.set_page_config(page_title="AI Underwriting Workflow", page_icon="🛡️", layout="wide")
 
@@ -51,6 +58,14 @@ with st.sidebar:
     st.markdown("**— or —**")
     uploaded = st.file_uploader("Upload a proposal (.html or .pdf)", type=["html", "htm", "pdf"])
 
+    st.divider()
+    controller_choice = st.radio(
+        "Controller",
+        options=["v1 — Python controller", "v2 — ADK Workflow graph"],
+        help="v1: workflow/controller.py, hand-rolled routing. "
+             "v2: workflow/adk_controller.py, a real google.adk.workflow.Workflow graph.",
+    )
+
     provider = os.environ.get("MODEL_PROVIDER", "groq")
     st.caption(f"Model provider: `{provider}`")
 
@@ -78,11 +93,17 @@ if run_clicked:
     if not file_path:
         st.warning("Pick a sample proposal or upload a file first.")
     else:
-        with st.spinner(f"Running workflow on {file_label} ..."):
+        if controller_choice.startswith("v2"):
+            from workflow.adk_controller import run_workflow
+        else:
+            from workflow.controller import run_workflow
+
+        with st.spinner(f"Running {controller_choice} on {file_label} ..."):
             try:
                 decision = run_workflow(file_path)
                 st.session_state.decision = decision
                 st.session_state.file_label = file_label
+                st.session_state.controller_used = controller_choice
             except Exception as e:
                 st.error(f"Workflow failed: {e}")
                 st.session_state.decision = None
@@ -94,6 +115,7 @@ if decision is None:
     st.stop()
 
 st.subheader(f"Result — {st.session_state.file_label}")
+st.caption(f"Controller: {st.session_state.get('controller_used', '')}")
 
 status = decision.get("status", "UNKNOWN")
 icon, color = STATUS_STYLE.get(status, ("❔", "#6b7280"))

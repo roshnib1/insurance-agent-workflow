@@ -5,8 +5,8 @@ Two families of types live here:
 
 1. Plain dataclasses (ApplicantData, FinalDecision, CommunicationDraft) --
    used for deterministic, non-LLM data (parsed/normalized proposal data,
-   the final assembled decision). Simple and dict-serializable so the
-   Governance SDK can log/replay/diff them without custom serializers.
+   the final assembled decision). Simple and dict-serializable so any
+   downstream consumer can log/replay/diff them without custom serializers.
 
 2. Pydantic BaseModels (the *Output classes) -- used as the `output_schema`
    for each Google ADK LlmAgent. Setting output_schema forces the model to

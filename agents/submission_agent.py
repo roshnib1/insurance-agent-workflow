@@ -13,10 +13,13 @@ fields are missing, and how confident it is.
 
 from dataclasses import asdict
 
+from pydantic import ValidationError
+
 from google.adk.agents import LlmAgent
 
 from schemas.models import ApplicantData, SubmissionIntakeOutput
 from services.normalizer import MANDATORY_LABELS, find_missing_mandatory_fields
+from tools.completeness_tool import check_submission_completeness
 from workflow.model_config import get_model
 from workflow.adk_runtime import call_agent
 
@@ -26,17 +29,25 @@ You are the Submission Intake Agent in an insurance underwriting workflow.
 You receive a normalized insurance proposal (JSON) and a list of mandatory
 fields required before underwriting can begin.
 
+You have a tool, check_submission_completeness, that runs the deterministic
+mandatory-field check. Call it first with the applicant_data you were given.
+Then apply your own judgment on top of its result -- for example, spotting
+placeholder text like "not provided" / "left blank" / "not applicable" in a
+field the tool didn't flag as missing.
+
 Decide:
 1. Is the submission complete enough to start underwriting?
 2. Which mandatory fields (by their human-readable label) are missing,
-   null, empty, or clearly unusable (e.g. placeholder text)?
+   null, empty, or clearly unusable?
 3. How confident are you in this completeness assessment (0.0-1.0)?
 
-A field counts as missing if its value is null, empty, or a placeholder
-like "not provided" / "left blank" / "not applicable".
-
-Respond ONLY with JSON matching the required schema. Do not add commentary
-outside the JSON.
+Respond ONLY with a JSON object of this exact shape, and no other text:
+{
+  "complete": <bool>,
+  "missing_fields": [<string>, ...],
+  "confidence": <float between 0.0 and 1.0>,
+  "notes": [<string>, ...]
+}
 """
 
 
@@ -45,7 +56,7 @@ def build_agent() -> LlmAgent:
         name="SubmissionIntakeAgent",
         model=get_model(),
         instruction=INSTRUCTION,
-        output_schema=SubmissionIntakeOutput,
+        tools=[check_submission_completeness],
     )
 
 
@@ -66,6 +77,18 @@ def run(applicant: ApplicantData) -> dict:
 
     agent = build_agent()
     result = call_agent(agent, payload)
+
+    # Validate/coerce the agent's raw JSON against the expected shape now
+    # that output_schema is no longer enforcing it for us (output_schema
+    # and tools can't be used together in ADK -- see build_agent() above).
+    try:
+        result = SubmissionIntakeOutput(**result).model_dump()
+    except ValidationError:
+        pass  # fall through with the raw dict; downstream code still has defaults below
+
+    result.setdefault("missing_fields", [])
+    result.setdefault("confidence", 0.5)
+    result.setdefault("notes", [])
 
     # Belt-and-braces: never let the LLM under-report a field the
     # deterministic check flagged as missing.

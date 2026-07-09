@@ -1,0 +1,19 @@
+{
+  "action": "REQUEST_MORE_INFORMATION",
+  "trigger": "incomplete_submission",
+  "recipient": "Applicant",
+  "missing_fields": [
+    "Proposal Number",
+    "Full Name",
+    "Declared Annual Income",
+    "Requested Sum Insured",
+    "Existing Medical Conditions",
+    "Family Medical History",
+    "Hospitalization History",
+    "Smoking Status",
+    "Applicant Signature"
+  ],
+  "subject": "Additional Information Required for Insurance Proposal",
+  "body": "Dear Broker/Applicant,\n\nThank you for submitting proposal [Proposal Number] for the applicant.\n\nOur underwriting review process has identified that the following mandatory information is missing or incomplete:\n\n  - Proposal Number\n  - Full Name\n  - Declared Annual Income\n  - Requested Sum Insured\n  - Existing Medical Conditions\n  - Family Medical History\n  - Hospitalization History\n  - Smoking Status\n  - Applicant Signature\n\nKindly provide the above details at your earliest convenience so we can continue the underwriting assessment. The proposal will remain on hold until this information is received.\n\nRegards,\nUnderwriting Operations Team\nSuryodaya Life & General Insurance Co. Ltd.",
+  "status": "DRAFT_NOT_SENT"
+}

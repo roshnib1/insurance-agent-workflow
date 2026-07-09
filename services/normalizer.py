@@ -39,7 +39,13 @@ def _extract_age(dob_value: Optional[str]) -> Optional[int]:
     match = re.search(r"Age\s*(\d+)", dob_value)
     return int(match.group(1)) if match else None
 
+def _extract_bmi(value: Optional[str]) -> Optional[float]:
+    if not value:
+        return None
 
+    match = re.search(r"BMI\s*([\d.]+)", value)
+
+    return float(match.group(1)) if match else None
 def normalize(raw: Dict[str, Any]) -> ApplicantData:
     f = raw.get("fields", {})
 
@@ -69,8 +75,10 @@ def normalize(raw: Dict[str, Any]) -> ApplicantData:
         plan_variant=f.get("Plan Variant"),
 
         height_cm=_to_number(f.get("Height")),
-        weight_kg=_to_number(f.get("Weight")),
-        bmi=_to_number(f.get("Weight")),  # BMI text lives inside Weight value; risk_agent re-parses if needed
+        weight_kg=_to_number(
+            re.split(r"\(", f.get("Weight", ""))[0]
+        ),
+        bmi=_extract_bmi(f.get("Weight")),  # BMI text lives inside Weight value; risk_agent re-parses if needed
         medical_conditions=f.get("Existing Medical Conditions"),
         medications=f.get("Current Medications"),
         family_medical_history=f.get("Family Medical History"),

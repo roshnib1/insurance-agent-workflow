@@ -6,8 +6,7 @@ mismatch was found. Simulates the judgment call a human underwriter would
 make, choosing one of APPROVE / DECLINE / REQUEST_MORE_INFORMATION /
 ESCALATE.
 
-This agent proposes an action for a human underwriter (or the Governance
-SDK) to confirm -- it does not send anything. When it recommends
+This agent proposes an action for a human underwriter to confirm -- it does not send anything. When it recommends
 REQUEST_MORE_INFORMATION, the workflow controller drafts an (unsent) email
 via services/communication_service.py, a deterministic templating step
 kept outside the LLM so every draft is consistent and auditable.
@@ -16,9 +15,12 @@ kept outside the LLM so every draft is consistent and auditable.
 from dataclasses import asdict
 from typing import Optional
 
+from pydantic import ValidationError
+
 from google.adk.agents import LlmAgent
 
 from schemas.models import ApplicantData, HumanReviewOutput
+from tools.human_review_queue_tool import enqueue_for_human_review
 from workflow.model_config import get_model
 from workflow.adk_runtime import call_agent
 
@@ -51,8 +53,19 @@ Decide the action:
 If your action is REQUEST_MORE_INFORMATION, list the specific documents or
 clarifications needed in `requested_items`.
 
-Respond ONLY with JSON matching the required schema. Do not add commentary
-outside the JSON.
+You have a tool, enqueue_for_human_review, that registers this case in the
+human-review queue. Call it once, after you've decided your action, with
+the application_id, the trigger you were given, and your `reason` as the
+review reason. This is for audit/tracking purposes -- it does not change
+your decision.
+
+Respond ONLY with a JSON object of this exact shape, and no other text:
+{{
+  "action": "APPROVE"|"DECLINE"|"REQUEST_MORE_INFORMATION"|"ESCALATE",
+  "reason": <string>,
+  "reviewer_notes": [<string>, ...],
+  "requested_items": [<string>, ...]
+}}
 """
 
 
@@ -61,7 +74,7 @@ def build_agent() -> LlmAgent:
         name="HumanReviewAgent",
         model=get_model(),
         instruction=INSTRUCTION,
-        output_schema=HumanReviewOutput,
+        tools=[enqueue_for_human_review],
     )
 
 
@@ -90,6 +103,13 @@ def run(
 
     agent = build_agent()
     result = call_agent(agent, payload)
+
+    try:
+        result = HumanReviewOutput(**result).model_dump()
+    except ValidationError:
+        pass  # fall through with the raw dict
+
     result.setdefault("requested_items", [])
     result.setdefault("reviewer_notes", [])
+    result.setdefault("reason", "")
     return result

@@ -1,0 +1,12 @@
+{
+  "action": "REQUEST_MORE_INFORMATION",
+  "trigger": "incomplete_submission",
+  "recipient": "Broker",
+  "missing_fields": [
+    "BMI",
+    "Weight (kg)"
+  ],
+  "subject": "Additional Information Required for Insurance Proposal SLG/2026/00417",
+  "body": "Dear Kavitha Ramanathan, Ramanathan Insurance Associates,\n\nThank you for submitting proposal SLG/2026/00417 for Arvind Suresh Nair.\n\nOur underwriting review process has identified that the following mandatory information is missing or incomplete:\n\n  - BMI\n  - Weight (kg)\n\nKindly provide the above details at your earliest convenience so we can continue the underwriting assessment. The proposal will remain on hold until this information is received.\n\nRegards,\nUnderwriting Operations Team\nSuryodaya Life & General Insurance Co. Ltd.",
+  "status": "DRAFT_NOT_SENT"
+}

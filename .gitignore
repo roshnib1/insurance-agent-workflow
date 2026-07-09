@@ -3,3 +3,17 @@
 venv/
 __pycache__/
 *.py[cod]
+*.pyc
+
+.env
+.env.*
+
+decision.json
+*.log
+
+.streamlit/secrets.toml
+
+.vscode/
+.idea/
+
+*.db

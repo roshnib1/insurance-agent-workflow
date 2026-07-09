@@ -3,9 +3,8 @@ Shared workflow state.
 
 A single mutable object threaded through the custom workflow controller.
 Every stage reads what it needs from it and writes its result back, so the
-controller (and, later, the Governance SDK via the hook) always has a
-single source of truth for "what has happened so far" -- independent of
-which ADK agent produced which piece of it.
+controller always has a single source of truth for "what has happened so
+far" -- independent of which ADK agent produced which piece of it.
 """
 
 from dataclasses import dataclass, field
