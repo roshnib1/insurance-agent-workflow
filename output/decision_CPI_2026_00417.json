@@ -1,0 +1,449 @@
+{
+  "application_id": "CPI/2026/00417",
+  "scenario": "proposal_low_risk",
+  "status": "COMPLETED",
+  "current_phase": "PHASE_8_FINAL_DECISION",
+  "decision_mode": "AUTONOMOUS",
+  "decision_maker": "AI",
+  "risk_category": "LOW",
+  "risk_score": 6,
+  "confidence": 1.0,
+  "cat_exposure": {
+    "vendor": "GeoRisk CAT Analytics",
+    "cat_score": 20,
+    "cat_category": "LOW",
+    "flood_points": 10,
+    "earthquake_points": 10,
+    "cyclone_prone": false,
+    "wildfire_exposed": false,
+    "vendor_approved": true,
+    "pii_redacted": true
+  },
+  "pricing": {
+    "deductible": "INR 5,00,000 per occurrence",
+    "indicative_premium": 647500.0,
+    "rationale": [
+      "The risk is classified as LOW with no identified material risks.",
+      "The premium is derived from the base rate of 0.35 per 1,000 TIV without any additional risk loading applied.",
+      "The pricing is consistent with the standard rate for this risk category."
+    ],
+    "recommendation": "LOW risk -- standard rate, no loading."
+  },
+  "recommendation": {
+    "action": "APPROVE",
+    "basis": "LOW risk -- standard rate, no loading.",
+    "confidence": 1.0,
+    "conditions": [],
+    "reason": "The risk is a high-quality, Grade-A commercial IT office building with very low hazard profile and minimal CAT exposure (Score: 20, Low Risk). All safety systems (NFPA-13 compliant sprinklers, smoke detection, and wet risers) are in place, and the lack of hazardous materials or processes further reduces the risk. The pricing is consistent with the low-risk classification, and there are no disclosure mismatches or material concerns identified in the assessment."
+  },
+  "decision_evidence": [
+    "Minimal risk score of 6, placing the account in the Low risk category.",
+    "CAT exposure is the only contributing factor, with a low score of 6.",
+    "GeoRisk CAT Analytics indicates low exposure to flood and earthquake perils.",
+    "No active hazards, safety gaps, or mismatch issues were detected in the scan.",
+    "No material risks or claims history concerns were identified."
+  ],
+  "audit_trail": [
+    "Submission received and parsed.",
+    "Submission validated as complete.",
+    "No disclosure mismatch found.",
+    "PII redacted before CAT vendor call."
+  ],
+  "approval_lineage": [
+    {
+      "actor": "SubmissionIntakeAgent",
+      "action": "COMPLETE"
+    },
+    {
+      "actor": "DocumentIntelligenceAgent",
+      "action": "CONSISTENT"
+    },
+    {
+      "actor": "CATExposureAgent",
+      "action": "LOW"
+    },
+    {
+      "actor": "RiskSummaryAgent",
+      "action": "LOW"
+    },
+    {
+      "actor": "PricingAgent",
+      "action": "PRICED"
+    },
+    {
+      "actor": "HumanUnderwriterAgent",
+      "action": "Approve"
+    }
+  ],
+  "governance_history": [],
+  "workflow_metrics": {
+    "agents_executed": 7,
+    "decision_gates": 10,
+    "human_reviews": 1,
+    "governance_checks": 0
+  },
+  "ai_summary": "Nandini Techpark Solutions Pvt. Ltd., an IT services provider, has been approved for a new business policy with a Total Insured Value (TIV) of INR 185 Crore. The decision to approve at a standard rate with no additional loading was driven by the risk's classification as Low, supported by a Grade-A RCC commercial building construction and an excellent safety profile, including NFPA-13 compliant sprinklers and quarterly fire drills. CAT exposure is minimal, with a GeoRisk score of 20 and low vulnerability to flood and earthquake perils in the Bengaluru region. Given the lack of hazardous occupancy, zero historical claims, and robust fire protection systems, the risk presents a high-quality profile for the Enterprise Commercial Property Shield product.",
+  "communication": {
+    "emails_generated": 0,
+    "drafts": []
+  },
+  "workflow": {
+    "workflow_id": "0fed457b-4fdf-4df5-b44b-a98503b6bf6a",
+    "started_at": "2026-07-12T03:04:21.074399+00:00",
+    "completed_at": "2026-07-12T03:04:54.430001+00:00",
+    "duration_seconds": 33.356,
+    "workflow_version": "1.0"
+  },
+  "applicant": {
+    "business_name": "Nandini Techpark Solutions Pvt. Ltd.",
+    "broker_name": "Sagar Prakash Insurance Brokers Pvt. Ltd.",
+    "primary_property_address": "Tower B, Nandini Techpark, Outer Ring Road, Marathahalli, Bengaluru - 560103",
+    "total_insured_value": 1850000000.0,
+    "occupancy_type": "IT Office / Low Hazard"
+  },
+  "documents": [],
+  "execution_timeline": [
+    {
+      "timestamp": 1783825461.0743992,
+      "phase": "PHASE_1_SUBMISSION_INTAKE",
+      "step": "parse_submission",
+      "event": "started"
+    },
+    {
+      "timestamp": 1783825461.1110797,
+      "phase": "PHASE_1_SUBMISSION_INTAKE",
+      "step": "parse_submission",
+      "event": "completed"
+    },
+    {
+      "timestamp": 1783825461.1110797,
+      "phase": "PHASE_1_SUBMISSION_INTAKE",
+      "step": "SubmissionIntakeAgent",
+      "event": "started"
+    },
+    {
+      "timestamp": 1783825461.115084,
+      "phase": "PHASE_1_SUBMISSION_INTAKE",
+      "step": "SubmissionIntakeAgent",
+      "event": "started"
+    },
+    {
+      "timestamp": 1783825468.6897194,
+      "phase": "PHASE_1_SUBMISSION_INTAKE",
+      "step": "SubmissionIntakeAgent",
+      "event": "completed"
+    },
+    {
+      "timestamp": 1783825468.6897194,
+      "phase": "PHASE_1_SUBMISSION_INTAKE",
+      "step": "SubmissionIntakeAgent",
+      "event": "completed"
+    },
+    {
+      "timestamp": 1783825468.6897194,
+      "phase": "PHASE_1_SUBMISSION_INTAKE",
+      "step": "Decision1_SubmissionComplete",
+      "event": "gate_decision",
+      "route": "True"
+    },
+    {
+      "timestamp": 1783825468.6897194,
+      "phase": "PHASE_2_DOCUMENT_INTELLIGENCE",
+      "step": "document_linker",
+      "event": "started"
+    },
+    {
+      "timestamp": 1783825468.7250357,
+      "phase": "PHASE_2_DOCUMENT_INTELLIGENCE",
+      "step": "document_linker",
+      "event": "completed"
+    },
+    {
+      "timestamp": 1783825468.7259364,
+      "phase": "PHASE_2_DOCUMENT_INTELLIGENCE",
+      "step": "hazard_detection_tool",
+      "event": "started",
+      "fields_checked": 8
+    },
+    {
+      "timestamp": 1783825468.7259364,
+      "phase": "PHASE_2_DOCUMENT_INTELLIGENCE",
+      "step": "hazard_detection_tool",
+      "event": "completed",
+      "hazard_count": 0
+    },
+    {
+      "timestamp": 1783825468.7259364,
+      "phase": "PHASE_2_DOCUMENT_INTELLIGENCE",
+      "step": "mismatch_detection_tool",
+      "event": "started",
+      "linked_document_count": 0
+    },
+    {
+      "timestamp": 1783825468.7259364,
+      "phase": "PHASE_2_DOCUMENT_INTELLIGENCE",
+      "step": "mismatch_detection_tool",
+      "event": "completed",
+      "issue_count": 0
+    },
+    {
+      "timestamp": 1783825468.7259364,
+      "phase": "PHASE_2_DOCUMENT_INTELLIGENCE",
+      "step": "DocumentIntelligenceAgent",
+      "event": "started"
+    },
+    {
+      "timestamp": 1783825468.7259364,
+      "phase": "PHASE_2_DOCUMENT_INTELLIGENCE",
+      "step": "DocumentIntelligenceAgent",
+      "event": "started"
+    },
+    {
+      "timestamp": 1783825477.0476937,
+      "phase": "PHASE_2_DOCUMENT_INTELLIGENCE",
+      "step": "DocumentIntelligenceAgent",
+      "event": "completed"
+    },
+    {
+      "timestamp": 1783825477.0476937,
+      "phase": "PHASE_2_DOCUMENT_INTELLIGENCE",
+      "step": "DocumentIntelligenceAgent",
+      "event": "completed"
+    },
+    {
+      "timestamp": 1783825477.0476937,
+      "phase": "PHASE_2_DOCUMENT_INTELLIGENCE",
+      "step": "Decision2_DisclosureMismatch",
+      "event": "gate_decision",
+      "route": "False"
+    },
+    {
+      "timestamp": 1783825477.0476937,
+      "phase": "PHASE_3_CAT_EXPOSURE",
+      "step": "vendor_approval_tool",
+      "event": "started",
+      "vendor": "GeoRisk CAT Analytics"
+    },
+    {
+      "timestamp": 1783825477.0476937,
+      "phase": "PHASE_3_CAT_EXPOSURE",
+      "step": "vendor_approval_tool",
+      "event": "completed",
+      "approved": true
+    },
+    {
+      "timestamp": 1783825477.0476937,
+      "phase": "PHASE_3_CAT_EXPOSURE",
+      "step": "Decision3_VendorApproved",
+      "event": "gate_decision",
+      "route": "True"
+    },
+    {
+      "timestamp": 1783825477.0476937,
+      "phase": "PHASE_3_CAT_EXPOSURE",
+      "step": "pii_redaction_tool",
+      "event": "started",
+      "field_count": 79
+    },
+    {
+      "timestamp": 1783825477.0476937,
+      "phase": "PHASE_3_CAT_EXPOSURE",
+      "step": "pii_redaction_tool",
+      "event": "completed",
+      "redacted_count": 6
+    },
+    {
+      "timestamp": 1783825477.0476937,
+      "phase": "PHASE_3_CAT_EXPOSURE",
+      "step": "Decision4_PayloadContainsPII",
+      "event": "gate_decision",
+      "route": "True"
+    },
+    {
+      "timestamp": 1783825477.0476937,
+      "phase": "PHASE_3_CAT_EXPOSURE",
+      "step": "cat_vendor_tool",
+      "event": "started",
+      "vendor": "GeoRisk CAT Analytics"
+    },
+    {
+      "timestamp": 1783825477.0476937,
+      "phase": "PHASE_3_CAT_EXPOSURE",
+      "step": "cat_vendor_tool",
+      "event": "completed",
+      "cat_score": 20,
+      "cat_category": "LOW"
+    },
+    {
+      "timestamp": 1783825477.0476937,
+      "phase": "PHASE_3_CAT_EXPOSURE",
+      "step": "CATExposureAgent",
+      "event": "started"
+    },
+    {
+      "timestamp": 1783825477.0476937,
+      "phase": "PHASE_3_CAT_EXPOSURE",
+      "step": "CATExposureAgent",
+      "event": "started"
+    },
+    {
+      "timestamp": 1783825478.815777,
+      "phase": "PHASE_3_CAT_EXPOSURE",
+      "step": "CATExposureAgent",
+      "event": "completed"
+    },
+    {
+      "timestamp": 1783825478.815777,
+      "phase": "PHASE_3_CAT_EXPOSURE",
+      "step": "CATExposureAgent",
+      "event": "completed"
+    },
+    {
+      "timestamp": 1783825478.815777,
+      "phase": "PHASE_4_RISK_ASSESSMENT",
+      "step": "property_risk_scoring_tool",
+      "event": "started",
+      "hazard_count": 0,
+      "mismatch_count": 0
+    },
+    {
+      "timestamp": 1783825478.815777,
+      "phase": "PHASE_4_RISK_ASSESSMENT",
+      "step": "property_risk_scoring_tool",
+      "event": "completed",
+      "risk_score": 6,
+      "risk_category": "LOW"
+    },
+    {
+      "timestamp": 1783825478.815777,
+      "phase": "PHASE_4_RISK_ASSESSMENT",
+      "step": "RiskSummaryAgent",
+      "event": "started"
+    },
+    {
+      "timestamp": 1783825478.815777,
+      "phase": "PHASE_4_RISK_ASSESSMENT",
+      "step": "RiskSummaryAgent",
+      "event": "started"
+    },
+    {
+      "timestamp": 1783825483.7762828,
+      "phase": "PHASE_4_RISK_ASSESSMENT",
+      "step": "RiskSummaryAgent",
+      "event": "completed"
+    },
+    {
+      "timestamp": 1783825483.7762828,
+      "phase": "PHASE_4_RISK_ASSESSMENT",
+      "step": "RiskSummaryAgent",
+      "event": "completed"
+    },
+    {
+      "timestamp": 1783825483.7762828,
+      "phase": "PHASE_4_RISK_ASSESSMENT",
+      "step": "pricing_tool",
+      "event": "started",
+      "risk_category": "LOW",
+      "material_risk": false
+    },
+    {
+      "timestamp": 1783825483.7762828,
+      "phase": "PHASE_4_RISK_ASSESSMENT",
+      "step": "pricing_tool",
+      "event": "completed",
+      "indicative_premium": 647500.0
+    },
+    {
+      "timestamp": 1783825483.7762828,
+      "phase": "PHASE_4_RISK_ASSESSMENT",
+      "step": "PricingAgent",
+      "event": "started"
+    },
+    {
+      "timestamp": 1783825483.7762828,
+      "phase": "PHASE_4_RISK_ASSESSMENT",
+      "step": "PricingAgent",
+      "event": "started"
+    },
+    {
+      "timestamp": 1783825487.2339225,
+      "phase": "PHASE_4_RISK_ASSESSMENT",
+      "step": "PricingAgent",
+      "event": "completed"
+    },
+    {
+      "timestamp": 1783825487.2339225,
+      "phase": "PHASE_4_RISK_ASSESSMENT",
+      "step": "PricingAgent",
+      "event": "completed"
+    },
+    {
+      "timestamp": 1783825487.2339225,
+      "phase": "PHASE_4_RISK_ASSESSMENT",
+      "step": "Decision5_MaterialHazard",
+      "event": "gate_decision",
+      "route": "False"
+    },
+    {
+      "timestamp": 1783825487.2339225,
+      "phase": "PHASE_5_HUMAN_UNDERWRITER",
+      "step": "HumanUnderwriterAgent",
+      "event": "started"
+    },
+    {
+      "timestamp": 1783825487.2339225,
+      "phase": "PHASE_5_HUMAN_UNDERWRITER",
+      "step": "HumanUnderwriterAgent",
+      "event": "started"
+    },
+    {
+      "timestamp": 1783825491.232435,
+      "phase": "PHASE_5_HUMAN_UNDERWRITER",
+      "step": "HumanUnderwriterAgent",
+      "event": "completed"
+    },
+    {
+      "timestamp": 1783825491.232435,
+      "phase": "PHASE_5_HUMAN_UNDERWRITER",
+      "step": "HumanUnderwriterAgent",
+      "event": "completed"
+    },
+    {
+      "timestamp": 1783825491.232435,
+      "phase": "PHASE_5_HUMAN_UNDERWRITER",
+      "step": "Decision7_UnderwriterAction",
+      "event": "gate_decision",
+      "route": "Approve"
+    },
+    {
+      "timestamp": 1783825491.232435,
+      "phase": "PHASE_8_FINAL_DECISION",
+      "step": "EvidenceGenerationAgent",
+      "event": "started"
+    },
+    {
+      "timestamp": 1783825491.232435,
+      "phase": "PHASE_8_FINAL_DECISION",
+      "step": "EvidenceGenerationAgent",
+      "event": "started"
+    },
+    {
+      "timestamp": 1783825494.430002,
+      "phase": "PHASE_8_FINAL_DECISION",
+      "step": "EvidenceGenerationAgent",
+      "event": "completed"
+    },
+    {
+      "timestamp": 1783825494.430002,
+      "phase": "PHASE_8_FINAL_DECISION",
+      "step": "EvidenceGenerationAgent",
+      "event": "completed"
+    },
+    {
+      "timestamp": 1783825494.430002,
+      "phase": "PHASE_8_FINAL_DECISION",
+      "step": "decision_assembly_tool",
+      "event": "started"
+    }
+  ]
+}

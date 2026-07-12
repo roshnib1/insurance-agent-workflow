@@ -1,0 +1,13 @@
+{
+  "email_id": "email_001",
+  "created_at": "2026-07-12T03:11:58.420647+00:00",
+  "status": "DRAFT_NOT_SENT",
+  "recipient_role": "Broker",
+  "recipient_name": "Vikram Risk & Insurance Advisors LLP",
+  "recipient_email": "vikram.risk.insurance.advisors.llp@vikramriskinsurancea.example",
+  "subject": "Further Information Requested \u2014 Proposal CPI/2026/00512",
+  "body": "Proposal Number: CPI/2026/00512\nInsured: Suryodaya Petrochem Industries Pvt. Ltd.\nBroker: Vikram Risk & Insurance Advisors LLP\n\nDear Vikram Risk & Insurance Advisors LLP,\n\nFollowing review of Proposal CPI/2026/00512 (Suryodaya Petrochem Industries Pvt. Ltd.), the following is required before a final decision can be issued:\n  - Comprehensive Electrical Audit Report and remediation plan.\n  - Professional Engineering Survey Report (Fire & Process Safety).\n  - Updated Fire Protection Plan detailing automatic suppression upgrades.\n  - Detailed Drainage Improvement Plan to mitigate flood risk.\n\nRegards,\nUnderwriting Team, Commercial Property Division",
+  "reason": "The risk profile presents unacceptable levels of unmitigated hazard and catastrophic exposure that exceed the current proposal's mitigation strategy. Specifically: 1) The combination of high-hazard exothermic chemical processes and 480 KL of Class B flammable liquids without an automatic sprinkler system is a critical safety failure; 2) The self-reported aged electrical wiring in process areas is an immediate fire hazard that must be remediated before coverage can be granted; 3) The TIV of INR 940 Crore, coupled with extreme flood zone exposure (Zone A/Riverine) and poor drainage, makes the proposed INR 50 Lakh deductible insufficient for the potential loss magnitude; and 4) The lack of automatic suppression in a high-hazard chemical facility is contrary to standard underwriting appetite for this occupancy type.",
+  "related_application": "CPI/2026/00512",
+  "workflow_phase": "PHASE_7_SENIOR_UNDERWRITER"
+}

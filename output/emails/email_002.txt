@@ -1,0 +1,19 @@
+Subject: Proposal CPI/2026/00512 — Conditional Approval
+To: Vikram Risk & Insurance Advisors LLP <vikram.risk.insurance.advisors.llp@vikramriskinsurancea.example> (Broker)
+Status: DRAFT_NOT_SENT
+
+Proposal Number: CPI/2026/00512
+Insured: Suryodaya Petrochem Industries Pvt. Ltd.
+Broker: Vikram Risk & Insurance Advisors LLP
+
+Dear Vikram Risk & Insurance Advisors LLP,
+
+We are pleased to confirm conditional approval of Proposal CPI/2026/00512 for Suryodaya Petrochem Industries Pvt. Ltd., subject to the following conditions:
+  - Mandatory comprehensive electrical audit and certified rewiring of the process area must be completed and documented prior to policy inception.
+  - Submission of a formal Fire Safety Improvement Plan, specifically including a binding timeline for the installation of an automatic sprinkler system in process and storage areas.
+  - Requirement for an upgraded onsite drainage/flood mitigation system to address documented waterlogging issues.
+  - Implementation of a documented Preventive Maintenance Program (PMP) for all high-temperature equipment and boilers, with quarterly inspection reports submitted to the insurer.
+  - Increase the deductible for Flood and Natural Catastrophe perils to INR 75,000,000 to better align with the high-risk CAT profile and poor drainage conditions.
+
+Regards,
+Underwriting Team, Commercial Property Division

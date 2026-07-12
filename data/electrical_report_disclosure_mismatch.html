@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Electrical Report - KESA/ELEC/2026/2217</title>
+<style>
+:root{
+  --navy:#12233F;
+  --navy-2:#1E3A63;
+  --steel:#3A5876;
+  --gold:#A8801E;
+  --gold-light:#F3E9D2;
+  --paper:#FFFFFF;
+  --ink:#1A1D22;
+  --muted:#5B6470;
+  --line:#C7CDD6;
+  --line-soft:#E3E7ED;
+  --ok-bg:#EAF3EC;
+  --ok-line:#2F7D4F;
+  --warn-bg:#FBEAEA;
+  --warn-line:#B23A3A;
+  --band:#F4F6F9;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  font-family:"Segoe UI","Helvetica Neue",Arial,sans-serif;
+  color:var(--ink);
+  background:#7c869a;
+  font-size:12.4px;
+  line-height:1.45;
+}
+.page{
+  width:210mm;
+  min-height:297mm;
+  margin:14px auto;
+  background:var(--paper);
+  box-shadow:0 0 14px rgba(0,0,0,0.35);
+  padding:14mm 13mm 20mm 13mm;
+  position:relative;
+}
+@media print{
+  body{background:#fff;}
+  .page{box-shadow:none;margin:0;width:auto;min-height:0;}
+}
+
+/* ---- Masthead ---- */
+.masthead{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  border-bottom:3px solid var(--navy);
+  padding-bottom:8px;
+  margin-bottom:10px;
+}
+.brand{display:flex;align-items:center;gap:12px;}
+.logo{
+  width:52px;height:52px;border-radius:6px;
+  background:linear-gradient(135deg,var(--navy),var(--steel));
+  color:#fff;display:flex;align-items:center;justify-content:center;
+  font-family:Georgia,serif;font-weight:700;font-size:20px;letter-spacing:1px;
+  border:1px solid var(--gold);
+}
+.brand-text .co-name{
+  font-family:Georgia,'Times New Roman',serif;
+  font-size:19px;font-weight:700;color:var(--navy);letter-spacing:.3px;
+}
+.brand-text .co-sub{font-size:10.5px;color:var(--muted);letter-spacing:.5px;text-transform:uppercase;}
+.doc-title-block{text-align:right;}
+.doc-title-block .doc-cat{
+  font-size:10px;letter-spacing:1.5px;color:var(--gold);text-transform:uppercase;font-weight:700;
+}
+.doc-title-block .doc-title{
+  font-family:Georgia,serif;font-size:17px;color:var(--navy);font-weight:700;margin-top:2px;
+}
+.status-tag{
+  display:inline-block;margin-top:6px;padding:3px 10px;font-size:10px;font-weight:700;
+  border-radius:3px;letter-spacing:.5px;text-transform:uppercase;
+}
+.status-submitted{background:var(--gold-light);color:#7A5A10;border:1px solid var(--gold);}
+
+/* ---- Metadata strip ---- */
+.metabox{
+  background:var(--band);
+  border:1px solid var(--line);
+  border-radius:4px;
+  padding:8px 12px;
+  margin-bottom:14px;
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:6px 14px;
+}
+.metabox .mi{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;}
+.metabox .mv{font-size:11.5px;color:var(--navy);font-weight:600;}
+
+/* ---- Section ---- */
+.section{
+  border:1px solid var(--line);
+  border-radius:4px;
+  margin-bottom:12px;
+  overflow:hidden;
+  page-break-inside:avoid;
+}
+.section-head{
+  background:var(--navy);
+  color:#fff;
+  padding:6px 12px;
+  font-size:12px;
+  font-weight:700;
+  letter-spacing:.4px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+.section-head .num{
+  display:inline-block;background:var(--gold);color:var(--navy);
+  width:20px;height:20px;border-radius:50%;text-align:center;line-height:20px;
+  font-size:11px;margin-right:8px;font-weight:800;
+}
+.section-body{padding:10px 12px;}
+
+/* ---- Field grid ---- */
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:0 18px;}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0 14px;}
+.field{
+  padding:5px 0;
+  border-bottom:1px dotted var(--line-soft);
+  display:flex;justify-content:space-between;gap:10px;
+}
+.field .lbl{color:var(--muted);font-size:11px;white-space:nowrap;}
+.field .val{color:var(--ink);font-weight:600;font-size:11.5px;text-align:right;}
+.field .val.blank{
+  color:#B23A3A;font-style:italic;font-weight:600;border-bottom:1px solid #B23A3A;min-width:120px;
+}
+
+/* ---- Tables ---- */
+table.ent{width:100%;border-collapse:collapse;font-size:11px;margin-top:4px;}
+table.ent th{
+  background:var(--band);color:var(--navy);text-align:left;
+  padding:6px 8px;border:1px solid var(--line);font-size:10.5px;text-transform:uppercase;letter-spacing:.3px;
+}
+table.ent td{padding:6px 8px;border:1px solid var(--line-soft);vertical-align:top;}
+table.ent tr:nth-child(even) td{background:#FBFBFC;}
+
+/* ---- Checkbox / radio rows ---- */
+.opts{display:flex;flex-wrap:wrap;gap:14px;margin-top:4px;}
+.opt{display:flex;align-items:center;gap:5px;font-size:11px;}
+.opt input{transform:scale(1.05);accent-color:var(--navy);}
+.chk-line{display:flex;align-items:center;gap:6px;font-size:11px;margin:4px 0;}
+
+/* ---- Signature ---- */
+.sigrow{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:14px;}
+.sigbox{border-top:1px solid var(--ink);padding-top:4px;font-size:10.5px;color:var(--muted);min-height:46px;}
+.stamp{
+  width:120px;height:70px;border:2px dashed var(--line);border-radius:6px;
+  display:flex;align-items:center;justify-content:center;text-align:center;
+  color:var(--muted);font-size:9.5px;text-transform:uppercase;letter-spacing:.4px;
+}
+
+/* ---- Footer ---- */
+.pagefoot{
+  position:absolute;bottom:8mm;left:13mm;right:13mm;
+  border-top:1px solid var(--line);padding-top:5px;
+  display:flex;justify-content:space-between;
+  font-size:9px;color:var(--muted);
+}
+.watermark-note{font-size:9px;color:var(--muted);font-style:italic;}
+
+/* badges */
+.badge{display:inline-block;padding:1px 7px;border-radius:3px;font-size:9.5px;font-weight:700;}
+.badge-yes{background:var(--ok-bg);color:var(--ok-line);border:1px solid var(--ok-line);}
+.badge-no{background:var(--warn-bg);color:var(--warn-line);border:1px solid var(--warn-line);}
+.badge-na{background:var(--band);color:var(--muted);border:1px solid var(--line);}
+h4.sub{font-size:11px;color:var(--navy);margin:10px 0 4px 0;text-transform:uppercase;letter-spacing:.4px;border-left:3px solid var(--gold);padding-left:6px;}
+p.note{font-size:10.5px;color:var(--muted);}
+</style>
+</head>
+<body>
+<div class="page"><div class="masthead">
+  <div class="brand">
+    <div class="logo">SP</div>
+    <div class="brand-text">
+      <div class="co-name">Sagar Prakash Insurance Brokers Pvt. Ltd.</div>
+      <div class="co-sub">IRDAI Direct Broker Licence No. 456 &nbsp;|&nbsp; Composite Broker</div>
+    </div>
+  </div>
+  <div class="doc-title-block">
+    <div class="doc-cat">Third-Party Risk Survey</div>
+    <div class="doc-title">Electrical Installation Inspection Report</div>
+    <div class="status-tag status-submitted">FINAL — SUBMITTED WITH PROPOSAL</div>
+  </div>
+</div><div class="metabox"><div><div class="mi">Document ID</div><div class="mv">DOC-CPI-2026-00561-ER</div></div><div><div class="mi">Document Type</div><div class="mv">Electrical Installation Inspection Report</div></div><div><div class="mi">Version</div><div class="mv">1.0</div></div><div><div class="mi">Generated Date</div><div class="mv">30-06-2026</div></div><div><div class="mi">Reference Proposal No.</div><div class="mv">CPI/2026/00561</div></div><div><div class="mi">Prepared By</div><div class="mv">Konark Electrical Safety Auditors Pvt. Ltd.</div></div><div><div class="mi">Document Status</div><div class="mv">Final -- Submitted with Proposal</div></div><div><div class="mi">Format</div><div class="mv">HTML / Print-Ready A4</div></div></div><div class="section">
+  <div class="section-head"><span><span class="num">1</span>Inspection Header</span></div>
+  <div class="section-body"><div class="grid2"><div><div class="field"><span class="lbl">Report Number</span><span class="val">KESA/ELEC/2026/2217</span></div><div class="field"><span class="lbl">Inspection Date</span><span class="val">28-06-2026</span></div><div class="field"><span class="lbl">Inspector</span><span class="val">Sunil Kadam, Licensed Electrical Supervisor (Grade I)</span></div><div class="field"><span class="lbl">Inspecting Firm</span><span class="val">Konark Electrical Safety Auditors Pvt. Ltd.</span></div></div><div><div class="field"><span class="lbl">Property Inspected</span><span class="val">Plot 118, MIDC Industrial Area, Bhosari, Pune - 411026</span></div><div class="field"><span class="lbl">Client / Applicant</span><span class="val">Bhosari Precision Engineering Pvt. Ltd.</span></div><div class="field"><span class="lbl">Proposal Reference</span><span class="val">CPI/2026/00561</span></div><div class="field"><span class="lbl">Broker Name</span><span class="val">Om Shanti Insurance Broking Pvt. Ltd.</span></div></div></div></div>
+</div><div class="section">
+  <div class="section-head"><span><span class="num">2</span>Electrical Inspection Findings</span></div>
+  <div class="section-body"><table class="ent"><tr><th>Inspection Item</th><th>Observation</th></tr><tr><td style="width:30%;font-weight:600;">Main Electrical Panel</td><td>Original 2006 panel, signs of thermal discolouration observed at incoming breaker terminals</td></tr><tr><td style="width:30%;font-weight:600;">Wiring Condition</td><td>Aged PVC insulated wiring in machine shop section, insulation cracking noted at multiple junction points</td></tr><tr><td style="width:30%;font-weight:600;">Earthing</td><td>Earth pit resistance measured at 8.2 ohms, exceeds recommended threshold of 5 ohms</td></tr><tr><td style="width:30%;font-weight:600;">Circuit Breakers</td><td>Two MCBs in Bay-3 distribution board found non-functional / bypassed with direct wire link</td></tr><tr><td style="width:30%;font-weight:600;">Overloaded Circuits</td><td><span class="badge badge-no">Yes</span></td></tr><tr><td style="width:30%;font-weight:600;">Exposed Wiring</td><td><span class="badge badge-no">Yes</span></td></tr><tr><td style="width:30%;font-weight:600;">Compliance Status</td><td><span class="badge badge-no">Non-Compliant</span></td></tr></table></div>
+</div><div class="section">
+  <div class="section-head"><span><span class="num">3</span>Inspector Remarks</span></div>
+  <div class="section-body"><p class="note">During the site visit, exposed and frayed wiring was observed near the induction furnace feeder line in Bay-3, along with an overloaded distribution panel serving the CNC machine bank. The main panel's incoming breaker terminals showed thermal discolouration consistent with historical overheating. Circuit breaker bypassing was observed on two circuits. These findings are inconsistent with the 'no electrical hazards' disclosure made in the accompanying proposal form and warrant immediate rectification prior to policy inception.</p></div>
+</div><div class="section">
+  <div class="section-head"><span><span class="num">4</span>Inspector Certification</span></div>
+  <div class="section-body"><div class="sigrow">
+      <div class="sigbox"><strong>Inspector:</strong> Sunil Kadam<br>
+      <strong>Signature:</strong> S. Kadam (wet signature, scanned)<br>
+      <strong>Date:</strong> 29-06-2026<br>
+      <strong>Licence / Empanelment No.:</strong> MSEDCL/GR-I/08847</div>
+      <div style="display:flex;justify-content:flex-end;"><div class="stamp">Surveyor Seal<br>Affix Here</div></div>
+    </div></div>
+</div><div class="pagefoot">
+  <span>DOC-CPI-2026-00561-ER &nbsp;|&nbsp; Sagar Prakash Insurance Brokers Pvt. Ltd. &nbsp;|&nbsp; Confidential Broker Submission</span>
+  <span>Page 1 of 1 &nbsp;|&nbsp; Electrical Inspection Report</span>
+</div></div>
+</body>
+</html>

@@ -1,0 +1,7 @@
+google-adk
+litellm
+pydantic
+beautifulsoup4
+pdfplumber
+streamlit
+python-dotenv

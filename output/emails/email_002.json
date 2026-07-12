@@ -1,0 +1,13 @@
+{
+  "email_id": "email_002",
+  "created_at": "2026-07-12T03:20:57.689026+00:00",
+  "status": "DRAFT_NOT_SENT",
+  "recipient_role": "Broker",
+  "recipient_name": "Vikram Risk & Insurance Advisors LLP",
+  "recipient_email": "vikram.risk.insurance.advisors.llp@vikramriskinsurancea.example",
+  "subject": "Proposal CPI/2026/00512 \u2014 Conditional Approval",
+  "body": "Proposal Number: CPI/2026/00512\nInsured: Suryodaya Petrochem Industries Pvt. Ltd.\nBroker: Vikram Risk & Insurance Advisors LLP\n\nDear Vikram Risk & Insurance Advisors LLP,\n\nWe are pleased to confirm conditional approval of Proposal CPI/2026/00512 for Suryodaya Petrochem Industries Pvt. Ltd., subject to the following conditions:\n  - Mandatory comprehensive electrical audit and certified rewiring of the process area must be completed and documented prior to policy inception.\n  - Submission of a formal Fire Safety Improvement Plan, specifically including a binding timeline for the installation of an automatic sprinkler system in process and storage areas.\n  - Requirement for an upgraded onsite drainage/flood mitigation system to address documented waterlogging issues.\n  - Implementation of a documented Preventive Maintenance Program (PMP) for all high-temperature equipment and boilers, with quarterly inspection reports submitted to the insurer.\n  - Increase the deductible for Flood and Natural Catastrophe perils to INR 75,000,000 to better align with the high-risk CAT profile and poor drainage conditions.\n\nRegards,\nUnderwriting Team, Commercial Property Division",
+  "reason": "The risk is approved subject to stringent risk mitigation conditions. While the TIV and hazard profile (flammable solvents, exothermic reactions) are significant, the primary concerns regarding ignition sources (aged wiring) and suppression (lack of sprinklers) can be managed through mandatory pre-inception audits and a structured improvement roadmap. The 25% loading is a starting point, but the increased deductible for CAT perils is required to address the elevated flood vulnerability.",
+  "related_application": "CPI/2026/00512",
+  "workflow_phase": "PHASE_8_FINAL_DECISION"
+}
