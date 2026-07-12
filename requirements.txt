@@ -3,3 +3,6 @@ litellm
 pydantic
 beautifulsoup4
 pdfplumber
+python-dotenv
+streamlit
+-e ../Governance/sdk-gateway/sdk[adk]

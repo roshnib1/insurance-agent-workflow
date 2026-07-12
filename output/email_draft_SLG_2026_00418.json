@@ -3,19 +3,14 @@
   "trigger": "incomplete_submission",
   "recipient": "Applicant",
   "missing_fields": [
-    "Broker / Agent Name",
-    "Broker Licence Code",
     "Declared Annual Income",
     "Requested Sum Insured",
     "Existing Medical Conditions",
-    "Current Medications",
     "Family Medical History",
-    "Last Medical Checkup Date",
     "Hospitalization History",
-    "Applicant Signature",
-    "Date"
+    "Applicant Signature"
   ],
   "subject": "Additional Information Required for Insurance Proposal SLG/2026/00418",
-  "body": "Dear Meera Krishnamurthy,\n\nThank you for submitting proposal SLG/2026/00418 for Meera Krishnamurthy.\n\nOur underwriting review process has identified that the following mandatory information is missing or incomplete:\n\n  - Broker / Agent Name\n  - Broker Licence Code\n  - Declared Annual Income\n  - Requested Sum Insured\n  - Existing Medical Conditions\n  - Current Medications\n  - Family Medical History\n  - Last Medical Checkup Date\n  - Hospitalization History\n  - Applicant Signature\n  - Date\n\nKindly provide the above details at your earliest convenience so we can continue the underwriting assessment. The proposal will remain on hold until this information is received.\n\nRegards,\nUnderwriting Operations Team\nSuryodaya Life & General Insurance Co. Ltd.",
+  "body": "Dear Meera Krishnamurthy,\n\nThank you for submitting proposal SLG/2026/00418 for Meera Krishnamurthy.\n\nOur underwriting review process has identified that the following mandatory information is missing or incomplete:\n\n  - Declared Annual Income\n  - Requested Sum Insured\n  - Existing Medical Conditions\n  - Family Medical History\n  - Hospitalization History\n  - Applicant Signature\n\nKindly provide the above details at your earliest convenience so we can continue the underwriting assessment. The proposal will remain on hold until this information is received.\n\nRegards,\nUnderwriting Operations Team\nSuryodaya Life & General Insurance Co. Ltd.",
   "status": "DRAFT_NOT_SENT"
 }

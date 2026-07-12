@@ -69,6 +69,11 @@ with st.sidebar:
     provider = os.environ.get("MODEL_PROVIDER", "groq")
     st.caption(f"Model provider: `{provider}`")
 
+    if controller_choice.startswith("v2"):
+        from workflow.assurance import is_assurance_active
+        assurance_status = "active" if is_assurance_active() else "inactive"
+        st.caption(f"Assurance (v2): `{assurance_status}`")
+
     run_clicked = st.button("▶ Run Workflow", type="primary", use_container_width=True)
 
 if "decision" not in st.session_state:

@@ -12,7 +12,10 @@ instead of reasoning over nested tables itself.
 
 from typing import Any, Dict
 
+from tools._common import log_tool_io
 
+
+@log_tool_io
 def extract_supporting_document_data(attached_documents: Dict[str, Any]) -> Dict[str, Any]:
     """
     Flatten attached supporting document tables into a single structured dict.

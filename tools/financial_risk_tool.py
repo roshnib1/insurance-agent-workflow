@@ -9,9 +9,12 @@ moderate, <10x normal).
 
 from typing import Any, Dict, Optional
 
+from tools._common import log_tool_io
+
 MAX_FINANCIAL_POINTS = 15
 
 
+@log_tool_io
 def assess_financial_risk(
     sum_insured: Optional[float] = None,
     annual_income: Optional[float] = None,

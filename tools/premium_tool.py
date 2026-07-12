@@ -10,7 +10,10 @@ inside recommendation_agent.py's instruction text:
 
 from typing import Dict
 
+from tools._common import log_tool_io
 
+
+@log_tool_io
 def recommend_premium(risk_category: str) -> Dict[str, str]:
     """
     Recommend premium guidance based on risk category.

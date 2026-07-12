@@ -43,6 +43,29 @@ also apply your own judgment for anything the tool doesn't cover. If there
 are no attached documents, or everything lines up, `consistent` should be
 true and `issues` empty.
 
+IMPORTANT: After you finish calling tools, you MUST emit a final assistant
+message that contains ONLY the JSON object below (no prose, no markdown).
+Do not end the turn after tool calls without that JSON.
+
+Respond ONLY with a JSON object of this exact shape, and no other text:
+{
+  "consistent": <bool>,
+  "issues": [{"field": <string>, "declared": <string>, "found": <string>}, ...],
+  "extracted_data": {<string>: <string>, ...},
+  "notes": [<string>, ...]
+}
+"""
+
+JUDGMENT_INSTRUCTION = """
+You are the Document Intelligence Agent in an insurance underwriting workflow.
+
+You receive a JSON payload that already includes `tool_result` from
+extract_supporting_document_data + validate_consistency (consistent, issues,
+extracted_data). Do NOT call tools. Apply judgment for anything the tools
+may have missed; if everything lines up, keep consistent=true and issues=[].
+
+IMPORTANT: Respond with a final message containing ONLY the JSON object below.
+
 Respond ONLY with a JSON object of this exact shape, and no other text:
 {
   "consistent": <bool>,
@@ -53,12 +76,12 @@ Respond ONLY with a JSON object of this exact shape, and no other text:
 """
 
 
-def build_agent() -> LlmAgent:
+def build_agent(*, with_tools: bool = True) -> LlmAgent:
     return LlmAgent(
         name="DocumentIntelligenceAgent",
         model=get_model(),
-        instruction=INSTRUCTION,
-        tools=[extract_supporting_document_data, validate_consistency],
+        instruction=INSTRUCTION if with_tools else JUDGMENT_INSTRUCTION,
+        tools=[extract_supporting_document_data, validate_consistency] if with_tools else [],
     )
 
 

@@ -8,9 +8,12 @@ previous claim on record adds weight.
 
 from typing import Any, Dict, List, Optional
 
+from tools._common import log_tool_io
+
 MAX_CLAIMS_POINTS = 15
 
 
+@log_tool_io
 def assess_claims_risk(
     previous_claims_filed: Optional[str] = None,
     claims_details: Optional[List[Dict[str, str]]] = None,

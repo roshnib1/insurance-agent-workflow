@@ -10,7 +10,10 @@ only inside recommendation_agent.py's instruction text:
 
 from typing import Dict, List
 
+from tools._common import log_tool_io
 
+
+@log_tool_io
 def determine_coverage_conditions(
     medical_risk: str = "LOW",
     lifestyle_risk: str = "LOW",

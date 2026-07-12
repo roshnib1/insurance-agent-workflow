@@ -17,16 +17,25 @@ deterministic part so it isn't left purely to LLM pattern-matching.
 import re
 from typing import Any, Dict, List, Optional
 
+from tools._common import log_tool_io
+
 INCOME_VARIANCE_THRESHOLD = 0.15
 
 
 def _to_number(value: Any) -> Optional[float]:
     if value is None:
         return None
-    digits = re.sub(r"[^\d.]", "", str(value))
-    return float(digits) if digits else None
+    text = str(value).replace(",", "")
+    match = re.search(r"\d+(?:\.\d+)?", text)
+    if not match:
+        return None
+    try:
+        return float(match.group(0))
+    except ValueError:
+        return None
 
 
+@log_tool_io
 def validate_consistency(
     declared_smoking_status: Optional[str] = None,
     declared_previous_claims_filed: Optional[str] = None,

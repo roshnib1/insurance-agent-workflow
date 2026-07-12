@@ -12,6 +12,8 @@ previously lived only inside risk_agent.py's instruction text:
 
 from typing import Any, Dict, List, Optional
 
+from tools._common import log_tool_io
+
 MAX_LIFESTYLE_POINTS = 45
 
 HAZARDOUS_HOBBY_KEYWORDS = (
@@ -41,6 +43,7 @@ def _is_hobby_text_benign_only(hobbies_text: str) -> bool:
     return all(any(benign in part for benign in BENIGN_HOBBY_KEYWORDS) for part in parts)
 
 
+@log_tool_io
 def assess_lifestyle_risk(
     smoking_status: Optional[str] = None,
     hazardous_occupation: Optional[str] = None,

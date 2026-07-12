@@ -14,8 +14,6 @@ reason over the data instead of pure if/else scoring.
   an LLM call.
 - `services/communication_service.py` — unchanged. Drafting the (unsent)
   broker/applicant emails is templating, kept deterministic and auditable.
-- `hooks/sdk_hooks.py` — unchanged. Same `PolicyHook` / `NoOpPolicyHook`
-  interface for the external Governance SDK to hook into later.
 - The 5-agent business workflow and its decision gates (complete? →
   consistent? → material risk? → confidence above threshold?).
 
@@ -30,17 +28,17 @@ reason over the data instead of pure if/else scoring.
 - **`workflow/adk_runtime.py`** — a small synchronous wrapper around ADK's
   async `Runner`/session API, so each agent module can expose a plain
   `run(...)` function.
-- **`workflow/controller.py`** — the custom workflow controller (explicitly
-  **not** a `SequentialAgent`). It owns the shared `UnderwritingState`,
-  calls each agent in order, evaluates every decision gate itself in plain
-  Python, wraps every agent call with `hook.before_agent`/`after_agent`,
-  and assembles `output/decision.json`.
+- **`workflow/adk_controller.py`** — v2 workflow as a real `google.adk.workflow.Workflow`
+  graph with conditional gates; integrates the Assurance SDK for observability.
+- **`workflow/assurance.py`** — Operational Assurance SDK wiring (`AssuranceADKPlugin`
+  + domain events at underwriting gates). Opt-in via `ASSURANCE_*` env vars.
 
 ## Folder structure
 
 ```
-insurance_agent_adk/
+insurance-agent-workflow/
 ├── app.py
+├── streamlit_app.py
 ├── agents/
 │   ├── submission_agent.py
 │   ├── document_agent.py
@@ -48,7 +46,9 @@ insurance_agent_adk/
 │   ├── recommendation_agent.py
 │   └── human_review_agent.py
 ├── workflow/
-│   ├── controller.py
+│   ├── controller.py          # v1 — hand-rolled Python orchestration
+│   ├── adk_controller.py        # v2 — ADK Workflow graph
+│   ├── assurance.py             # Assurance SDK integration (v2)
 │   ├── state.py
 │   ├── model_config.py
 │   └── adk_runtime.py
@@ -59,8 +59,6 @@ insurance_agent_adk/
 │   └── communication_service.py
 ├── schemas/
 │   └── models.py
-├── hooks/
-│   └── sdk_hooks.py
 ├── data/                  (your 4 sample proposal forms)
 ├── output/                (decision.json + email_draft_*.json land here)
 └── requirements.txt
@@ -77,7 +75,8 @@ export $(cat .env | xargs)  # or use python-dotenv / your shell's env loading
 ## Run
 
 ```bash
-python app.py data/proposal.html               # low risk, straight-through
+python app.py data/proposal.html               # v1 — low risk, straight-through
+python app.py data/proposal.html --v2          # v2 — ADK Workflow graph (+ Assurance if configured)
 python app.py data/proposal_incomplete.html     # missing mandatory fields
 python app.py data/proposal_high_risk.html      # material risk -> human review
 python app.py data/proposal_mismatch.html       # disclosure mismatch -> human review
@@ -86,6 +85,64 @@ python app.py data/proposal_mismatch.html       # disclosure mismatch -> human r
 Each run prints the final decision JSON and writes it to
 `output/decision.json` (plus `output/email_draft_<proposal_number>.json`
 whenever a communication was drafted).
+
+## Operational Assurance (v2 only)
+
+The v2 workflow (`--v2` or Streamlit "ADK Workflow graph") can emit
+observability events to the [Assurance SDK gateway](../Governance/sdk-gateway)
+when `ASSURANCE_*` env vars are set. See [`how-to-use-sdk.md`](how-to-use-sdk.md)
+for full SDK documentation.
+
+### Setup
+
+1. Install dependencies (includes `assurance-sdk[adk]` from the local sdk-gateway repo):
+
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+2. Start the gateway (from `../Governance/sdk-gateway`):
+
+   ```bash
+   export GATEWAY_SIGNING_SECRET=local-dev-signing-secret
+   export GATEWAY_ADMIN_TOKEN=local-dev-admin-token
+   uvicorn gateway.app:app --app-dir gateway --host 0.0.0.0 --port 8000
+   ```
+
+3. Register a producer with all required event types:
+
+   ```bash
+   curl -X POST http://127.0.0.1:8000/v1/producers/register \
+     -H 'Content-Type: application/json' \
+     -H 'X-Admin-Token: local-dev-admin-token' \
+     -d '{
+       "producer_id": "insurance-underwriting",
+       "tenant_id": "default-tenant",
+       "api_key": "your-producer-api-key",
+       "producer_type": "SDK",
+       "allowed_event_types": [
+         "WORKFLOW_RUN_STARTED", "WORKFLOW_RUN_COMPLETED", "WORKFLOW_RUN_FAILED",
+         "AGENT_RUN_STARTED", "AGENT_RUN_COMPLETED", "AGENT_RUN_FAILED",
+         "MODEL_INVOCATION_STARTED", "MODEL_INVOCATION_COMPLETED", "MODEL_INVOCATION_FAILED",
+         "TOOL_CALL_STARTED", "TOOL_CALL_COMPLETED", "TOOL_CALL_FAILED",
+         "UNDERWRITING_GATE_EVALUATED", "UNDERWRITING_DECISION_FINALIZED", "HUMAN_APPROVAL"
+       ]
+     }'
+   ```
+
+4. Copy assurance vars into `.env` (see `.env.example`):
+
+   ```bash
+   ASSURANCE_GATEWAY_URL=http://127.0.0.1:8000
+   ASSURANCE_API_KEY=your-producer-api-key
+   ASSURANCE_PRODUCER_ID=insurance-underwriting
+   ASSURANCE_TENANT_ID=default-tenant
+   ```
+
+5. Run v2 and check events at `http://127.0.0.1:8000/dashboard`.
+
+Instrumentation is non-blocking: if the gateway is down or env vars are
+missing, the workflow still completes normally.
 
 ## Notes
 
@@ -96,5 +153,3 @@ whenever a communication was drafted).
   and material-risk threshold (45) as the original rule-based scorer, so
   its output stays anchored to the same underwriting logic even though an
   LLM is now doing the reasoning.
-- Governance SDK integration is still just the hook interface — no policy
-  logic is implemented here, per the original scope.

@@ -7,21 +7,22 @@
   "premium": null,
   "confidence": null,
   "decision_evidence": [
-    "Existing medical conditions reported: Hypertension (diagnosed 2018, on medication); Type 2 Diabetes Mellitus (diagnosed 2021, on medication)",
-    "Hospitalization history reported: Hospitalized for 4 days in March 2024 at Fortis Escorts Hospital, Faridabad, for hypertensive crisis and management of uncontrolled blood sugar",
-    "BMI 30.04 indicates obesity.",
-    "Current smoker: Current smoker \u2014 approx. 12 cigarettes/day for 20 years",
-    "Hazardous occupation exposure: Yes \u2014 regular exposure to blasting sites and heavy mining equipment as part of job duties",
-    "Sum insured is 14.1x declared annual income (10-15x is moderate).",
-    "Previous claim(s) on record.",
-    "1 claim record(s) found in claim history."
+    "The applicant has diagnosed hypertension (since 2018) and Type 2 Diabetes Mellitus (since 2021), both managed with medication.",
+    "The applicant's BMI is 30.4, classifying them as obese.",
+    "There is a history of hospitalization in March 2024 for hypertensive crisis and uncontrolled blood sugar.",
+    "The applicant is a current smoker, consuming approximately 12 cigarettes per day for 20 years.",
+    "The occupation as a Site Operations Supervisor in mining involves hazardous duties, including exposure to blasting operations and heavy equipment.",
+    "The sum insured is 14.1 times the annual income, which is within a moderate range but contributes to the overall assessment.",
+    "The applicant has a previous claim settlement for hospitalization related to a hypertensive crisis."
   ],
   "audit_trail": [
     "Submission received and parsed (DocumentParserTool).",
-    "Submission validated as complete by Submission Intake Agent.",
+    "Submission validated as complete by CompletenessCheckTool.",
+    "Document tools found no disclosure mismatches.",
     "Document Intelligence Agent found no disclosure mismatches.",
+    "Risk dimension tools completed (medical/lifestyle/financial/claims + score).",
     "Risk assessed: score=100, category=HIGH, confidence=0.95.",
-    "Material risk identified -- routed to Human Review. Action: ESCALATE. Reason: Material risk identified with high confidence (0.95). The risk profile is high due to the intersection of chronic medical conditions (hypertension and diabetes), obesity, active smoking habit, recent hospitalization for a hypertensive crisis, and a hazardous occupation in mining/blasting."
+    "Material risk identified -- routed to Human Review. Action: ESCALATE. Reason: The applicant's profile presents a high-risk profile due to multiple pre-existing medical conditions (hypertension, diabetes, obesity), a history of hospitalization, current smoking, and a hazardous occupation. The confidence score for material risk is 0.95, meeting the threshold for escalation."
   ],
   "communication": null
 }

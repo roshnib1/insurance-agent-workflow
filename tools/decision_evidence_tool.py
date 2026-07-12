@@ -11,8 +11,10 @@ dataclass-construction code.
 from typing import Any, Dict, List, Optional
 
 from schemas.models import FinalDecision, to_dict
+from tools._common import log_tool_io
 
 
+@log_tool_io
 def assemble_final_decision(
     application_id: Optional[str],
     status: str,

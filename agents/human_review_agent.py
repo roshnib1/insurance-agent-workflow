@@ -68,13 +68,38 @@ Respond ONLY with a JSON object of this exact shape, and no other text:
 }}
 """
 
+JUDGMENT_INSTRUCTION = f"""
+You are the Human Review Agent in an insurance underwriting workflow,
+simulating the judgment of a senior underwriter.
 
-def build_agent() -> LlmAgent:
+You will be told the trigger for review (disclosure_mismatch, material_risk,
+or low_confidence) plus supporting context. Do NOT call tools.
+
+Decide the action:
+- disclosure_mismatch -> usually REQUEST_MORE_INFORMATION
+- material_risk with confidence >= {CONFIDENCE_THRESHOLD} -> usually ESCALATE
+- material_risk with confidence < {CONFIDENCE_THRESHOLD} -> usually REQUEST_MORE_INFORMATION
+- low_confidence -> usually REQUEST_MORE_INFORMATION
+- otherwise ESCALATE
+
+If action is REQUEST_MORE_INFORMATION, list items in requested_items.
+
+Respond ONLY with a JSON object of this exact shape, and no other text:
+{{
+  "action": "APPROVE"|"DECLINE"|"REQUEST_MORE_INFORMATION"|"ESCALATE",
+  "reason": <string>,
+  "reviewer_notes": [<string>, ...],
+  "requested_items": [<string>, ...]
+}}
+"""
+
+
+def build_agent(*, with_tools: bool = True) -> LlmAgent:
     return LlmAgent(
         name="HumanReviewAgent",
         model=get_model(),
-        instruction=INSTRUCTION,
-        tools=[enqueue_for_human_review],
+        instruction=INSTRUCTION if with_tools else JUDGMENT_INSTRUCTION,
+        tools=[enqueue_for_human_review] if with_tools else [],
     )
 
 

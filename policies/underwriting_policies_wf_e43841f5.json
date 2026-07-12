@@ -1,0 +1,233 @@
+{
+  "policy_sentence": "On WORKFLOW_RUN_COMPLETED for insurance_underwriting/proposal_file: document extraction must succeed; risk aggregation requires all four dimension tools + score; STP finalize requires risk ok, recommendation stp, COMPLETED/APPROVE decision, and no tool failures. Non-STP completed runs fail these end-state policies (UI Non-Compliant).",
+  "enforcement_mode": "observe",
+  "active_versions": [
+    {
+      "policy_id": "POL-UW-DOC-EXTRACT-001",
+      "version": "5",
+      "version_id": 13,
+      "assignment_id": 13,
+      "rule": {
+        "subject": {
+          "type": "tool",
+          "selector": {
+            "tool_name": "extract_supporting_document_data"
+          }
+        },
+        "trigger": {
+          "event_type": "WORKFLOW_RUN_COMPLETED"
+        },
+        "assertions": [
+          {
+            "assertion_id": "extract-completed-success",
+            "type": "event_exists",
+            "event_type": "TOOL_CALL_COMPLETED",
+            "where": {
+              "tool_name": "extract_supporting_document_data",
+              "status": "success"
+            }
+          },
+          {
+            "assertion_id": "extract-started-before-completed",
+            "type": "temporal_order",
+            "before": "TOOL_CALL_STARTED",
+            "after": "TOOL_CALL_COMPLETED"
+          }
+        ],
+        "enforcement": {
+          "mode": "observe",
+          "failure_action": "record_finding"
+        }
+      },
+      "severity": "medium"
+    },
+    {
+      "policy_id": "POL-UW-RISK-AGGREGATE-001",
+      "version": "5",
+      "version_id": 14,
+      "assignment_id": 14,
+      "rule": {
+        "subject": {
+          "type": "tool",
+          "selector": {
+            "tool_name": "compute_overall_risk_score"
+          }
+        },
+        "trigger": {
+          "event_type": "WORKFLOW_RUN_COMPLETED"
+        },
+        "assertions": [
+          {
+            "assertion_id": "medical-risk-completed",
+            "type": "event_exists",
+            "event_type": "TOOL_CALL_COMPLETED",
+            "where": {
+              "tool_name": "assess_medical_risk",
+              "status": "success"
+            }
+          },
+          {
+            "assertion_id": "lifestyle-risk-completed",
+            "type": "event_exists",
+            "event_type": "TOOL_CALL_COMPLETED",
+            "where": {
+              "tool_name": "assess_lifestyle_risk",
+              "status": "success"
+            }
+          },
+          {
+            "assertion_id": "financial-risk-completed",
+            "type": "event_exists",
+            "event_type": "TOOL_CALL_COMPLETED",
+            "where": {
+              "tool_name": "assess_financial_risk",
+              "status": "success"
+            }
+          },
+          {
+            "assertion_id": "claims-risk-completed",
+            "type": "event_exists",
+            "event_type": "TOOL_CALL_COMPLETED",
+            "where": {
+              "tool_name": "assess_claims_risk",
+              "status": "success"
+            }
+          },
+          {
+            "assertion_id": "aggregate-completed-success",
+            "type": "event_exists",
+            "event_type": "TOOL_CALL_COMPLETED",
+            "where": {
+              "tool_name": "compute_overall_risk_score",
+              "status": "success"
+            }
+          }
+        ],
+        "enforcement": {
+          "mode": "observe",
+          "failure_action": "record_finding"
+        }
+      },
+      "severity": "high"
+    },
+    {
+      "policy_id": "POL-UW-STP-FINALIZE-001",
+      "version": "5",
+      "version_id": 15,
+      "assignment_id": 15,
+      "rule": {
+        "subject": {
+          "type": "tool",
+          "selector": {
+            "tool_name": "assemble_final_decision"
+          }
+        },
+        "trigger": {
+          "event_type": "WORKFLOW_RUN_COMPLETED"
+        },
+        "assertions": [
+          {
+            "assertion_id": "risk-gate-ok",
+            "type": "event_exists",
+            "event_type": "UNDERWRITING_GATE_EVALUATED",
+            "where": {
+              "gate": "risk",
+              "route": "ok"
+            }
+          },
+          {
+            "assertion_id": "recommendation-gate-stp",
+            "type": "event_exists",
+            "event_type": "UNDERWRITING_GATE_EVALUATED",
+            "where": {
+              "gate": "recommendation",
+              "route": "stp"
+            }
+          },
+          {
+            "assertion_id": "decision-completed",
+            "type": "event_exists",
+            "event_type": "UNDERWRITING_DECISION_FINALIZED",
+            "where": {
+              "status": "COMPLETED"
+            }
+          },
+          {
+            "assertion_id": "decision-approve",
+            "type": "event_exists",
+            "event_type": "UNDERWRITING_DECISION_FINALIZED",
+            "where": {
+              "recommendation": "APPROVE"
+            }
+          },
+          {
+            "assertion_id": "no-tool-failures",
+            "type": "event_absence",
+            "event_type": "TOOL_CALL_FAILED"
+          }
+        ],
+        "enforcement": {
+          "mode": "observe",
+          "failure_action": "record_finding"
+        }
+      },
+      "severity": "high"
+    }
+  ],
+  "notes": [
+    "v5 triggers on WORKFLOW_RUN_COMPLETED; workflow_completion mode fails missing evidence.",
+    "v4 deprecated. Assignment has no bare subject_id.",
+    "Gateway evaluate_rule treats empty SubjectIdentity (no subject_type) as workflow-level so WORKFLOW_RUN_COMPLETED can apply tool end-state policies.",
+    "Producer: document_tools + risk_tools FunctionNodes; submission_gate uses CompletenessCheckTool for routing."
+  ],
+  "verification": [
+    {
+      "fixture": "proposal.html",
+      "workflow_id": "wf_5426f5f3-f525-4440-a3c2-1bbdf27e2c1f",
+      "run_status": "completed",
+      "decision_status": "COMPLETED",
+      "recommendation": "APPROVE",
+      "terminal_event": "WORKFLOW_RUN_COMPLETED",
+      "compliance_status": "compliant",
+      "passed_policy_count": 3,
+      "failed_policy_count": 0,
+      "open_findings": 0
+    },
+    {
+      "fixture": "proposal_incomplete.html",
+      "workflow_id": "wf_53c53cc8-d1e3-4ce0-98f7-f01e644d1a33",
+      "run_status": "completed",
+      "decision_status": "STOPPED_INCOMPLETE",
+      "recommendation": "REQUEST_MORE_INFORMATION",
+      "terminal_event": "WORKFLOW_RUN_COMPLETED",
+      "compliance_status": "non_compliant",
+      "passed_policy_count": 0,
+      "failed_policy_count": 3,
+      "open_findings": 3
+    },
+    {
+      "fixture": "proposal_mismatch.html",
+      "workflow_id": "wf_1a6cfccf-e5fa-499e-b0e4-b4d1dd8be73a",
+      "run_status": "completed",
+      "decision_status": "STOPPED_MISMATCH",
+      "recommendation": "REQUEST_MORE_INFORMATION",
+      "terminal_event": "WORKFLOW_RUN_COMPLETED",
+      "compliance_status": "non_compliant",
+      "passed_policy_count": 1,
+      "failed_policy_count": 2,
+      "open_findings": 4
+    },
+    {
+      "fixture": "proposal_high_risk.html",
+      "workflow_id": "wf_c6b55018-a3e5-4d68-b044-fdc47cb843a5",
+      "run_status": "completed",
+      "decision_status": "STOPPED_HUMAN_REVIEW",
+      "recommendation": "ESCALATE",
+      "terminal_event": "WORKFLOW_RUN_COMPLETED",
+      "compliance_status": "non_compliant",
+      "passed_policy_count": 2,
+      "failed_policy_count": 1,
+      "open_findings": 1
+    }
+  ]
+}

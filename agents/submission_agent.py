@@ -50,13 +50,32 @@ Respond ONLY with a JSON object of this exact shape, and no other text:
 }
 """
 
+# Used by the v2 ADK Workflow graph: tools already ran in a FunctionNode,
+# so the LLM only judges (avoids stuffing large applicant_data into tool calls).
+JUDGMENT_INSTRUCTION = """
+You are the Submission Intake Agent in an insurance underwriting workflow.
 
-def build_agent() -> LlmAgent:
+You receive a JSON payload that already includes `tool_result` from
+check_submission_completeness (complete, missing_fields, mandatory_fields).
+Do NOT call tools. Apply judgment on top of that result -- for example,
+spotting placeholder text like "not provided" / "left blank".
+
+Respond ONLY with a JSON object of this exact shape, and no other text:
+{
+  "complete": <bool>,
+  "missing_fields": [<string>, ...],
+  "confidence": <float between 0.0 and 1.0>,
+  "notes": [<string>, ...]
+}
+"""
+
+
+def build_agent(*, with_tools: bool = True) -> LlmAgent:
     return LlmAgent(
         name="SubmissionIntakeAgent",
         model=get_model(),
-        instruction=INSTRUCTION,
-        tools=[check_submission_completeness],
+        instruction=INSTRUCTION if with_tools else JUDGMENT_INSTRUCTION,
+        tools=[check_submission_completeness] if with_tools else [],
     )
 
 

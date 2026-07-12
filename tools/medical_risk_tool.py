@@ -12,6 +12,8 @@ the exact weighting described in the original instruction:
 
 from typing import Any, Dict, Optional
 
+from tools._common import log_tool_io
+
 MAX_MEDICAL_POINTS = 45
 
 
@@ -33,6 +35,7 @@ def _is_negative(value: Optional[str]) -> bool:
     return first_word in ("none", "no", "nil", "n/a", "nothing")
 
 
+@log_tool_io
 def assess_medical_risk(
     medical_conditions: Optional[str] = None,
     hospitalization_history: Optional[str] = None,

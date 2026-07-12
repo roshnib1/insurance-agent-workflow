@@ -14,7 +14,10 @@ orchestrator code that calls it.
 import uuid
 from typing import Any, Dict, Optional
 
+from tools._common import log_tool_io
 
+
+@log_tool_io
 def enqueue_for_human_review(
     application_id: Optional[str],
     trigger: str,

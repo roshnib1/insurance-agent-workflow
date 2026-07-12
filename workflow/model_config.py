@@ -45,13 +45,14 @@ def get_model():
         "gemini"
     )
 
-    print("Provider =", provider)
-
-
     if provider == "openrouter":
+        model_name = os.getenv(
+            "OPENROUTER_MODEL",
+            "meta-llama/llama-3.3-70b-instruct",
+        )
         return LiteLlm(
-            model=f"openrouter/{os.getenv('OPENROUTER_MODEL')}",
-            api_key=os.getenv("OPENROUTER_API_KEY")
+            model=f"openrouter/{model_name}",
+            api_key=os.getenv("OPENROUTER_API_KEY"),
         )
 
 

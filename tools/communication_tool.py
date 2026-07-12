@@ -18,10 +18,12 @@ from services.communication_service import (
     draft_disclosure_mismatch_email,
     draft_human_review_information_request,
 )
+from tools._common import log_tool_io
 
 VALID_TRIGGERS = ("incomplete_submission", "disclosure_mismatch", "human_review")
 
 
+@log_tool_io
 def draft_communication(
     trigger: str,
     proposal_number: Optional[str] = None,

@@ -56,13 +56,34 @@ Respond ONLY with a JSON object of this exact shape, and no other text:
 }
 """
 
+JUDGMENT_INSTRUCTION = """
+You are the Underwriting Recommendation Agent in an insurance underwriting
+workflow.
 
-def build_agent() -> LlmAgent:
+You receive a JSON payload with `risk_assessment` and `tool_result` from
+recommend_premium + determine_coverage_conditions. Do NOT call tools.
+
+Use tool_result.premium and tool_result.coverage_conditions as your base.
+Decide recommendation: APPROVE (LOW), APPROVE_WITH_CONDITIONS (MEDIUM), or
+REFER (HIGH). Set confidence (usually mirror risk_assessment.confidence).
+
+Respond ONLY with a JSON object of this exact shape, and no other text:
+{
+  "recommendation": "APPROVE"|"APPROVE_WITH_CONDITIONS"|"DECLINE"|"REFER",
+  "premium": <string>,
+  "coverage_conditions": [<string>, ...],
+  "rationale": [<string>, ...],
+  "confidence": <float 0.0-1.0>
+}
+"""
+
+
+def build_agent(*, with_tools: bool = True) -> LlmAgent:
     return LlmAgent(
         name="UnderwritingRecommendationAgent",
         model=get_model(),
-        instruction=INSTRUCTION,
-        tools=[recommend_premium, determine_coverage_conditions],
+        instruction=INSTRUCTION if with_tools else JUDGMENT_INSTRUCTION,
+        tools=[recommend_premium, determine_coverage_conditions] if with_tools else [],
     )
 
 

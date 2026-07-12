@@ -70,19 +70,46 @@ Respond ONLY with a JSON object of this exact shape, and no other text:
 }}
 """
 
+JUDGMENT_INSTRUCTION = f"""
+You are the Risk Assessment Agent in an insurance underwriting workflow.
 
-def build_agent() -> LlmAgent:
+You receive a JSON payload that already includes `tool_result` from the
+deterministic risk tools (risk_score, risk_category, material_risk,
+per-dimension labels, reasoning). Do NOT call tools.
+
+Use tool_result for score/category/material_risk/dimension labels. Add your
+own confidence (0.6-0.97) and a short summary. You may lightly tidy reasoning.
+
+Respond ONLY with a JSON object of this exact shape, and no other text:
+{{
+  "risk_score": <int 0-100>,
+  "risk_category": "LOW"|"MEDIUM"|"HIGH",
+  "medical_risk": "LOW"|"MEDIUM"|"HIGH",
+  "financial_risk": "LOW"|"MEDIUM"|"HIGH",
+  "lifestyle_risk": "LOW"|"MEDIUM"|"HIGH",
+  "claims_risk": "LOW"|"MEDIUM"|"HIGH",
+  "material_risk": <bool, true if risk_score >= {MATERIAL_RISK_THRESHOLD}>,
+  "confidence": <float 0.0-1.0>,
+  "summary": <string>,
+  "reasoning": [<string>, ...]
+}}
+"""
+
+
+def build_agent(*, with_tools: bool = True) -> LlmAgent:
     return LlmAgent(
         name="RiskAssessmentAgent",
         model=get_model(),
-        instruction=INSTRUCTION,
+        instruction=INSTRUCTION if with_tools else JUDGMENT_INSTRUCTION,
         tools=[
             assess_medical_risk,
             assess_lifestyle_risk,
             assess_financial_risk,
             assess_claims_risk,
             compute_overall_risk_score,
-        ],
+        ]
+        if with_tools
+        else [],
     )
 
 

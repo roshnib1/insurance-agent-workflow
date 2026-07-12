@@ -1,12 +1,13 @@
 {
   "action": "REQUEST_MORE_INFORMATION",
-  "trigger": "incomplete_submission",
+  "trigger": "disclosure_mismatch",
   "recipient": "Broker",
   "missing_fields": [
-    "Declared Annual Income",
-    "Smoking Status"
+    "Smoking Status",
+    "Previous Insurance Claims Filed",
+    "Declared Annual Income"
   ],
-  "subject": "Additional Information Required for Insurance Proposal SLG/2026/00420",
-  "body": "Dear Anitha Fernandes, Coastal Insurance Brokers Pvt. Ltd.,\n\nThank you for submitting proposal SLG/2026/00420 for Vikram Chandrashekar Rao.\n\nOur underwriting review process has identified that the following mandatory information is missing or incomplete:\n\n  - Declared Annual Income\n  - Smoking Status\n\nKindly provide the above details at your earliest convenience so we can continue the underwriting assessment. The proposal will remain on hold until this information is received.\n\nRegards,\nUnderwriting Operations Team\nSuryodaya Life & General Insurance Co. Ltd.",
+  "subject": "Clarification Required \u2014 Discrepancy in Proposal SLG/2026/00420",
+  "body": "Dear Anitha Fernandes, Coastal Insurance Brokers Pvt. Ltd.,\n\nDuring document review of proposal SLG/2026/00420 for Vikram Chandrashekar Rao, our verification process identified the following discrepancies between the proposal form and the supporting documents submitted:\n\n  - Smoking Status: declared as \"Non-smoker\", but supporting documents indicate \"Current smoker \u2014 patient reports smoking approx. 8-10 cigarettes/day, confirmed on clinical examination (nicotine staining noted, respiratory auscultation consistent with smoker's history)\"\n  - Previous Insurance Claims Filed: declared as \"No\", but supporting documents indicate \"Amara Life Insurance \u2014 Health Rider Claim, 14 September 2023, \u20b92,10,000, Settled (Cardiac investigation)\"\n  - Declared Annual Income: declared as \"1800000.0\", but supporting documents indicate \"900000.0\"\n\nPlease confirm the accurate information or provide clarifying documentation so we can proceed with the underwriting assessment. The proposal has been placed on hold pending this clarification.\n\nRegards,\nUnderwriting Operations Team\nSuryodaya Life & General Insurance Co. Ltd.",
   "status": "DRAFT_NOT_SENT"
 }

@@ -14,10 +14,30 @@ throughout the rest of the project (risk_agent.py, controller.py).
 """
 
 from typing import Any, Dict, List
+import json
+
+from tools._common import log_tool_io
 
 MATERIAL_RISK_THRESHOLD = 45
 
 
+def _coerce_dim_result(value: Any) -> Dict[str, Any]:
+    """Models sometimes pass tool results as JSON strings instead of objects."""
+    if isinstance(value, dict):
+        return value
+    if isinstance(value, str):
+        text = value.strip()
+        if text:
+            try:
+                parsed = json.loads(text)
+            except json.JSONDecodeError:
+                parsed = None
+            if isinstance(parsed, dict):
+                return parsed
+    return {}
+
+
+@log_tool_io
 def compute_overall_risk_score(
     medical_result: Dict[str, Any],
     lifestyle_result: Dict[str, Any],
@@ -45,6 +65,11 @@ def compute_overall_risk_score(
           "reasoning": [str, ...]   # combined reasoning from all four dimensions
         }
     """
+    medical_result = _coerce_dim_result(medical_result)
+    lifestyle_result = _coerce_dim_result(lifestyle_result)
+    financial_result = _coerce_dim_result(financial_result)
+    claims_result = _coerce_dim_result(claims_result)
+
     dims = [medical_result, lifestyle_result, financial_result, claims_result]
     risk_score = sum(int(d.get("points", 0)) for d in dims)
     risk_score = max(0, min(100, risk_score))

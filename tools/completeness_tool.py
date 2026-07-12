@@ -10,9 +10,10 @@ agent (as it currently does inside agents/submission_agent.py's run()).
 from typing import Any, Dict
 
 from services.normalizer import find_missing_mandatory_fields, MANDATORY_LABELS
-from tools._common import dict_to_applicant
+from tools._common import dict_to_applicant, log_tool_io
 
 
+@log_tool_io
 def check_submission_completeness(applicant_data: Dict[str, Any]) -> Dict[str, Any]:
     """
     Check whether a normalized insurance proposal has all mandatory fields.

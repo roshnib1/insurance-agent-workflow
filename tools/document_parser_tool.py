@@ -18,8 +18,10 @@ from typing import Any, Dict
 from services.html_parser import load_and_parse_html
 from services.pdf_parser import parse_pdf_proposal
 from services.normalizer import normalize
+from tools._common import log_tool_io
 
 
+@log_tool_io
 def parse_proposal_document(file_path: str) -> Dict[str, Any]:
     """
     Parse a PDF or HTML insurance proposal file into normalized applicant data.
