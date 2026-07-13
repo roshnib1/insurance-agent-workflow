@@ -3,15 +3,6 @@ Risk Summary Agent (Google ADK LlmAgent)
 
 Phase 4 -- Risk Assessment.
 
-Now calls tools.score_property_risk itself via real LLM-directed function
-calling, bound via closure to this call's hazard/mismatch counts, CAT
-score, and claims history (all already known from earlier phases' final
-results). The model's job is deciding when to call the tool and writing
-the plain-language narrative on top of its deterministic result -- it
-never disagrees with the score/category/material_risk the tool returns.
-
-Has `tools=[...]`, so no `output_schema` (ADK constraint) -- final answer
-is free-form JSON text, parsed manually in run() below.
 """
 
 from typing import Any, Dict, Optional

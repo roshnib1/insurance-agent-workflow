@@ -3,14 +3,6 @@ Pricing Agent (Google ADK LlmAgent)
 
 Phase 4 -- Risk Assessment (Pricing Recommendation).
 
-Now calls tools.calculate_pricing itself via real LLM-directed function
-calling, bound via closure to this call's TIV/risk category/material
-risk/deductible. The model's job is deciding when to call the tool and
-writing the rationale on top of its deterministic result -- it never
-recomputes the premium itself.
-
-Has `tools=[...]`, so no `output_schema` (ADK constraint) -- final answer
-is free-form JSON text, parsed manually in run() below.
 """
 
 from typing import Any, Dict, Optional

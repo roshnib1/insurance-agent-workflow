@@ -3,15 +3,6 @@ Submission Intake Agent (Google ADK LlmAgent)
 
 Phase 1 -- Submission Intake.
 
-Now calls tools.check_completeness itself (real LLM-directed function
-calling), rather than receiving a precomputed deterministic result from
-the controller. The tool is bound via closure to this call's applicant
-fields, so the model doesn't need to reproduce a large fields dict as a
-tool-call argument -- it just decides to call the (zero-argument) tool.
-
-Because this agent has `tools=[...]`, it cannot also use `output_schema`
-(a Google ADK constraint) -- its final answer is free-form JSON text,
-parsed manually in run() below.
 """
 
 from typing import Any, Dict, List, Optional

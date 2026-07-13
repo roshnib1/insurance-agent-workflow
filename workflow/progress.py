@@ -1,19 +1,7 @@
 """
 workflow/progress.py
 
-ProgressTracker gives Streamlit's "Live progress" panel (and any other
-caller) a single place to subscribe to what the workflow is doing right
-now. It doesn't run anything itself -- it's a plain event sink that
-property_controller.py, every agent's run() call (via adk_runtime.call_agent),
-and every tool call (via tools._common.emit) all feed into through the
-same `emit()` method, so a "before Phase X" / "after Phase X" event looks
-identical whether it came from an LLM agent, a deterministic tool, or a
-FunctionNode gate.
 
-No threads, no websockets -- ADK's own Runner already streams events
-synchronously as an async generator; this class is just a plain list +
-an optional callback, safe to call from the same thread Streamlit runs
-its script in.
 """
 
 import time

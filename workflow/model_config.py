@@ -13,20 +13,6 @@ Three providers are supported, matching the reference project exactly:
 Set the provider and the matching API key as environment variables before
 running app.py / streamlit_app.py:
 
-  export MODEL_PROVIDER=openrouter
-  export OPENROUTER_MODEL=...
-  export OPENROUTER_API_KEY=...
-
-  # or
-  export MODEL_PROVIDER=groq
-  export GROQ_API_KEY=...
-
-  # or
-  export MODEL_PROVIDER=gemini
-  export GOOGLE_API_KEY=...
-
-Every agent must call get_model() -- never instantiate a model class
-directly -- so the provider is switchable in one place.
 """
 
 import os

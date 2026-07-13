@@ -3,19 +3,6 @@ Senior Underwriter Agent (Google ADK LlmAgent)
 
 Phase 7 -- Senior Underwriter (Decision Replay).
 
-Reached when: the Human Underwriter escalated (Phase 5), a mismatch
-review escalated (Phase 2), or an override was accepted but exceeded
-delegated authority (Phase 6, Decision 9). This agent replays the full
-case with senior-level authority and decides whether to grant conditional
-approval or reject/request more review.
-
-Now calls tools.check_delegated_authority itself via real LLM-directed
-function calling, bound via closure to this call's TIV -- the natural
-tool for a senior underwriter's own authority-aware judgment, rather than
-a value handed to it pre-computed.
-
-Has `tools=[...]`, so no `output_schema` (ADK constraint) -- final answer
-is free-form JSON text, parsed manually in run() below.
 """
 
 from typing import Any, Dict, Optional

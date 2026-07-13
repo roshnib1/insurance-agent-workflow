@@ -2,18 +2,7 @@
 Document Intelligence Agent (Google ADK LlmAgent)
 
 Phase 2 -- Document Intelligence (OCR + Entity Extraction + Hazard
-Detection, cross-document reasoning over Proposal + Electrical Report +
-Engineering Report + Loss Runs).
 
-Now calls tools.detect_hazards and tools.detect_mismatches itself via
-real LLM-directed function calling, rather than receiving precomputed
-results from the controller. Both tools are bound via closure to this
-call's applicant fields + linked document HTML, so the model just
-decides which to call -- it never has to reproduce a large fields/HTML
-blob as a tool-call argument.
-
-Has `tools=[...]`, so no `output_schema` (ADK constraint) -- final answer
-is free-form JSON text, parsed manually in run() below.
 """
 
 from typing import Any, Dict, List, Optional

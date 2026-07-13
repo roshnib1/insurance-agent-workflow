@@ -3,17 +3,6 @@ Human Underwriter Agent (Google ADK LlmAgent)
 
 Phase 5 -- Human Underwriter.
 
-Simulates the judgment of a human underwriter reviewing the fully
-assembled case (submission, document intelligence, CAT exposure, risk
-assessment, pricing). Chooses one of Approve / Decline / Escalate /
-Override -- property_controller.py's Decision 7 gate routes on this
-`action` field into four different branches (Final Approval / Reject /
-Senior UW / Governance Check).
-
-This agent proposes the action for a human underwriter to confirm; it
-never sends anything itself. If its action implies more information is
-needed, property_controller.py drafts the (unsent) email via
-tools.communication_tool.
 """
 
 from typing import Any, Dict, List, Optional

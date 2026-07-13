@@ -1,21 +1,7 @@
 """
 Shared data contracts.
 
-Two families of types live here (same convention as the reference project):
 
-1. Plain dataclasses (CommercialPropertyApplicant, LinkedDocument,
-   FinalDecision) -- deterministic, non-LLM data: parsed/normalized
-   proposal data and final assembled artifacts. Simple and
-   dict-serializable so any downstream consumer can log/replay/diff them
-   without custom serializers.
-
-2. Pydantic BaseModels (the *Output classes) -- one per Google ADK
-   LlmAgent, used as `output_schema` so each agent's response is
-   structured JSON, never free-form prose. NOTE: per ADK's own
-   constraint, `output_schema` and `tools=[...]` cannot both be set on
-   the same LlmAgent -- agents that call a tool validate/coerce their
-   raw JSON against these classes in code instead (see agents/*.py),
-   exactly like the reference project's submission_agent.py does.
 """
 
 from dataclasses import asdict, dataclass, field

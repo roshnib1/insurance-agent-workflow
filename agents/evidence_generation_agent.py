@@ -3,11 +3,7 @@ Evidence Generation Agent (Google ADK LlmAgent)
 
 Phase 8 -- Final Decision.
 
-Writes the one-paragraph `ai_summary` that goes into decision.json for
-underwriting leadership -- the only part of the final decision.json that
-is itself LLM-authored text; every other field (status, pricing, audit
-trail, lineage, governance history) is assembled deterministically by
-tools.decision_assembly_tool.
+
 """
 
 from typing import Any, Dict, Optional

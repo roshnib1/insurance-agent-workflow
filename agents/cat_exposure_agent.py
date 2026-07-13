@@ -3,16 +3,6 @@ CAT Exposure Agent (Google ADK LlmAgent)
 
 Phase 3 -- CAT Exposure.
 
-Now calls three tools itself, in order, via real LLM-directed function
-calling: vendor approval -> PII redaction -> the (mocked) external CAT
-vendor call. Each tool is bound via closure to this call's applicant
-data, and a small shared dict threads each step's result into the next
-one automatically -- the model decides *when* to call each tool, but
-never has to manually copy a redacted-payload dict as a call argument;
-the closures do that handoff internally.
-
-Has `tools=[...]`, so no `output_schema` (ADK constraint) -- final answer
-is free-form JSON text, parsed manually in run() below.
 """
 
 from typing import Any, Dict, Optional

@@ -1,23 +1,5 @@
 """
 Internal helpers shared by every tool in this package.
-
-Not exposed as an ADK tool itself (never passed in an agent's `tools=[...]`)
--- just the small utilities every tool below needs so business logic
-doesn't repeat itself:
-
-  * `emit()` -- the before/after callback convention used by every tool
-    function in this package. Every public tool accepts an optional
-    `progress_callback` and calls `emit(progress_callback, "before", ...)`
-    as its first line and `emit(progress_callback, "after", ...)` as its
-    last, so workflow/progress.py can subscribe to a uniform event shape
-    (`{"phase", "step", "event", "tool", ...}`) regardless of which tool
-    fired it. A tool never *requires* a callback -- this makes every tool
-    trivially unit-testable on its own with no controller/progress wiring.
-
-  * Small field-name constants mirrored here (not yet imported from
-    schemas.models, which lands in a later module). Once schemas/models.py
-    exists, these will be replaced by a single import; keeping them local
-    for now means this tools/ package works standalone.
 """
 
 import re
