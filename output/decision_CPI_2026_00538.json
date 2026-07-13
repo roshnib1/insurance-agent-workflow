@@ -1,0 +1,214 @@
+{
+  "application_id": "CPI/2026/00538",
+  "scenario": "proposal_incomplete",
+  "status": "STOPPED_INCOMPLETE",
+  "current_phase": "PHASE_8_FINAL_DECISION",
+  "decision_mode": "HUMAN_REVIEW",
+  "decision_maker": "Human Underwriter",
+  "risk_category": null,
+  "risk_score": null,
+  "confidence": null,
+  "cat_exposure": {},
+  "pricing": {},
+  "recommendation": {
+    "action": "REQUEST_MORE_INFORMATION",
+    "basis": "Incomplete submission",
+    "confidence": 0.9,
+    "conditions": [],
+    "reason": "Missing mandatory fields."
+  },
+  "decision_evidence": [
+    "Missing mandatory field: Annual Revenue",
+    "Missing mandatory field: Deductible",
+    "Missing mandatory field: Electrical Hazards",
+    "Missing mandatory field: Fire Protection System",
+    "Missing mandatory field: Flammable Materials",
+    "Missing mandatory field: Hazardous Processes",
+    "Missing mandatory field: Last Safety Inspection Date",
+    "Missing mandatory field: Natural Catastrophe Cover",
+    "Missing mandatory field: Primary Property Address",
+    "Missing mandatory field: Registered Address",
+    "Missing mandatory field: Requested Sum Insured",
+    "Missing mandatory field: Risk Mitigation Measures"
+  ],
+  "audit_trail": [
+    "Submission received and parsed.",
+    "Mandatory fields missing: ['Annual Revenue', 'Deductible', 'Electrical Hazards', 'Fire Protection System', 'Flammable Materials', 'Hazardous Processes', 'Last Safety Inspection Date', 'Natural Catastrophe Cover', 'Primary Property Address', 'Registered Address', 'Requested Sum Insured', 'Risk Mitigation Measures']"
+  ],
+  "approval_lineage": [
+    {
+      "actor": "SubmissionIntakeAgent",
+      "action": "INCOMPLETE"
+    }
+  ],
+  "governance_history": [],
+  "workflow_metrics": {
+    "agents_executed": 2,
+    "decision_gates": 10,
+    "human_reviews": 0,
+    "governance_checks": 0
+  },
+  "ai_summary": "This new business submission for Meenakshi Textile Mills Pvt. Ltd. for Enterprise Commercial Property Shield has been stopped due to incomplete information. The applicant, a textile manufacturing unit in Coimbatore, Tamil Nadu, has a Total Insured Value of INR 62,00,00,000 and is situated in a moderate flood risk zone (Zone B) and moderate seismic risk zone (Zone III). Key missing mandatory fields prevent further underwriting assessment and a decision. Additional information is required to proceed with the review.",
+  "communication": {
+    "emails_generated": 1,
+    "drafts": [
+      {
+        "email_id": "email_003",
+        "status": "DRAFT_NOT_SENT",
+        "reason": "Missing mandatory fields: Annual Revenue, Deductible, Electrical Hazards, Fire Protection System, Flammable Materials, Hazardous Processes, Last Safety Inspection Date, Natural Catastrophe Cover, Primary Property Address, Registered Address, Requested Sum Insured, Risk Mitigation Measures",
+        "recipient_role": "Broker",
+        "subject": "Additional Information Required \u2014 Proposal CPI/2026/00538",
+        "file": "C:\\Users\\roshni\\Downloads\\insurance_agent_adk\\workflow_agent\\output\\emails\\email_003.json"
+      }
+    ]
+  },
+  "workflow": {
+    "workflow_id": "18024cef-34a0-48dc-b5b5-d58339552d6b",
+    "started_at": "2026-07-13T08:25:09.074063+00:00",
+    "completed_at": "2026-07-13T08:25:38.223147+00:00",
+    "duration_seconds": 29.149,
+    "workflow_version": "1.0"
+  },
+  "applicant": {
+    "business_name": "Meenakshi Textile Mills Pvt. Ltd.",
+    "broker_name": "Coastal Line Insurance Brokers Pvt. Ltd.",
+    "primary_property_address": null,
+    "total_insured_value": 620000000.0,
+    "occupancy_type": "Textile Manufacturing / Moderate Hazard"
+  },
+  "documents": [],
+  "execution_timeline": [
+    {
+      "timestamp": 1783931109.0740635,
+      "phase": "PHASE_1_SUBMISSION_INTAKE",
+      "step": "parse_submission",
+      "event": "started"
+    },
+    {
+      "timestamp": 1783931109.0947304,
+      "phase": "PHASE_1_SUBMISSION_INTAKE",
+      "step": "parse_submission",
+      "event": "completed"
+    },
+    {
+      "timestamp": 1783931109.0947304,
+      "phase": "PHASE_1_SUBMISSION_INTAKE",
+      "step": "SubmissionIntakeAgent",
+      "event": "started"
+    },
+    {
+      "timestamp": 1783931109.0947304,
+      "phase": "PHASE_1_SUBMISSION_INTAKE",
+      "step": "SubmissionIntakeAgent",
+      "event": "started"
+    },
+    {
+      "timestamp": "2026-07-13T08:25:15.963280+00:00",
+      "phase": "PHASE_1_SUBMISSION_INTAKE",
+      "step": "agent",
+      "event": "started",
+      "tool": "check_completeness",
+      "field_count": 79
+    },
+    {
+      "timestamp": "2026-07-13T08:25:15.963280+00:00",
+      "phase": "PHASE_1_SUBMISSION_INTAKE",
+      "step": "agent",
+      "event": "completed",
+      "tool": "check_completeness",
+      "complete": false,
+      "missing_count": 2
+    },
+    {
+      "timestamp": 1783931119.1335008,
+      "phase": "PHASE_1_SUBMISSION_INTAKE",
+      "step": "SubmissionIntakeAgent",
+      "event": "retry",
+      "attempt": 1,
+      "max_retries": 3,
+      "error": "Model response was not valid JSON (Expecting value: line 1 column 1 (char 0)). Raw response:\nI have identified the following issues with the submission:\n\n*   **Registered Address:** This field is empty.\n*   **Primary Property Address:** This field is empty.\n*   **Fire Protection System:** This field is empty.\n*   **Electrical Hazards:** This field is empty.\n*   **Flammable Materials:** This field is empty.\n*   **Hazardous Processes:** This field is empty.\n*   **Requested Sum Insured:** This field is empty.\n*   **Business Interruption Cover:** While indicated as \"Yes\", the \"Indemnity Per... (likely a transient upstream hiccup -- retrying)"
+    },
+    {
+      "timestamp": "2026-07-13T08:25:33.558855+00:00",
+      "phase": "PHASE_1_SUBMISSION_INTAKE",
+      "step": "agent",
+      "event": "started",
+      "tool": "check_completeness",
+      "field_count": 79
+    },
+    {
+      "timestamp": "2026-07-13T08:25:33.558855+00:00",
+      "phase": "PHASE_1_SUBMISSION_INTAKE",
+      "step": "agent",
+      "event": "completed",
+      "tool": "check_completeness",
+      "complete": false,
+      "missing_count": 2
+    },
+    {
+      "timestamp": 1783931136.7767615,
+      "phase": "PHASE_1_SUBMISSION_INTAKE",
+      "step": "SubmissionIntakeAgent",
+      "event": "completed"
+    },
+    {
+      "timestamp": 1783931136.7767615,
+      "phase": "PHASE_1_SUBMISSION_INTAKE",
+      "step": "SubmissionIntakeAgent",
+      "event": "completed"
+    },
+    {
+      "timestamp": 1783931136.7767615,
+      "phase": "PHASE_1_SUBMISSION_INTAKE",
+      "step": "Decision1_SubmissionComplete",
+      "event": "gate_decision",
+      "route": "False"
+    },
+    {
+      "timestamp": 1783931136.7767615,
+      "phase": "PHASE_1_SUBMISSION_INTAKE",
+      "step": "communication_tool",
+      "event": "started",
+      "trigger": "incomplete_submission",
+      "proposal_number": "CPI/2026/00538"
+    },
+    {
+      "timestamp": 1783931136.7767615,
+      "phase": "PHASE_1_SUBMISSION_INTAKE",
+      "step": "communication_tool",
+      "event": "completed",
+      "email_id": "email_003",
+      "recipient_role": "Broker"
+    },
+    {
+      "timestamp": 1783931136.7767615,
+      "phase": "PHASE_8_FINAL_DECISION",
+      "step": "EvidenceGenerationAgent",
+      "event": "started"
+    },
+    {
+      "timestamp": 1783931136.7842188,
+      "phase": "PHASE_8_FINAL_DECISION",
+      "step": "EvidenceGenerationAgent",
+      "event": "started"
+    },
+    {
+      "timestamp": 1783931138.2231476,
+      "phase": "PHASE_8_FINAL_DECISION",
+      "step": "EvidenceGenerationAgent",
+      "event": "completed"
+    },
+    {
+      "timestamp": 1783931138.2231476,
+      "phase": "PHASE_8_FINAL_DECISION",
+      "step": "EvidenceGenerationAgent",
+      "event": "completed"
+    },
+    {
+      "timestamp": 1783931138.2231476,
+      "phase": "PHASE_8_FINAL_DECISION",
+      "step": "decision_assembly_tool",
+      "event": "started"
+    }
+  ]
+}

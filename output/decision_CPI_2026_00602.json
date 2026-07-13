@@ -1,0 +1,639 @@
+{
+  "application_id": "CPI/2026/00602",
+  "scenario": "proposal_override_case",
+  "status": "CONDITIONALLY_APPROVED",
+  "current_phase": "PHASE_8_FINAL_DECISION",
+  "decision_mode": "SENIOR_UNDERWRITER",
+  "decision_maker": "Senior Underwriter",
+  "risk_category": "MEDIUM",
+  "risk_score": 56,
+  "confidence": 0.9,
+  "cat_exposure": {
+    "vendor": "GeoRisk CAT Analytics",
+    "cat_score": 70,
+    "cat_category": "HIGH",
+    "vendor_approved": true,
+    "pii_redacted": true
+  },
+  "pricing": {
+    "recommendation": "MEDIUM risk with material hazard -- 25% loading applied on top of the standard medium-risk rate.",
+    "indicative_premium": 770000.0,
+    "deductible": "INR 15,00,000 per occurrence",
+    "rationale": [
+      "The total insured value (TIV) is 1,120,000,000.0.",
+      "The risk category is MEDIUM.",
+      "There is a material risk present.",
+      "A risk loading of 25% was applied due to the material risk.",
+      "The base rate for a medium risk TIV of this size would typically be lower, but the material risk has increased the premium.",
+      "The final indicative premium is 770,000, with a deductible of INR 15,00,000 per occurrence."
+    ]
+  },
+  "recommendation": {
+    "action": "APPROVE",
+    "basis": "The case is approved as the Total Insured Value (TIV) of INR 112 Crore is within the delegated authority limit of INR 500 Crore. While the risk profile indicates material risk and high catastrophe exposure, the recent mitigation efforts, including electrical rewiring and a new fire suppression system, along with the existence of a full sprinkler and smoke detection system, are satisfactory. The previous claims count is low, and the business is in a stable industry. The pricing reflects an appropriate loading for the identified risks.",
+    "confidence": 0.9,
+    "conditions": [
+      "A specific condition regarding the review and acceptance of the engineering report for the electrical hazard remediation completed in April 2026 must be documented.",
+      "Confirmation of the proper functioning and maintenance schedule for the newly installed sprinkler system (April 2026) is required.",
+      "The bunded storage area for chemicals must be verified to meet regulatory standards for containment of spills.",
+      "Evidence of the last safety inspection (02-06-2026) and any outstanding recommendations addressed should be on file."
+    ],
+    "reason": "The case is approved as the Total Insured Value (TIV) of INR 112 Crore is within the delegated authority limit of INR 500 Crore. While the risk profile indicates material risk and high catastrophe exposure, the recent mitigation efforts, including electrical rewiring and a new fire suppression system, along with the existence of a full sprinkler and smoke detection system, are satisfactory. The previous claims count is low, and the business is in a stable industry. The pricing reflects an appropriate loading for the identified risks."
+  },
+  "decision_evidence": [
+    "The property has a high hazard count (7), contributing significantly to the risk score.",
+    "Catastrophe exposure (CAT score of 70) poses a substantial risk.",
+    "The absence of previous claims is a positive factor, reducing the overall risk.",
+    "There are no identified safety gaps.",
+    "No mismatches were found that would increase risk."
+  ],
+  "audit_trail": [
+    "Submission received and parsed.",
+    "Submission validated as complete.",
+    "No disclosure mismatch found.",
+    "PII redacted before CAT vendor call."
+  ],
+  "approval_lineage": [
+    {
+      "actor": "SubmissionIntakeAgent",
+      "action": "COMPLETE"
+    },
+    {
+      "actor": "DocumentIntelligenceAgent",
+      "action": "CONSISTENT"
+    },
+    {
+      "actor": "CATExposureAgent",
+      "action": "HIGH"
+    },
+    {
+      "actor": "RiskSummaryAgent",
+      "action": "MEDIUM"
+    },
+    {
+      "actor": "PricingAgent",
+      "action": "PRICED"
+    },
+    {
+      "actor": "HumanUnderwriterAgent",
+      "action": "Escalate"
+    },
+    {
+      "actor": "SeniorUnderwriterAgent_Escalate",
+      "action": "APPROVE"
+    }
+  ],
+  "governance_history": [],
+  "workflow_metrics": {
+    "agents_executed": 8,
+    "decision_gates": 10,
+    "human_reviews": 2,
+    "governance_checks": 0
+  },
+  "ai_summary": "This renewal for Ganga Leather & Footwear Industries Pvt. Ltd. (CPI/2026/00602) has been conditionally approved by the Senior Underwriter. The renewal features a Total Insured Value (TIV) of INR 112 Crore, well within the delegated authority. While the property presents material risks and high catastrophe exposure, driven by its industrial nature and location, significant mitigation efforts have recently been undertaken. These include a complete electrical rewiring, installation of a new sprinkler and fire suppression system, and upgraded CCTV, addressing previously noted electrical hazards. Though the risk score is medium (56) with a material risk flag and a high CAT score (70), the low previous claims count, comprehensive safety upgrades, and the proposal's direct broker channel contributed to the approval. The pricing incorporates a 25% loading for the identified material risks, with approval contingent on verifying documentation for electrical remediation, sprinkler system maintenance, chemical storage compliance, and completion of the latest safety inspection recommendations.",
+  "communication": {
+    "emails_generated": 1,
+    "drafts": [
+      {
+        "email_id": "email_004",
+        "status": "DRAFT_NOT_SENT",
+        "reason": "The case is approved as the Total Insured Value (TIV) of INR 112 Crore is within the delegated authority limit of INR 500 Crore. While the risk profile indicates material risk and high catastrophe exposure, the recent mitigation efforts, including electrical rewiring and a new fire suppression system, along with the existence of a full sprinkler and smoke detection system, are satisfactory. The previous claims count is low, and the business is in a stable industry. The pricing reflects an appropriate loading for the identified risks.",
+        "recipient_role": "Broker",
+        "subject": "Proposal CPI/2026/00602 \u2014 Conditional Approval",
+        "file": "C:\\Users\\roshni\\Downloads\\insurance_agent_adk\\workflow_agent\\output\\emails\\email_004.json"
+      }
+    ]
+  },
+  "workflow": {
+    "workflow_id": "d7049b63-f7eb-4d1f-9af8-1392b45906b0",
+    "started_at": "2026-07-13T10:36:07.702011+00:00",
+    "completed_at": "2026-07-13T10:37:06.258229+00:00",
+    "duration_seconds": 58.556,
+    "workflow_version": "1.0"
+  },
+  "applicant": {
+    "business_name": "Ganga Leather & Footwear Industries Pvt. Ltd.",
+    "broker_name": "Ganges Insurance Consultants Pvt. Ltd.",
+    "primary_property_address": "C-24, Panki Industrial Area, Site II, Kanpur - 208022",
+    "total_insured_value": 1120000000.0,
+    "occupancy_type": "Leather & Footwear Manufacturing / Moderate-High Hazard"
+  },
+  "documents": [
+    {
+      "doc_type": "engineering_report",
+      "file_path": "C:\\Users\\roshni\\Downloads\\insurance_agent_adk\\workflow_agent\\data\\engineering_report_override_case.html"
+    }
+  ],
+  "execution_timeline": [
+    {
+      "timestamp": 1783938967.7020113,
+      "phase": "PHASE_1_SUBMISSION_INTAKE",
+      "step": "parse_submission",
+      "event": "started"
+    },
+    {
+      "timestamp": 1783938967.7692218,
+      "phase": "PHASE_1_SUBMISSION_INTAKE",
+      "step": "parse_submission",
+      "event": "completed"
+    },
+    {
+      "timestamp": 1783938967.7692218,
+      "phase": "PHASE_1_SUBMISSION_INTAKE",
+      "step": "SubmissionIntakeAgent",
+      "event": "started"
+    },
+    {
+      "timestamp": 1783938967.7779186,
+      "phase": "PHASE_1_SUBMISSION_INTAKE",
+      "step": "SubmissionIntakeAgent",
+      "event": "started"
+    },
+    {
+      "timestamp": 1783938973.6983113,
+      "phase": "PHASE_1_SUBMISSION_INTAKE",
+      "step": "SubmissionIntakeAgent",
+      "event": "retry",
+      "attempt": 1,
+      "max_retries": 3,
+      "error": "Model response was not valid JSON (Expecting value: line 1 column 1 (char 0)). Raw response:\nAwaiting Tool Use (likely a transient upstream hiccup -- retrying)"
+    },
+    {
+      "timestamp": "2026-07-13T10:36:16.364675+00:00",
+      "phase": "PHASE_1_SUBMISSION_INTAKE",
+      "step": "agent",
+      "event": "started",
+      "tool": "check_completeness",
+      "field_count": 79
+    },
+    {
+      "timestamp": "2026-07-13T10:36:16.364675+00:00",
+      "phase": "PHASE_1_SUBMISSION_INTAKE",
+      "step": "agent",
+      "event": "completed",
+      "tool": "check_completeness",
+      "complete": true,
+      "missing_count": 0
+    },
+    {
+      "timestamp": 1783938978.1231482,
+      "phase": "PHASE_1_SUBMISSION_INTAKE",
+      "step": "SubmissionIntakeAgent",
+      "event": "completed"
+    },
+    {
+      "timestamp": 1783938978.1231482,
+      "phase": "PHASE_1_SUBMISSION_INTAKE",
+      "step": "SubmissionIntakeAgent",
+      "event": "completed"
+    },
+    {
+      "timestamp": 1783938978.1231482,
+      "phase": "PHASE_1_SUBMISSION_INTAKE",
+      "step": "Decision1_SubmissionComplete",
+      "event": "gate_decision",
+      "route": "True"
+    },
+    {
+      "timestamp": 1783938978.1231482,
+      "phase": "PHASE_2_DOCUMENT_INTELLIGENCE",
+      "step": "document_linker",
+      "event": "started"
+    },
+    {
+      "timestamp": 1783938978.1690931,
+      "phase": "PHASE_2_DOCUMENT_INTELLIGENCE",
+      "step": "document_linker",
+      "event": "completed"
+    },
+    {
+      "timestamp": 1783938978.1690931,
+      "phase": "PHASE_2_DOCUMENT_INTELLIGENCE",
+      "step": "DocumentIntelligenceAgent",
+      "event": "started"
+    },
+    {
+      "timestamp": 1783938978.1690931,
+      "phase": "PHASE_2_DOCUMENT_INTELLIGENCE",
+      "step": "DocumentIntelligenceAgent",
+      "event": "started"
+    },
+    {
+      "timestamp": "2026-07-13T10:36:19.813327+00:00",
+      "phase": "PHASE_2_DOCUMENT_INTELLIGENCE",
+      "step": "agent",
+      "event": "started",
+      "tool": "hazard_detection_tool",
+      "fields_checked": 8
+    },
+    {
+      "timestamp": "2026-07-13T10:36:19.813327+00:00",
+      "phase": "PHASE_2_DOCUMENT_INTELLIGENCE",
+      "step": "agent",
+      "event": "completed",
+      "tool": "hazard_detection_tool",
+      "hazard_count": 7
+    },
+    {
+      "timestamp": "2026-07-13T10:36:19.813327+00:00",
+      "phase": "PHASE_2_DOCUMENT_INTELLIGENCE",
+      "step": "agent",
+      "event": "started",
+      "tool": "mismatch_detection_tool",
+      "linked_document_count": 1
+    },
+    {
+      "timestamp": "2026-07-13T10:36:19.823194+00:00",
+      "phase": "PHASE_2_DOCUMENT_INTELLIGENCE",
+      "step": "agent",
+      "event": "completed",
+      "tool": "mismatch_detection_tool",
+      "issue_count": 0
+    },
+    {
+      "timestamp": 1783938981.778291,
+      "phase": "PHASE_2_DOCUMENT_INTELLIGENCE",
+      "step": "DocumentIntelligenceAgent",
+      "event": "completed"
+    },
+    {
+      "timestamp": 1783938981.782321,
+      "phase": "PHASE_2_DOCUMENT_INTELLIGENCE",
+      "step": "DocumentIntelligenceAgent",
+      "event": "completed"
+    },
+    {
+      "timestamp": 1783938981.782321,
+      "phase": "PHASE_2_DOCUMENT_INTELLIGENCE",
+      "step": "Decision2_DisclosureMismatch",
+      "event": "gate_decision",
+      "route": "False"
+    },
+    {
+      "timestamp": 1783938981.782321,
+      "phase": "PHASE_3_CAT_EXPOSURE",
+      "step": "CATExposureAgent",
+      "event": "started"
+    },
+    {
+      "timestamp": 1783938981.782321,
+      "phase": "PHASE_3_CAT_EXPOSURE",
+      "step": "CATExposureAgent",
+      "event": "started"
+    },
+    {
+      "timestamp": "2026-07-13T10:36:23.684410+00:00",
+      "phase": "PHASE_3_CAT_EXPOSURE",
+      "step": "agent",
+      "event": "started",
+      "tool": "vendor_approval_tool",
+      "vendor": "GeoRisk CAT Analytics"
+    },
+    {
+      "timestamp": "2026-07-13T10:36:23.684410+00:00",
+      "phase": "PHASE_3_CAT_EXPOSURE",
+      "step": "agent",
+      "event": "completed",
+      "tool": "vendor_approval_tool",
+      "approved": true
+    },
+    {
+      "timestamp": "2026-07-13T10:36:24.436674+00:00",
+      "phase": "PHASE_3_CAT_EXPOSURE",
+      "step": "agent",
+      "event": "started",
+      "tool": "pii_redaction_tool",
+      "field_count": 79
+    },
+    {
+      "timestamp": "2026-07-13T10:36:24.436674+00:00",
+      "phase": "PHASE_3_CAT_EXPOSURE",
+      "step": "agent",
+      "event": "completed",
+      "tool": "pii_redaction_tool",
+      "redacted_count": 6
+    },
+    {
+      "timestamp": "2026-07-13T10:36:29.541849+00:00",
+      "phase": "PHASE_3_CAT_EXPOSURE",
+      "step": "agent",
+      "event": "started",
+      "tool": "cat_vendor_tool",
+      "vendor": "GeoRisk CAT Analytics"
+    },
+    {
+      "timestamp": "2026-07-13T10:36:29.541849+00:00",
+      "phase": "PHASE_3_CAT_EXPOSURE",
+      "step": "agent",
+      "event": "completed",
+      "tool": "cat_vendor_tool",
+      "cat_score": 70,
+      "cat_category": "HIGH"
+    },
+    {
+      "timestamp": 1783938990.4078908,
+      "phase": "PHASE_3_CAT_EXPOSURE",
+      "step": "CATExposureAgent",
+      "event": "retry",
+      "attempt": 1,
+      "max_retries": 3,
+      "error": "Model response was not valid JSON (Expecting value: line 1 column 98 (char 97)). Raw response:\n{\"vendor_approved\": true, \"pii_redacted\": true, \"cat_score\": 70, \"cat_category\": \"HIGH\", \"notes\": (likely a transient upstream hiccup -- retrying)"
+    },
+    {
+      "timestamp": "2026-07-13T10:36:41.977102+00:00",
+      "phase": "PHASE_3_CAT_EXPOSURE",
+      "step": "agent",
+      "event": "started",
+      "tool": "vendor_approval_tool",
+      "vendor": "GeoRisk CAT Analytics"
+    },
+    {
+      "timestamp": "2026-07-13T10:36:41.977102+00:00",
+      "phase": "PHASE_3_CAT_EXPOSURE",
+      "step": "agent",
+      "event": "completed",
+      "tool": "vendor_approval_tool",
+      "approved": true
+    },
+    {
+      "timestamp": "2026-07-13T10:36:42.728395+00:00",
+      "phase": "PHASE_3_CAT_EXPOSURE",
+      "step": "agent",
+      "event": "started",
+      "tool": "pii_redaction_tool",
+      "field_count": 79
+    },
+    {
+      "timestamp": "2026-07-13T10:36:42.728395+00:00",
+      "phase": "PHASE_3_CAT_EXPOSURE",
+      "step": "agent",
+      "event": "completed",
+      "tool": "pii_redaction_tool",
+      "redacted_count": 6
+    },
+    {
+      "timestamp": "2026-07-13T10:36:46.449464+00:00",
+      "phase": "PHASE_3_CAT_EXPOSURE",
+      "step": "agent",
+      "event": "started",
+      "tool": "cat_vendor_tool",
+      "vendor": "GeoRisk CAT Analytics"
+    },
+    {
+      "timestamp": "2026-07-13T10:36:46.449464+00:00",
+      "phase": "PHASE_3_CAT_EXPOSURE",
+      "step": "agent",
+      "event": "completed",
+      "tool": "cat_vendor_tool",
+      "cat_score": 70,
+      "cat_category": "HIGH"
+    },
+    {
+      "timestamp": 1783939009.0512896,
+      "phase": "PHASE_3_CAT_EXPOSURE",
+      "step": "CATExposureAgent",
+      "event": "completed"
+    },
+    {
+      "timestamp": 1783939009.0512896,
+      "phase": "PHASE_3_CAT_EXPOSURE",
+      "step": "CATExposureAgent",
+      "event": "completed"
+    },
+    {
+      "timestamp": 1783939009.0512896,
+      "phase": "PHASE_3_CAT_EXPOSURE",
+      "step": "Decision3_VendorApproved",
+      "event": "gate_decision",
+      "route": "True"
+    },
+    {
+      "timestamp": 1783939009.0512896,
+      "phase": "PHASE_3_CAT_EXPOSURE",
+      "step": "Decision4_PayloadContainsPII",
+      "event": "gate_decision",
+      "route": "True"
+    },
+    {
+      "timestamp": 1783939009.0512896,
+      "phase": "PHASE_4_RISK_ASSESSMENT",
+      "step": "RiskSummaryAgent",
+      "event": "started"
+    },
+    {
+      "timestamp": 1783939009.0524082,
+      "phase": "PHASE_4_RISK_ASSESSMENT",
+      "step": "RiskSummaryAgent",
+      "event": "started"
+    },
+    {
+      "timestamp": "2026-07-13T10:36:50.996657+00:00",
+      "phase": "PHASE_4_RISK_ASSESSMENT",
+      "step": "agent",
+      "event": "started",
+      "tool": "property_risk_scoring_tool",
+      "hazard_count": 7,
+      "mismatch_count": 0
+    },
+    {
+      "timestamp": "2026-07-13T10:36:50.996657+00:00",
+      "phase": "PHASE_4_RISK_ASSESSMENT",
+      "step": "agent",
+      "event": "completed",
+      "tool": "property_risk_scoring_tool",
+      "risk_score": 56,
+      "risk_category": "MEDIUM"
+    },
+    {
+      "timestamp": 1783939013.971579,
+      "phase": "PHASE_4_RISK_ASSESSMENT",
+      "step": "RiskSummaryAgent",
+      "event": "completed"
+    },
+    {
+      "timestamp": 1783939013.9800751,
+      "phase": "PHASE_4_RISK_ASSESSMENT",
+      "step": "RiskSummaryAgent",
+      "event": "completed"
+    },
+    {
+      "timestamp": 1783939013.9820838,
+      "phase": "PHASE_4_RISK_ASSESSMENT",
+      "step": "PricingAgent",
+      "event": "started"
+    },
+    {
+      "timestamp": 1783939013.992047,
+      "phase": "PHASE_4_RISK_ASSESSMENT",
+      "step": "PricingAgent",
+      "event": "started"
+    },
+    {
+      "timestamp": "2026-07-13T10:36:56.170247+00:00",
+      "phase": "PHASE_4_RISK_ASSESSMENT",
+      "step": "agent",
+      "event": "started",
+      "tool": "pricing_tool",
+      "risk_category": "MEDIUM",
+      "material_risk": true
+    },
+    {
+      "timestamp": "2026-07-13T10:36:56.170247+00:00",
+      "phase": "PHASE_4_RISK_ASSESSMENT",
+      "step": "agent",
+      "event": "completed",
+      "tool": "pricing_tool",
+      "indicative_premium": 770000.0
+    },
+    {
+      "timestamp": 1783939017.5144513,
+      "phase": "PHASE_4_RISK_ASSESSMENT",
+      "step": "PricingAgent",
+      "event": "completed"
+    },
+    {
+      "timestamp": 1783939017.5144513,
+      "phase": "PHASE_4_RISK_ASSESSMENT",
+      "step": "PricingAgent",
+      "event": "completed"
+    },
+    {
+      "timestamp": 1783939017.5144513,
+      "phase": "PHASE_4_RISK_ASSESSMENT",
+      "step": "Decision5_MaterialHazard",
+      "event": "gate_decision",
+      "route": "True"
+    },
+    {
+      "timestamp": 1783939017.5144513,
+      "phase": "PHASE_4_RISK_ASSESSMENT",
+      "step": "Decision6_LowConfidence",
+      "event": "gate_decision",
+      "route": "False"
+    },
+    {
+      "timestamp": 1783939017.5144513,
+      "phase": "PHASE_5_HUMAN_UNDERWRITER",
+      "step": "HumanUnderwriterAgent",
+      "event": "started"
+    },
+    {
+      "timestamp": 1783939017.5233245,
+      "phase": "PHASE_5_HUMAN_UNDERWRITER",
+      "step": "HumanUnderwriterAgent",
+      "event": "started"
+    },
+    {
+      "timestamp": 1783939019.3022182,
+      "phase": "PHASE_5_HUMAN_UNDERWRITER",
+      "step": "HumanUnderwriterAgent",
+      "event": "completed"
+    },
+    {
+      "timestamp": 1783939019.3022182,
+      "phase": "PHASE_5_HUMAN_UNDERWRITER",
+      "step": "HumanUnderwriterAgent",
+      "event": "completed"
+    },
+    {
+      "timestamp": 1783939019.3022182,
+      "phase": "PHASE_5_HUMAN_UNDERWRITER",
+      "step": "Decision7_UnderwriterAction",
+      "event": "gate_decision",
+      "route": "Escalate"
+    },
+    {
+      "timestamp": 1783939019.3022182,
+      "phase": "PHASE_7_SENIOR_UNDERWRITER",
+      "step": "SeniorUnderwriterAgent_Escalate",
+      "event": "started"
+    },
+    {
+      "timestamp": 1783939019.310261,
+      "phase": "PHASE_7_SENIOR_UNDERWRITER",
+      "step": "SeniorUnderwriterAgent_Escalate",
+      "event": "started"
+    },
+    {
+      "timestamp": "2026-07-13T10:37:02.270166+00:00",
+      "phase": "PHASE_7_SENIOR_UNDERWRITER",
+      "step": "agent",
+      "event": "started",
+      "tool": "delegated_authority_tool",
+      "role": "senior_underwriter"
+    },
+    {
+      "timestamp": "2026-07-13T10:37:02.270166+00:00",
+      "phase": "PHASE_7_SENIOR_UNDERWRITER",
+      "step": "agent",
+      "event": "completed",
+      "tool": "delegated_authority_tool",
+      "exceeds_authority": false
+    },
+    {
+      "timestamp": 1783939024.1231158,
+      "phase": "PHASE_7_SENIOR_UNDERWRITER",
+      "step": "SeniorUnderwriterAgent_Escalate",
+      "event": "completed"
+    },
+    {
+      "timestamp": 1783939024.1231158,
+      "phase": "PHASE_7_SENIOR_UNDERWRITER",
+      "step": "SeniorUnderwriterAgent_Escalate",
+      "event": "completed"
+    },
+    {
+      "timestamp": 1783939024.1231158,
+      "phase": "PHASE_7_SENIOR_UNDERWRITER",
+      "step": "Decision10_SeniorApprove",
+      "event": "gate_decision",
+      "route": "True"
+    },
+    {
+      "timestamp": 1783939024.1231158,
+      "phase": "PHASE_7_SENIOR_UNDERWRITER",
+      "step": "communication_tool",
+      "event": "started",
+      "trigger": "conditional_approval",
+      "proposal_number": "CPI/2026/00602"
+    },
+    {
+      "timestamp": 1783939024.142926,
+      "phase": "PHASE_7_SENIOR_UNDERWRITER",
+      "step": "communication_tool",
+      "event": "completed",
+      "email_id": "email_004",
+      "recipient_role": "Broker"
+    },
+    {
+      "timestamp": 1783939024.1449409,
+      "phase": "PHASE_8_FINAL_DECISION",
+      "step": "EvidenceGenerationAgent",
+      "event": "started"
+    },
+    {
+      "timestamp": 1783939024.1449409,
+      "phase": "PHASE_8_FINAL_DECISION",
+      "step": "EvidenceGenerationAgent",
+      "event": "started"
+    },
+    {
+      "timestamp": 1783939026.2582295,
+      "phase": "PHASE_8_FINAL_DECISION",
+      "step": "EvidenceGenerationAgent",
+      "event": "completed"
+    },
+    {
+      "timestamp": 1783939026.2582295,
+      "phase": "PHASE_8_FINAL_DECISION",
+      "step": "EvidenceGenerationAgent",
+      "event": "completed"
+    },
+    {
+      "timestamp": 1783939026.2582295,
+      "phase": "PHASE_8_FINAL_DECISION",
+      "step": "decision_assembly_tool",
+      "event": "started"
+    }
+  ]
+}

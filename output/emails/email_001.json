@@ -1,0 +1,13 @@
+{
+  "email_id": "email_001",
+  "created_at": "2026-07-13T08:18:30.234898+00:00",
+  "status": "DRAFT_NOT_SENT",
+  "recipient_role": "Broker",
+  "recipient_name": "Vikram Risk & Insurance Advisors LLP",
+  "recipient_email": "vikram.risk.insurance.advisors.llp@vikramriskinsurancea.example",
+  "subject": "Further Information Requested \u2014 Proposal CPI/2026/00512",
+  "body": "Proposal Number: CPI/2026/00512\nInsured: Suryodaya Petrochem Industries Pvt. Ltd.\nBroker: Vikram Risk & Insurance Advisors LLP\n\nDear Vikram Risk & Insurance Advisors LLP,\n\nFollowing review of Proposal CPI/2026/00512 (Suryodaya Petrochem Industries Pvt. Ltd.), the following is required before a final decision can be issued:\n  - Review by Chief Underwriting Officer\n\nRegards,\nUnderwriting Team, Commercial Property Division",
+  "reason": "The Total Insured Value (TIV) of INR 940,00,00,000 significantly exceeds my delegated authority and requires review by the Chief Underwriting Officer. The case presents several high-risk factors including chemical manufacturing processes, storage of flammable liquids, aged electrical wiring, and a high catastrophe exposure (flood and seismic zones). While the human underwriter's assessment correctly identified these risks and applied appropriate loadings, the TIV necessitates a higher level of review.",
+  "related_application": "CPI/2026/00512",
+  "workflow_phase": "PHASE_7_SENIOR_UNDERWRITER"
+}

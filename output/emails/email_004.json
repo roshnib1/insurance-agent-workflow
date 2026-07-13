@@ -1,0 +1,13 @@
+{
+  "email_id": "email_004",
+  "created_at": "2026-07-13T10:37:04.140160+00:00",
+  "status": "DRAFT_NOT_SENT",
+  "recipient_role": "Broker",
+  "recipient_name": "Ganges Insurance Consultants Pvt. Ltd.",
+  "recipient_email": "ganges.insurance.consultants.pvt.ltd@gangesinsuranceconsu.example",
+  "subject": "Proposal CPI/2026/00602 \u2014 Conditional Approval",
+  "body": "Proposal Number: CPI/2026/00602\nInsured: Ganga Leather & Footwear Industries Pvt. Ltd.\nBroker: Ganges Insurance Consultants Pvt. Ltd.\n\nDear Ganges Insurance Consultants Pvt. Ltd.,\n\nWe are pleased to confirm conditional approval of Proposal CPI/2026/00602 for Ganga Leather & Footwear Industries Pvt. Ltd., subject to the following conditions:\n  - A specific condition regarding the review and acceptance of the engineering report for the electrical hazard remediation completed in April 2026 must be documented.\n  - Confirmation of the proper functioning and maintenance schedule for the newly installed sprinkler system (April 2026) is required.\n  - The bunded storage area for chemicals must be verified to meet regulatory standards for containment of spills.\n  - Evidence of the last safety inspection (02-06-2026) and any outstanding recommendations addressed should be on file.\n\nRegards,\nUnderwriting Team, Commercial Property Division",
+  "reason": "The case is approved as the Total Insured Value (TIV) of INR 112 Crore is within the delegated authority limit of INR 500 Crore. While the risk profile indicates material risk and high catastrophe exposure, the recent mitigation efforts, including electrical rewiring and a new fire suppression system, along with the existence of a full sprinkler and smoke detection system, are satisfactory. The previous claims count is low, and the business is in a stable industry. The pricing reflects an appropriate loading for the identified risks.",
+  "related_application": "CPI/2026/00602",
+  "workflow_phase": "PHASE_8_FINAL_DECISION"
+}
