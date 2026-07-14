@@ -63,7 +63,11 @@ from agents import (
 )
 from services.document_linker import find_linked_documents, linked_documents_as_dict
 from services.html_parser import load_and_parse_html
-from services.normalizer import MANDATORY_LABELS, find_missing_mandatory_fields, normalize
+from services.normalizer import (
+    MANDATORY_LABELS,
+    find_missing_mandatory_fields,
+    normalize,
+)
 from services.pdf_parser import parse_pdf_document
 from tools.cat_vendor_tool import call_cat_vendor
 from tools.communication_tool import draft_email
@@ -94,6 +98,7 @@ CONFIDENCE_THRESHOLD = 0.75
 # ---------------------------------------------------------------------------
 # Small helpers (same role as adk_controller.py's _parse / _save_json)
 # ---------------------------------------------------------------------------
+
 
 def _parse(node_input: Any) -> Dict[str, Any]:
     """LlmAgent nodes with output_schema emit either a parsed dict
@@ -135,13 +140,18 @@ def _fresh_agent(module, unique_name: str) -> LlmAgent:
     each branch gets its own LlmAgent instance -- same instruction and
     output_schema as the module's build_agent(), just a distinct node name."""
     template = module.build_agent()
-    return LlmAgent(name=unique_name, model=template.model, instruction=template.instruction,
-                     output_schema=template.output_schema)
+    return LlmAgent(
+        name=unique_name,
+        model=template.model,
+        instruction=template.instruction,
+        output_schema=template.output_schema,
+    )
 
 
 # ---------------------------------------------------------------------------
 # PHASE 1 -- Submission Intake
 # ---------------------------------------------------------------------------
+
 
 @node
 def intake(ctx: Context, node_input: str):
@@ -154,22 +164,24 @@ def intake(ctx: Context, node_input: str):
     deterministic_missing = find_missing_mandatory_fields(applicant)
 
     tracker.completed("PHASE_1_SUBMISSION_INTAKE", "parse_submission")
-    ctx.state.update({
-        "file_path": file_path,
-        "applicant_fields": applicant.raw_fields,
-        "applicant": applicant,
-        "application_id": applicant.proposal_number,
-        "deterministic_missing": deterministic_missing,
-        "audit_trail": ["Submission received and parsed."],
-        "approval_lineage": [],
-        "governance_history": [],
-        "email_references": [],
-        "agents_executed": 0,
-        "human_reviews": 0,
-        "governance_checks": 0,
-        "workflow_id": str(uuid.uuid4()),
-        "started_at": datetime.now(timezone.utc).isoformat(),
-    })
+    ctx.state.update(
+        {
+            "file_path": file_path,
+            "applicant_fields": applicant.raw_fields,
+            "applicant": applicant,
+            "application_id": applicant.proposal_number,
+            "deterministic_missing": deterministic_missing,
+            "audit_trail": ["Submission received and parsed."],
+            "approval_lineage": [],
+            "governance_history": [],
+            "email_references": [],
+            "agents_executed": 0,
+            "human_reviews": 0,
+            "governance_checks": 0,
+            "workflow_id": str(uuid.uuid4()),
+            "started_at": datetime.now(timezone.utc).isoformat(),
+        }
+    )
     return {
         "applicant_fields": applicant.raw_fields,
         "mandatory_fields": list(MANDATORY_LABELS.values()),
@@ -185,16 +197,31 @@ def submission_gate(ctx: Context, node_input: Any):
     complete = len(missing) == 0
 
     ctx.state["agents_executed"] = ctx.state.get("agents_executed", 0) + 1
-    ctx.state["completeness_result"] = {"complete": complete, "missing_fields": missing, "confidence": result.get("confidence", 0.85)}
+    ctx.state["completeness_result"] = {
+        "complete": complete,
+        "missing_fields": missing,
+        "confidence": result.get("confidence", 0.85),
+    }
     ctx.state["audit_trail"].append(
-        "Submission validated as complete." if complete else f"Mandatory fields missing: {missing}"
+        "Submission validated as complete."
+        if complete
+        else f"Mandatory fields missing: {missing}"
     )
-    ctx.state["approval_lineage"].append({"actor": "SubmissionIntakeAgent", "action": "COMPLETE" if complete else "INCOMPLETE"})
+    ctx.state["approval_lineage"].append(
+        {
+            "actor": "SubmissionIntakeAgent",
+            "action": "COMPLETE" if complete else "INCOMPLETE",
+        }
+    )
 
     tracker = _tracker(ctx)
-    tracker.gate_decision("PHASE_1_SUBMISSION_INTAKE", "Decision1_SubmissionComplete", str(complete))
+    tracker.gate_decision(
+        "PHASE_1_SUBMISSION_INTAKE", "Decision1_SubmissionComplete", str(complete)
+    )
 
-    return Event(route="complete" if complete else "incomplete", output={"__ctx_marker__": True})
+    return Event(
+        route="complete" if complete else "incomplete", output={"__ctx_marker__": True}
+    )
 
 
 @node
@@ -204,21 +231,33 @@ def handle_incomplete(ctx: Context, node_input):
     tracker = _tracker(ctx)
 
     email = draft_email(
-        trigger="incomplete_submission", proposal_number=applicant.proposal_number,
-        insured_name=applicant.business_name, broker_name=applicant.broker_name,
+        trigger="incomplete_submission",
+        proposal_number=applicant.proposal_number,
+        insured_name=applicant.business_name,
+        broker_name=applicant.broker_name,
         reason=f"Missing mandatory fields: {', '.join(missing)}",
         required_action="Provide the missing fields and resubmit.",
-        context={"missing_fields": missing}, output_dir=OUTPUT_DIR,
-        progress_callback=tracker.tool_callback("PHASE_1_SUBMISSION_INTAKE", "communication_tool"),
+        context={"missing_fields": missing},
+        output_dir=OUTPUT_DIR,
+        progress_callback=tracker.tool_callback(
+            "PHASE_1_SUBMISSION_INTAKE", "communication_tool"
+        ),
     )
     if email["success"]:
         ctx.state["email_references"].append(email["reference"])
 
     return _finalize(
-        ctx, status="STOPPED_INCOMPLETE", decision_mode="HUMAN_REVIEW", decision_maker="Human Underwriter",
-        recommendation={"action": "REQUEST_MORE_INFORMATION", "basis": "Incomplete submission",
-                         "confidence": ctx.state["completeness_result"].get("confidence", 0.9),
-                         "conditions": [], "reason": "Missing mandatory fields."},
+        ctx,
+        status="STOPPED_INCOMPLETE",
+        decision_mode="HUMAN_REVIEW",
+        decision_maker="Human Underwriter",
+        recommendation={
+            "action": "REQUEST_MORE_INFORMATION",
+            "basis": "Incomplete submission",
+            "confidence": ctx.state["completeness_result"].get("confidence", 0.9),
+            "conditions": [],
+            "reason": "Missing mandatory fields.",
+        },
         decision_evidence=[f"Missing mandatory field: {f}" for f in missing],
     )
 
@@ -226,6 +265,7 @@ def handle_incomplete(ctx: Context, node_input):
 # ---------------------------------------------------------------------------
 # PHASE 2 -- Document Intelligence
 # ---------------------------------------------------------------------------
+
 
 @node
 def document_intelligence_step(ctx: Context, node_input):
@@ -236,10 +276,23 @@ def document_intelligence_step(ctx: Context, node_input):
 
     linked = find_linked_documents(applicant.proposal_number, data_dir=DATA_DIR)
     linked_html = linked_documents_as_dict(linked)
-    ctx.state["linked_documents"] = [{"doc_type": d.doc_type, "file_path": d.file_path} for d in linked]
+    ctx.state["linked_documents"] = [
+        {"doc_type": d.doc_type, "file_path": d.file_path} for d in linked
+    ]
 
-    hazard_scan = detect_hazards(applicant.raw_fields, progress_callback=tracker.tool_callback("PHASE_2_DOCUMENT_INTELLIGENCE", "hazard_detection_tool"))
-    mismatch_scan = detect_mismatches(applicant.raw_fields, linked_html, progress_callback=tracker.tool_callback("PHASE_2_DOCUMENT_INTELLIGENCE", "mismatch_detection_tool"))
+    hazard_scan = detect_hazards(
+        applicant.raw_fields,
+        progress_callback=tracker.tool_callback(
+            "PHASE_2_DOCUMENT_INTELLIGENCE", "hazard_detection_tool"
+        ),
+    )
+    mismatch_scan = detect_mismatches(
+        applicant.raw_fields,
+        linked_html,
+        progress_callback=tracker.tool_callback(
+            "PHASE_2_DOCUMENT_INTELLIGENCE", "mismatch_detection_tool"
+        ),
+    )
 
     ctx.state["hazard_scan"] = hazard_scan
     ctx.state["mismatch_scan"] = mismatch_scan
@@ -264,17 +317,32 @@ def document_gate(ctx: Context, node_input: Any):
     mismatch = len(issues) > 0
 
     ctx.state["agents_executed"] += 1
-    ctx.state["doc_intel"] = {"disclosure_mismatch": mismatch, "issues": issues,
-                               "extracted_hazards": result.get("extracted_hazards", []), "notes": result.get("notes", [])}
+    ctx.state["doc_intel"] = {
+        "disclosure_mismatch": mismatch,
+        "issues": issues,
+        "extracted_hazards": result.get("extracted_hazards", []),
+        "notes": result.get("notes", []),
+    }
     ctx.state["audit_trail"].append(
-        f"Disclosure mismatch(es) detected: {issues}" if mismatch else "No disclosure mismatch found."
+        f"Disclosure mismatch(es) detected: {issues}"
+        if mismatch
+        else "No disclosure mismatch found."
     )
-    ctx.state["approval_lineage"].append({"actor": "DocumentIntelligenceAgent", "action": "MISMATCH" if mismatch else "CONSISTENT"})
+    ctx.state["approval_lineage"].append(
+        {
+            "actor": "DocumentIntelligenceAgent",
+            "action": "MISMATCH" if mismatch else "CONSISTENT",
+        }
+    )
 
     tracker = _tracker(ctx)
-    tracker.gate_decision("PHASE_2_DOCUMENT_INTELLIGENCE", "Decision2_DisclosureMismatch", str(mismatch))
+    tracker.gate_decision(
+        "PHASE_2_DOCUMENT_INTELLIGENCE", "Decision2_DisclosureMismatch", str(mismatch)
+    )
 
-    return Event(route="mismatch" if mismatch else "consistent", output={"__ctx_marker__": True})
+    return Event(
+        route="mismatch" if mismatch else "consistent", output={"__ctx_marker__": True}
+    )
 
 
 @node
@@ -282,17 +350,25 @@ def governance_and_mandatory_review(ctx: Context, node_input):
     """Deterministic governance stub, then routes into a fresh
     HumanUnderwriterAgent instance for the mandatory review."""
     applicant = ctx.state["applicant"]
-    governance_result = governance_policy_check("disclosure_mismatch", {
-        "proposal_number": applicant.proposal_number, "issues": ctx.state["doc_intel"]["issues"],
-    })
+    governance_result = governance_policy_check(
+        "disclosure_mismatch",
+        {
+            "proposal_number": applicant.proposal_number,
+            "issues": ctx.state["doc_intel"]["issues"],
+        },
+    )
     ctx.state["governance_history"].append(governance_result)
     ctx.state["governance_checks"] = ctx.state.get("governance_checks", 0) + 1
-    ctx.state["audit_trail"].append("Governance Policy Check logged -- routed to mandatory human review.")
+    ctx.state["audit_trail"].append(
+        "Governance Policy Check logged -- routed to mandatory human review."
+    )
 
     return {
         "applicant_fields": applicant.raw_fields,
         "document_intelligence": ctx.state["doc_intel"],
-        "cat_exposure": {}, "risk_summary": {}, "pricing": {},
+        "cat_exposure": {},
+        "risk_summary": {},
+        "pricing": {},
     }
 
 
@@ -302,10 +378,16 @@ def mismatch_review_gate(ctx: Context, node_input: Any):
     ctx.state["agents_executed"] += 1
     ctx.state["human_reviews"] = ctx.state.get("human_reviews", 0) + 1
     ctx.state["mismatch_review"] = review
-    ctx.state["approval_lineage"].append({"actor": "HumanUnderwriterAgent", "action": review.get("action", "Escalate")})
+    ctx.state["approval_lineage"].append(
+        {"actor": "HumanUnderwriterAgent", "action": review.get("action", "Escalate")}
+    )
 
     tracker = _tracker(ctx)
-    tracker.gate_decision("PHASE_2_DOCUMENT_INTELLIGENCE", "Decision2b_MandatoryReviewAction", review.get("action", "Escalate"))
+    tracker.gate_decision(
+        "PHASE_2_DOCUMENT_INTELLIGENCE",
+        "Decision2b_MandatoryReviewAction",
+        review.get("action", "Escalate"),
+    )
 
     action = review.get("action", "Escalate")
     route = {"Decline": "decline", "Escalate": "escalate"}.get(action, "continue")
@@ -318,17 +400,34 @@ def handle_mismatch_decline(ctx: Context, node_input):
     review = ctx.state["mismatch_review"]
     tracker = _tracker(ctx)
     email = draft_email(
-        trigger="rejection", proposal_number=applicant.proposal_number, insured_name=applicant.business_name,
-        broker_name=applicant.broker_name, reason=review.get("reason", ""), output_dir=OUTPUT_DIR,
-        progress_callback=tracker.tool_callback("PHASE_2_DOCUMENT_INTELLIGENCE", "communication_tool"),
+        trigger="rejection",
+        proposal_number=applicant.proposal_number,
+        insured_name=applicant.business_name,
+        broker_name=applicant.broker_name,
+        reason=review.get("reason", ""),
+        output_dir=OUTPUT_DIR,
+        progress_callback=tracker.tool_callback(
+            "PHASE_2_DOCUMENT_INTELLIGENCE", "communication_tool"
+        ),
     )
     if email["success"]:
         ctx.state["email_references"].append(email["reference"])
     return _finalize(
-        ctx, status="STOPPED_MISMATCH", decision_mode="HUMAN_REVIEW", decision_maker="Human Underwriter",
-        recommendation={"action": "DECLINE", "basis": "Disclosure mismatch", "confidence": 0.9,
-                         "conditions": [], "reason": review.get("reason", "")},
-        decision_evidence=[f"{i.get('field', 'Field')} mismatch" for i in ctx.state["doc_intel"]["issues"]],
+        ctx,
+        status="STOPPED_MISMATCH",
+        decision_mode="HUMAN_REVIEW",
+        decision_maker="Human Underwriter",
+        recommendation={
+            "action": "DECLINE",
+            "basis": "Disclosure mismatch",
+            "confidence": 0.9,
+            "conditions": [],
+            "reason": review.get("reason", ""),
+        },
+        decision_evidence=[
+            f"{i.get('field', 'Field')} mismatch"
+            for i in ctx.state["doc_intel"]["issues"]
+        ],
     )
 
 
@@ -339,16 +438,26 @@ def mismatch_continue(ctx: Context, node_input):
     applicant = ctx.state["applicant"]
     review = ctx.state["mismatch_review"]
     tracker = _tracker(ctx)
-    action_past_tense = {"Approve": "approved", "Override": "overridden"}.get(review.get("action"), "reviewed")
+    action_past_tense = {"Approve": "approved", "Override": "overridden"}.get(
+        review.get("action"), "reviewed"
+    )
     email = draft_email(
-        trigger="disclosure_mismatch", proposal_number=applicant.proposal_number, insured_name=applicant.business_name,
-        broker_name=applicant.broker_name, reason=f"Reviewed and {action_past_tense} by underwriter.",
-        context={"mismatches": ctx.state["doc_intel"]["issues"]}, output_dir=OUTPUT_DIR,
-        progress_callback=tracker.tool_callback("PHASE_2_DOCUMENT_INTELLIGENCE", "communication_tool"),
+        trigger="disclosure_mismatch",
+        proposal_number=applicant.proposal_number,
+        insured_name=applicant.business_name,
+        broker_name=applicant.broker_name,
+        reason=f"Reviewed and {action_past_tense} by underwriter.",
+        context={"mismatches": ctx.state["doc_intel"]["issues"]},
+        output_dir=OUTPUT_DIR,
+        progress_callback=tracker.tool_callback(
+            "PHASE_2_DOCUMENT_INTELLIGENCE", "communication_tool"
+        ),
     )
     if email["success"]:
         ctx.state["email_references"].append(email["reference"])
-    ctx.state["audit_trail"].append(f"Human Underwriter action on mismatch: {review.get('action')}. Continuing pipeline.")
+    ctx.state["audit_trail"].append(
+        f"Human Underwriter action on mismatch: {review.get('action')}. Continuing pipeline."
+    )
     return {"file_path": ctx.state["file_path"]}
 
 
@@ -356,15 +465,28 @@ def mismatch_continue(ctx: Context, node_input):
 # PHASE 3 -- CAT Exposure
 # ---------------------------------------------------------------------------
 
+
 @node
 def cat_vendor_gate(ctx: Context, node_input):
     applicant = ctx.state["applicant"]
     tracker = _tracker(ctx)
-    vendor_approval = check_vendor_approval(applicant.cat_vendor, progress_callback=tracker.tool_callback("PHASE_3_CAT_EXPOSURE", "vendor_approval_tool"))
+    vendor_approval = check_vendor_approval(
+        applicant.cat_vendor,
+        progress_callback=tracker.tool_callback(
+            "PHASE_3_CAT_EXPOSURE", "vendor_approval_tool"
+        ),
+    )
     ctx.state["vendor_approval"] = vendor_approval
 
-    tracker.gate_decision("PHASE_3_CAT_EXPOSURE", "Decision3_VendorApproved", str(vendor_approval["approved"]))
-    return Event(route="approved" if vendor_approval["approved"] else "blocked", output={"__ctx_marker__": True})
+    tracker.gate_decision(
+        "PHASE_3_CAT_EXPOSURE",
+        "Decision3_VendorApproved",
+        str(vendor_approval["approved"]),
+    )
+    return Event(
+        route="approved" if vendor_approval["approved"] else "blocked",
+        output={"__ctx_marker__": True},
+    )
 
 
 @node
@@ -372,16 +494,30 @@ def handle_vendor_blocked(ctx: Context, node_input):
     applicant = ctx.state["applicant"]
     tracker = _tracker(ctx)
     email = draft_email(
-        trigger="cat_vendor_blocked", proposal_number=applicant.proposal_number, insured_name=applicant.business_name,
-        broker_name=applicant.broker_name, reason=f"CAT vendor '{applicant.cat_vendor}' is not approved.",
-        output_dir=OUTPUT_DIR, progress_callback=tracker.tool_callback("PHASE_3_CAT_EXPOSURE", "communication_tool"),
+        trigger="cat_vendor_blocked",
+        proposal_number=applicant.proposal_number,
+        insured_name=applicant.business_name,
+        broker_name=applicant.broker_name,
+        reason=f"CAT vendor '{applicant.cat_vendor}' is not approved.",
+        output_dir=OUTPUT_DIR,
+        progress_callback=tracker.tool_callback(
+            "PHASE_3_CAT_EXPOSURE", "communication_tool"
+        ),
     )
     if email["success"]:
         ctx.state["email_references"].append(email["reference"])
     return _finalize(
-        ctx, status="STOPPED_MISMATCH", decision_mode="HUMAN_REVIEW", decision_maker="Human Underwriter",
-        recommendation={"action": "ESCALATE", "basis": "CAT vendor not approved", "confidence": 0.9,
-                         "conditions": [], "reason": f"Vendor '{applicant.cat_vendor}' is not on the approved list."},
+        ctx,
+        status="STOPPED_MISMATCH",
+        decision_mode="HUMAN_REVIEW",
+        decision_maker="Human Underwriter",
+        recommendation={
+            "action": "ESCALATE",
+            "basis": "CAT vendor not approved",
+            "confidence": 0.9,
+            "conditions": [],
+            "reason": f"Vendor '{applicant.cat_vendor}' is not on the approved list.",
+        },
         decision_evidence=[f"CAT vendor '{applicant.cat_vendor}' is not approved."],
     )
 
@@ -391,19 +527,40 @@ def pii_and_cat_call(ctx: Context, node_input):
     applicant = ctx.state["applicant"]
     tracker = _tracker(ctx)
 
-    pii_result = redact_pii(applicant.raw_fields, progress_callback=tracker.tool_callback("PHASE_3_CAT_EXPOSURE", "pii_redaction_tool"))
-    tracker.gate_decision("PHASE_3_CAT_EXPOSURE", "Decision4_PayloadContainsPII", str(pii_result["pii_found"]))
+    pii_result = redact_pii(
+        applicant.raw_fields,
+        progress_callback=tracker.tool_callback(
+            "PHASE_3_CAT_EXPOSURE", "pii_redaction_tool"
+        ),
+    )
+    tracker.gate_decision(
+        "PHASE_3_CAT_EXPOSURE",
+        "Decision4_PayloadContainsPII",
+        str(pii_result["pii_found"]),
+    )
     ctx.state["audit_trail"].append(
-        "PII redacted before CAT vendor call." if pii_result["pii_found"] else "No PII found in CAT vendor payload."
+        "PII redacted before CAT vendor call."
+        if pii_result["pii_found"]
+        else "No PII found in CAT vendor payload."
     )
 
     cat_result = call_cat_vendor(
-        applicant.cat_vendor, pii_result["redacted_payload"],
-        applicant.flood_zone, applicant.earthquake_zone, applicant.cyclone_zone, applicant.wildfire_zone,
-        progress_callback=tracker.tool_callback("PHASE_3_CAT_EXPOSURE", "cat_vendor_tool"),
+        applicant.cat_vendor,
+        pii_result["redacted_payload"],
+        applicant.flood_zone,
+        applicant.earthquake_zone,
+        applicant.cyclone_zone,
+        applicant.wildfire_zone,
+        progress_callback=tracker.tool_callback(
+            "PHASE_3_CAT_EXPOSURE", "cat_vendor_tool"
+        ),
     )
     ctx.state["cat_result"] = cat_result
-    ctx.state["cat_results"] = {**cat_result, "vendor_approved": True, "pii_redacted": pii_result["pii_found"]}
+    ctx.state["cat_results"] = {
+        **cat_result,
+        "vendor_approved": True,
+        "pii_redacted": pii_result["pii_found"],
+    }
 
     return {
         "vendor_approval": ctx.state["vendor_approval"],
@@ -417,16 +574,23 @@ def cat_exposure_step_done(ctx: Context, node_input: Any):
     result = _parse(node_input)
     ctx.state["agents_executed"] += 1
     ctx.state["cat_exposure"] = result
-    ctx.state["approval_lineage"].append({"actor": "CATExposureAgent", "action": result.get("cat_category", "LOW")})
+    ctx.state["approval_lineage"].append(
+        {"actor": "CATExposureAgent", "action": result.get("cat_category", "LOW")}
+    )
 
     # Deterministic risk scoring runs here, right after CAT results are
     # known, so its output can be handed straight to RiskSummaryAgent next.
     applicant = ctx.state["applicant"]
     tracker = _tracker(ctx)
     risk_score_result = score_property_risk(
-        applicant.raw_fields, len(ctx.state["hazard_scan"]["hazards_declared"]),
-        len(ctx.state["doc_intel"]["issues"]), ctx.state["cat_result"]["cat_score"],
-        applicant.previous_claims_count, progress_callback=tracker.tool_callback("PHASE_4_RISK_ASSESSMENT", "property_risk_scoring_tool"),
+        applicant.raw_fields,
+        len(ctx.state["hazard_scan"]["hazards_declared"]),
+        len(ctx.state["doc_intel"]["issues"]),
+        ctx.state["cat_result"]["cat_score"],
+        applicant.previous_claims_count,
+        progress_callback=tracker.tool_callback(
+            "PHASE_4_RISK_ASSESSMENT", "property_risk_scoring_tool"
+        ),
     )
     ctx.state["risk_score_result"] = risk_score_result
 
@@ -442,6 +606,7 @@ def cat_exposure_step_done(ctx: Context, node_input: Any):
 # PHASE 4 -- Risk Assessment
 # ---------------------------------------------------------------------------
 
+
 @node
 def pricing_step(ctx: Context, node_input: Any):
     result = _parse(node_input)
@@ -451,9 +616,15 @@ def pricing_step(ctx: Context, node_input: Any):
         "risk_category": ctx.state["risk_score_result"]["risk_category"],
         "material_risk": ctx.state["risk_score_result"]["material_risk"],
         "confidence": result.get("confidence", 0.85),
-        "summary": result.get("summary", ""), "reasoning": result.get("reasoning", []),
+        "summary": result.get("summary", ""),
+        "reasoning": result.get("reasoning", []),
     }
-    ctx.state["approval_lineage"].append({"actor": "RiskSummaryAgent", "action": ctx.state["risk_summary"]["risk_category"]})
+    ctx.state["approval_lineage"].append(
+        {
+            "actor": "RiskSummaryAgent",
+            "action": ctx.state["risk_summary"]["risk_category"],
+        }
+    )
     ctx.state["audit_trail"].append(
         f"Risk assessed: score={ctx.state['risk_summary']['risk_score']}, "
         f"category={ctx.state['risk_summary']['risk_category']}, confidence={ctx.state['risk_summary']['confidence']}."
@@ -462,8 +633,13 @@ def pricing_step(ctx: Context, node_input: Any):
 
     applicant = ctx.state["applicant"]
     pricing_result = calculate_pricing(
-        str(applicant.total_insured_value or 0), ctx.state["risk_summary"]["risk_category"], ctx.state["risk_summary"]["material_risk"],
-        applicant.deductible or "", progress_callback=tracker.tool_callback("PHASE_4_RISK_ASSESSMENT", "pricing_tool"),
+        str(applicant.total_insured_value or 0),
+        ctx.state["risk_summary"]["risk_category"],
+        ctx.state["risk_summary"]["material_risk"],
+        applicant.deductible or "",
+        progress_callback=tracker.tool_callback(
+            "PHASE_4_RISK_ASSESSMENT", "pricing_tool"
+        ),
     )
     ctx.state["pricing_result"] = pricing_result
     return {
@@ -478,7 +654,9 @@ def risk_gate(ctx: Context, node_input: Any):
     result = _parse(node_input)
     ctx.state["agents_executed"] += 1
     ctx.state["pricing"] = {
-        "recommendation": result.get("recommendation", ctx.state["pricing_result"].get("recommendation", "")),
+        "recommendation": result.get(
+            "recommendation", ctx.state["pricing_result"].get("recommendation", "")
+        ),
         "indicative_premium": ctx.state["pricing_result"].get("indicative_premium"),
         "deductible": ctx.state["pricing_result"].get("deductible"),
         "rationale": result.get("rationale", []),
@@ -487,26 +665,38 @@ def risk_gate(ctx: Context, node_input: Any):
 
     material_risk = ctx.state["risk_summary"]["material_risk"]
     tracker = _tracker(ctx)
-    tracker.gate_decision("PHASE_4_RISK_ASSESSMENT", "Decision5_MaterialHazard", str(material_risk))
+    tracker.gate_decision(
+        "PHASE_4_RISK_ASSESSMENT", "Decision5_MaterialHazard", str(material_risk)
+    )
     if material_risk:
-        low_confidence = ctx.state["risk_summary"].get("confidence", 1.0) < CONFIDENCE_THRESHOLD
-        tracker.gate_decision("PHASE_4_RISK_ASSESSMENT", "Decision6_LowConfidence", str(low_confidence))
+        low_confidence = (
+            ctx.state["risk_summary"].get("confidence", 1.0) < CONFIDENCE_THRESHOLD
+        )
+        tracker.gate_decision(
+            "PHASE_4_RISK_ASSESSMENT", "Decision6_LowConfidence", str(low_confidence)
+        )
         if low_confidence:
-            ctx.state["audit_trail"].append("Material hazard with confidence below threshold -- senior underwriter signoff will be required.")
+            ctx.state["audit_trail"].append(
+                "Material hazard with confidence below threshold -- senior underwriter signoff will be required."
+            )
 
     applicant = ctx.state["applicant"]
-    return Event(route="continue", output={
-        "applicant_fields": applicant.raw_fields,
-        "document_intelligence": ctx.state["doc_intel"],
-        "cat_exposure": ctx.state["cat_exposure"],
-        "risk_summary": ctx.state["risk_summary"],
-        "pricing": ctx.state["pricing"],
-    })
+    return Event(
+        route="continue",
+        output={
+            "applicant_fields": applicant.raw_fields,
+            "document_intelligence": ctx.state["doc_intel"],
+            "cat_exposure": ctx.state["cat_exposure"],
+            "risk_summary": ctx.state["risk_summary"],
+            "pricing": ctx.state["pricing"],
+        },
+    )
 
 
 # ---------------------------------------------------------------------------
 # PHASE 5 -- Human Underwriter
 # ---------------------------------------------------------------------------
+
 
 @node
 def human_underwriter_gate(ctx: Context, node_input: Any):
@@ -514,13 +704,24 @@ def human_underwriter_gate(ctx: Context, node_input: Any):
     ctx.state["agents_executed"] += 1
     ctx.state["human_reviews"] = ctx.state.get("human_reviews", 0) + 1
     ctx.state["human_underwriter_result"] = result
-    ctx.state["approval_lineage"].append({"actor": "HumanUnderwriterAgent", "action": result.get("action", "Escalate")})
+    ctx.state["approval_lineage"].append(
+        {"actor": "HumanUnderwriterAgent", "action": result.get("action", "Escalate")}
+    )
 
     tracker = _tracker(ctx)
-    tracker.gate_decision("PHASE_5_HUMAN_UNDERWRITER", "Decision7_UnderwriterAction", result.get("action", "Escalate"))
+    tracker.gate_decision(
+        "PHASE_5_HUMAN_UNDERWRITER",
+        "Decision7_UnderwriterAction",
+        result.get("action", "Escalate"),
+    )
 
     action = result.get("action", "Escalate")
-    route = {"Approve": "approve", "Decline": "decline", "Escalate": "escalate", "Override": "override"}.get(action, "escalate")
+    route = {
+        "Approve": "approve",
+        "Decline": "decline",
+        "Escalate": "escalate",
+        "Override": "override",
+    }.get(action, "escalate")
     return Event(route=route, output={"__ctx_marker__": True})
 
 
@@ -530,14 +731,25 @@ def handle_approve(ctx: Context, node_input):
     doc_intel = ctx.state["doc_intel"]
     human_result = ctx.state["human_underwriter_result"]
     is_clean_case = (
-        not risk_summary["material_risk"] and not doc_intel["disclosure_mismatch"]
+        not risk_summary["material_risk"]
+        and not doc_intel["disclosure_mismatch"]
         and risk_summary.get("confidence", 0) >= CONFIDENCE_THRESHOLD
     )
-    decision_mode, decision_maker = ("AUTONOMOUS", "AI") if is_clean_case else ("HUMAN_REVIEW", "Human Underwriter")
+    decision_mode, decision_maker = (
+        ("AUTONOMOUS", "AI") if is_clean_case else ("HUMAN_REVIEW", "Human Underwriter")
+    )
     return _finalize(
-        ctx, status="COMPLETED", decision_mode=decision_mode, decision_maker=decision_maker,
-        recommendation={"action": "APPROVE", "basis": ctx.state["pricing"]["recommendation"],
-                         "confidence": risk_summary.get("confidence"), "conditions": [], "reason": human_result["reason"]},
+        ctx,
+        status="COMPLETED",
+        decision_mode=decision_mode,
+        decision_maker=decision_maker,
+        recommendation={
+            "action": "APPROVE",
+            "basis": ctx.state["pricing"]["recommendation"],
+            "confidence": risk_summary.get("confidence"),
+            "conditions": [],
+            "reason": human_result["reason"],
+        },
         decision_evidence=risk_summary.get("reasoning", []),
     )
 
@@ -548,16 +760,30 @@ def handle_decline(ctx: Context, node_input):
     human_result = ctx.state["human_underwriter_result"]
     tracker = _tracker(ctx)
     email = draft_email(
-        trigger="rejection", proposal_number=applicant.proposal_number, insured_name=applicant.business_name,
-        broker_name=applicant.broker_name, reason=human_result["reason"], output_dir=OUTPUT_DIR,
-        progress_callback=tracker.tool_callback("PHASE_5_HUMAN_UNDERWRITER", "communication_tool"),
+        trigger="rejection",
+        proposal_number=applicant.proposal_number,
+        insured_name=applicant.business_name,
+        broker_name=applicant.broker_name,
+        reason=human_result["reason"],
+        output_dir=OUTPUT_DIR,
+        progress_callback=tracker.tool_callback(
+            "PHASE_5_HUMAN_UNDERWRITER", "communication_tool"
+        ),
     )
     if email["success"]:
         ctx.state["email_references"].append(email["reference"])
     return _finalize(
-        ctx, status="REJECTED", decision_mode="HUMAN_REVIEW", decision_maker="Human Underwriter",
-        recommendation={"action": "DECLINE", "basis": ctx.state["pricing"]["recommendation"],
-                         "confidence": ctx.state["risk_summary"].get("confidence"), "conditions": [], "reason": human_result["reason"]},
+        ctx,
+        status="REJECTED",
+        decision_mode="HUMAN_REVIEW",
+        decision_maker="Human Underwriter",
+        recommendation={
+            "action": "DECLINE",
+            "basis": ctx.state["pricing"]["recommendation"],
+            "confidence": ctx.state["risk_summary"].get("confidence"),
+            "conditions": [],
+            "reason": human_result["reason"],
+        },
         decision_evidence=ctx.state["risk_summary"].get("reasoning", []),
     )
 
@@ -566,13 +792,23 @@ def handle_decline(ctx: Context, node_input):
 # PHASE 6 -- Override
 # ---------------------------------------------------------------------------
 
+
 @node
 def override_gate(ctx: Context, node_input):
     material_risk = ctx.state["risk_summary"]["material_risk"]
     tracker = _tracker(ctx)
-    ctx.state["audit_trail"].append(f"Override submitted by underwriter: {ctx.state['human_underwriter_result']['reason']}")
-    tracker.gate_decision("PHASE_6_OVERRIDE", "Decision8_OverrideContradictsMaterialHazard", str(material_risk))
-    return Event(route="contradicts" if material_risk else "clean", output={"__ctx_marker__": True})
+    ctx.state["audit_trail"].append(
+        f"Override submitted by underwriter: {ctx.state['human_underwriter_result']['reason']}"
+    )
+    tracker.gate_decision(
+        "PHASE_6_OVERRIDE",
+        "Decision8_OverrideContradictsMaterialHazard",
+        str(material_risk),
+    )
+    return Event(
+        route="contradicts" if material_risk else "clean",
+        output={"__ctx_marker__": True},
+    )
 
 
 @node
@@ -580,12 +816,22 @@ def authority_gate(ctx: Context, node_input):
     applicant = ctx.state["applicant"]
     tracker = _tracker(ctx)
     authority_check = check_delegated_authority(
-        str(applicant.total_insured_value or 0), role="underwriter",
-        progress_callback=tracker.tool_callback("PHASE_6_OVERRIDE", "delegated_authority_tool"),
+        str(applicant.total_insured_value or 0),
+        role="underwriter",
+        progress_callback=tracker.tool_callback(
+            "PHASE_6_OVERRIDE", "delegated_authority_tool"
+        ),
     )
     ctx.state["authority_check"] = authority_check
-    tracker.gate_decision("PHASE_6_OVERRIDE", "Decision9_ExceedsDelegatedAuthority", str(authority_check["exceeds_authority"]))
-    return Event(route="exceeds" if authority_check["exceeds_authority"] else "within", output={"__ctx_marker__": True})
+    tracker.gate_decision(
+        "PHASE_6_OVERRIDE",
+        "Decision9_ExceedsDelegatedAuthority",
+        str(authority_check["exceeds_authority"]),
+    )
+    return Event(
+        route="exceeds" if authority_check["exceeds_authority"] else "within",
+        output={"__ctx_marker__": True},
+    )
 
 
 @node
@@ -595,18 +841,31 @@ def accept_override(ctx: Context, node_input):
     tracker = _tracker(ctx)
     ctx.state["audit_trail"].append("Override accepted within delegated authority.")
     email = draft_email(
-        trigger="human_review", proposal_number=applicant.proposal_number, insured_name=applicant.business_name,
-        broker_name=applicant.broker_name, reason=f"Override recorded: {human_result['reason']}",
-        required_action="Management visibility only -- no action required.", output_dir=OUTPUT_DIR,
-        progress_callback=tracker.tool_callback("PHASE_6_OVERRIDE", "communication_tool"),
+        trigger="human_review",
+        proposal_number=applicant.proposal_number,
+        insured_name=applicant.business_name,
+        broker_name=applicant.broker_name,
+        reason=f"Override recorded: {human_result['reason']}",
+        required_action="Management visibility only -- no action required.",
+        output_dir=OUTPUT_DIR,
+        progress_callback=tracker.tool_callback(
+            "PHASE_6_OVERRIDE", "communication_tool"
+        ),
     )
     if email["success"]:
         ctx.state["email_references"].append(email["reference"])
     return _finalize(
-        ctx, status="CONDITIONALLY_APPROVED", decision_mode="OVERRIDE", decision_maker="Human Underwriter",
-        recommendation={"action": "OVERRIDE", "basis": ctx.state["pricing"].get("recommendation", ""),
-                         "confidence": ctx.state["risk_summary"].get("confidence"),
-                         "conditions": human_result.get("conditions", []), "reason": human_result["reason"]},
+        ctx,
+        status="CONDITIONALLY_APPROVED",
+        decision_mode="OVERRIDE",
+        decision_maker="Human Underwriter",
+        recommendation={
+            "action": "OVERRIDE",
+            "basis": ctx.state["pricing"].get("recommendation", ""),
+            "confidence": ctx.state["risk_summary"].get("confidence"),
+            "conditions": human_result.get("conditions", []),
+            "reason": human_result["reason"],
+        },
         decision_evidence=ctx.state["risk_summary"].get("reasoning", []),
     )
 
@@ -614,6 +873,7 @@ def accept_override(ctx: Context, node_input):
 # ---------------------------------------------------------------------------
 # PHASE 7 -- Senior Underwriter
 # ---------------------------------------------------------------------------
+
 
 @node
 def senior_underwriter_prep(ctx: Context, node_input):
@@ -625,7 +885,8 @@ def senior_underwriter_prep(ctx: Context, node_input):
         "applicant_fields": applicant.raw_fields,
         "risk_summary": ctx.state.get("risk_summary", {}),
         "pricing": ctx.state.get("pricing", {}),
-        "human_underwriter_result": ctx.state.get("human_underwriter_result") or ctx.state.get("mismatch_review", {}),
+        "human_underwriter_result": ctx.state.get("human_underwriter_result")
+        or ctx.state.get("mismatch_review", {}),
         "authority_check": ctx.state.get("authority_check", {}),
     }
 
@@ -636,12 +897,24 @@ def senior_gate(ctx: Context, node_input: Any):
     ctx.state["agents_executed"] += 1
     ctx.state["human_reviews"] = ctx.state.get("human_reviews", 0) + 1
     ctx.state["senior_result"] = result
-    ctx.state["approval_lineage"].append({"actor": "SeniorUnderwriterAgent", "action": "APPROVE" if result.get("approve") else "REJECT"})
+    ctx.state["approval_lineage"].append(
+        {
+            "actor": "SeniorUnderwriterAgent",
+            "action": "APPROVE" if result.get("approve") else "REJECT",
+        }
+    )
 
     tracker = _tracker(ctx)
-    tracker.gate_decision("PHASE_7_SENIOR_UNDERWRITER", "Decision10_SeniorApprove", str(result.get("approve", False)))
+    tracker.gate_decision(
+        "PHASE_7_SENIOR_UNDERWRITER",
+        "Decision10_SeniorApprove",
+        str(result.get("approve", False)),
+    )
 
-    return Event(route="approve" if result.get("approve") else "reject", output={"__ctx_marker__": True})
+    return Event(
+        route="approve" if result.get("approve") else "reject",
+        output={"__ctx_marker__": True},
+    )
 
 
 @node
@@ -650,18 +923,32 @@ def senior_approve(ctx: Context, node_input):
     senior_result = ctx.state["senior_result"]
     tracker = _tracker(ctx)
     email = draft_email(
-        trigger="conditional_approval", proposal_number=applicant.proposal_number, insured_name=applicant.business_name,
-        broker_name=applicant.broker_name, reason=senior_result["reason"],
-        context={"conditions": senior_result.get("conditions", [])}, output_dir=OUTPUT_DIR,
-        progress_callback=tracker.tool_callback("PHASE_7_SENIOR_UNDERWRITER", "communication_tool"),
+        trigger="conditional_approval",
+        proposal_number=applicant.proposal_number,
+        insured_name=applicant.business_name,
+        broker_name=applicant.broker_name,
+        reason=senior_result["reason"],
+        context={"conditions": senior_result.get("conditions", [])},
+        output_dir=OUTPUT_DIR,
+        progress_callback=tracker.tool_callback(
+            "PHASE_7_SENIOR_UNDERWRITER", "communication_tool"
+        ),
     )
     if email["success"]:
         ctx.state["email_references"].append(email["reference"])
     risk_summary = ctx.state.get("risk_summary", {})
     return _finalize(
-        ctx, status="CONDITIONALLY_APPROVED", decision_mode="SENIOR_UNDERWRITER", decision_maker="Senior Underwriter",
-        recommendation={"action": "APPROVE", "basis": senior_result["reason"], "confidence": risk_summary.get("confidence"),
-                         "conditions": senior_result.get("conditions", []), "reason": senior_result["reason"]},
+        ctx,
+        status="CONDITIONALLY_APPROVED",
+        decision_mode="SENIOR_UNDERWRITER",
+        decision_maker="Senior Underwriter",
+        recommendation={
+            "action": "APPROVE",
+            "basis": senior_result["reason"],
+            "confidence": risk_summary.get("confidence"),
+            "conditions": senior_result.get("conditions", []),
+            "reason": senior_result["reason"],
+        },
         decision_evidence=risk_summary.get("reasoning", []),
     )
 
@@ -671,22 +958,44 @@ def senior_reject(ctx: Context, node_input):
     applicant = ctx.state["applicant"]
     senior_result = ctx.state["senior_result"]
     tracker = _tracker(ctx)
-    trigger = "information_request" if senior_result.get("requested_items") else "rejection"
+    trigger = (
+        "information_request" if senior_result.get("requested_items") else "rejection"
+    )
     email = draft_email(
-        trigger=trigger, proposal_number=applicant.proposal_number, insured_name=applicant.business_name,
-        broker_name=applicant.broker_name, reason=senior_result["reason"],
-        context={"requested_items": senior_result.get("requested_items", [])}, output_dir=OUTPUT_DIR,
-        progress_callback=tracker.tool_callback("PHASE_7_SENIOR_UNDERWRITER", "communication_tool"),
+        trigger=trigger,
+        proposal_number=applicant.proposal_number,
+        insured_name=applicant.business_name,
+        broker_name=applicant.broker_name,
+        reason=senior_result["reason"],
+        context={"requested_items": senior_result.get("requested_items", [])},
+        output_dir=OUTPUT_DIR,
+        progress_callback=tracker.tool_callback(
+            "PHASE_7_SENIOR_UNDERWRITER", "communication_tool"
+        ),
     )
     if email["success"]:
         ctx.state["email_references"].append(email["reference"])
     risk_summary = ctx.state.get("risk_summary", {})
-    status = "STOPPED_HUMAN_REVIEW" if senior_result.get("requested_items") else "REJECTED"
-    action = "REQUEST_MORE_INFORMATION" if senior_result.get("requested_items") else "DECLINE"
+    status = (
+        "STOPPED_HUMAN_REVIEW" if senior_result.get("requested_items") else "REJECTED"
+    )
+    action = (
+        "REQUEST_MORE_INFORMATION"
+        if senior_result.get("requested_items")
+        else "DECLINE"
+    )
     return _finalize(
-        ctx, status=status, decision_mode="SENIOR_UNDERWRITER", decision_maker="Senior Underwriter",
-        recommendation={"action": action, "basis": senior_result["reason"], "confidence": risk_summary.get("confidence"),
-                         "conditions": [], "reason": senior_result["reason"]},
+        ctx,
+        status=status,
+        decision_mode="SENIOR_UNDERWRITER",
+        decision_maker="Senior Underwriter",
+        recommendation={
+            "action": action,
+            "basis": senior_result["reason"],
+            "confidence": risk_summary.get("confidence"),
+            "conditions": [],
+            "reason": senior_result["reason"],
+        },
         decision_evidence=risk_summary.get("reasoning", []),
     )
 
@@ -695,22 +1004,46 @@ def senior_reject(ctx: Context, node_input):
 # PHASE 8 -- Final Decision
 # ---------------------------------------------------------------------------
 
-def _finalize(ctx: Context, status: str, decision_mode: str, decision_maker: str,
-              recommendation: Dict[str, Any], decision_evidence) -> Dict[str, Any]:
+
+def _finalize(
+    ctx: Context,
+    status: str,
+    decision_mode: str,
+    decision_maker: str,
+    recommendation: Dict[str, Any],
+    decision_evidence,
+) -> Dict[str, Any]:
     """Deterministic step -- backed by tools/decision_assembly_tool.py.
     Called directly by every terminal FunctionNode above (not itself a
     graph node) exactly like adk_controller.py's _finalize()."""
     with instrument_function_step(
         "finalize_decision",
-        tool_args={"status": status, "decision_mode": decision_mode, "decision_maker": decision_maker},
+        tool_args={
+            "status": status,
+            "decision_mode": decision_mode,
+            "decision_maker": decision_maker,
+        },
     ) as step:
-        decision = _finalize_impl(ctx, status, decision_mode, decision_maker, recommendation, decision_evidence)
+        decision = _finalize_impl(
+            ctx,
+            status,
+            decision_mode,
+            decision_maker,
+            recommendation,
+            decision_evidence,
+        )
         step["result"] = decision
         return decision
 
 
-def _finalize_impl(ctx: Context, status: str, decision_mode: str, decision_maker: str,
-                   recommendation: Dict[str, Any], decision_evidence) -> Dict[str, Any]:
+def _finalize_impl(
+    ctx: Context,
+    status: str,
+    decision_mode: str,
+    decision_maker: str,
+    recommendation: Dict[str, Any],
+    decision_evidence,
+) -> Dict[str, Any]:
     applicant = ctx.state["applicant"]
     tracker = _tracker(ctx)
 
@@ -720,24 +1053,36 @@ def _finalize_impl(ctx: Context, status: str, decision_mode: str, decision_maker
     # node into one shared downstream LlmAgent node without duplicating it
     # per branch -- calling it directly keeps Phase 8 in one place.
     from workflow.adk_runtime import call_agent
+
     evidence_agent = evidence_generation_agent.build_agent()
-    ai_summary = call_agent(evidence_agent, {
-        "applicant_fields": applicant.raw_fields,
-        "document_intelligence": ctx.state.get("doc_intel", {}),
-        "cat_exposure": ctx.state.get("cat_exposure", {}),
-        "risk_summary": ctx.state.get("risk_summary", {}),
-        "pricing": ctx.state.get("pricing", {}),
-        "final_decision_context": {"status": status, "decision_mode": decision_mode,
-                                    "decision_maker": decision_maker, "recommendation": recommendation},
-    }, progress_callback=tracker.agent_callback("PHASE_8_FINAL_DECISION")).get("ai_summary", "")
+    ai_summary = call_agent(
+        evidence_agent,
+        {
+            "applicant_fields": applicant.raw_fields,
+            "document_intelligence": ctx.state.get("doc_intel", {}),
+            "cat_exposure": ctx.state.get("cat_exposure", {}),
+            "risk_summary": ctx.state.get("risk_summary", {}),
+            "pricing": ctx.state.get("pricing", {}),
+            "final_decision_context": {
+                "status": status,
+                "decision_mode": decision_mode,
+                "decision_maker": decision_maker,
+                "recommendation": recommendation,
+            },
+        },
+        progress_callback=tracker.agent_callback("PHASE_8_FINAL_DECISION"),
+    ).get("ai_summary", "")
     ctx.state["agents_executed"] += 1
 
     scenario = os.path.splitext(os.path.basename(ctx.state["file_path"]))[0]
 
     decision = assemble_final_decision(
         application_id=ctx.state.get("application_id"),
-        status=status, scenario=scenario, current_phase="PHASE_8_FINAL_DECISION",
-        decision_mode=decision_mode, decision_maker=decision_maker,
+        status=status,
+        scenario=scenario,
+        current_phase="PHASE_8_FINAL_DECISION",
+        decision_mode=decision_mode,
+        decision_maker=decision_maker,
         risk_category=ctx.state.get("risk_summary", {}).get("risk_category"),
         risk_score=ctx.state.get("risk_summary", {}).get("risk_score"),
         confidence=ctx.state.get("risk_summary", {}).get("confidence"),
@@ -749,21 +1094,28 @@ def _finalize_impl(ctx: Context, status: str, decision_mode: str, decision_maker
         approval_lineage=ctx.state["approval_lineage"],
         governance_history=ctx.state["governance_history"],
         workflow_metrics={
-            "agents_executed": ctx.state["agents_executed"], "decision_gates": 10,
-            "human_reviews": ctx.state.get("human_reviews", 0), "governance_checks": ctx.state.get("governance_checks", 0),
+            "agents_executed": ctx.state["agents_executed"],
+            "decision_gates": 10,
+            "human_reviews": ctx.state.get("human_reviews", 0),
+            "governance_checks": ctx.state.get("governance_checks", 0),
         },
         ai_summary=ai_summary,
         email_references=ctx.state.get("email_references", []),
-        workflow_id=ctx.state.get("workflow_id"), started_at=ctx.state.get("started_at"),
+        workflow_id=ctx.state.get("workflow_id"),
+        started_at=ctx.state.get("started_at"),
         applicant={
-            "business_name": applicant.business_name, "broker_name": applicant.broker_name,
+            "business_name": applicant.business_name,
+            "broker_name": applicant.broker_name,
             "primary_property_address": applicant.primary_property_address,
-            "total_insured_value": applicant.total_insured_value, "occupancy_type": applicant.occupancy_type,
+            "total_insured_value": applicant.total_insured_value,
+            "occupancy_type": applicant.occupancy_type,
         },
         documents=ctx.state.get("linked_documents", []),
         execution_timeline=tracker.as_list(),
         output_dir=OUTPUT_DIR,
-        progress_callback=tracker.tool_callback("PHASE_8_FINAL_DECISION", "decision_assembly_tool"),
+        progress_callback=tracker.tool_callback(
+            "PHASE_8_FINAL_DECISION", "decision_assembly_tool"
+        ),
     )
     ctx.state["final_decision"] = decision
     return decision
@@ -773,6 +1125,7 @@ def _finalize_impl(ctx: Context, status: str, decision_mode: str, decision_maker
 # Graph assembly
 # ---------------------------------------------------------------------------
 
+
 def _build_graph() -> Workflow:
     submission_llm = submission_intake_agent.build_agent()
     document_llm = document_intelligence_agent.build_agent()
@@ -780,45 +1133,77 @@ def _build_graph() -> Workflow:
     risk_llm = risk_summary_agent.build_agent()
     pricing_llm = pricing_agent.build_agent()
 
-    human_underwriter_llm = _fresh_agent(human_underwriter_agent, "HumanUnderwriterAgent_Phase5")
-    human_underwriter_mismatch_llm = _fresh_agent(human_underwriter_agent, "HumanUnderwriterAgent_MandatoryReview")
+    human_underwriter_llm = _fresh_agent(
+        human_underwriter_agent, "HumanUnderwriterAgent_Phase5"
+    )
+    human_underwriter_mismatch_llm = _fresh_agent(
+        human_underwriter_agent, "HumanUnderwriterAgent_MandatoryReview"
+    )
 
-    senior_underwriter_mismatch_llm = _fresh_agent(senior_underwriter_agent, "SeniorUnderwriterAgent_Mismatch")
-    senior_underwriter_escalate_llm = _fresh_agent(senior_underwriter_agent, "SeniorUnderwriterAgent_Escalate")
-    senior_underwriter_authority_llm = _fresh_agent(senior_underwriter_agent, "SeniorUnderwriterAgent_Authority")
+    senior_underwriter_mismatch_llm = _fresh_agent(
+        senior_underwriter_agent, "SeniorUnderwriterAgent_Mismatch"
+    )
+    senior_underwriter_escalate_llm = _fresh_agent(
+        senior_underwriter_agent, "SeniorUnderwriterAgent_Escalate"
+    )
+    senior_underwriter_authority_llm = _fresh_agent(
+        senior_underwriter_agent, "SeniorUnderwriterAgent_Authority"
+    )
 
     return Workflow(
         name="commercial_property_underwriting_v2",
         edges=[
             ("START", intake, submission_llm, submission_gate),
-            (submission_gate, {"complete": document_intelligence_step, "incomplete": handle_incomplete}),
-
+            (
+                submission_gate,
+                {
+                    "complete": document_intelligence_step,
+                    "incomplete": handle_incomplete,
+                },
+            ),
             (document_intelligence_step, document_llm, document_gate),
-            (document_gate, {"consistent": cat_vendor_gate, "mismatch": governance_and_mandatory_review}),
-
-            (governance_and_mandatory_review, human_underwriter_mismatch_llm, mismatch_review_gate),
-            (mismatch_review_gate, {
-                "decline": handle_mismatch_decline,
-                "escalate": senior_underwriter_prep,
-                "continue": mismatch_continue,
-            }),
+            (
+                document_gate,
+                {
+                    "consistent": cat_vendor_gate,
+                    "mismatch": governance_and_mandatory_review,
+                },
+            ),
+            (
+                governance_and_mandatory_review,
+                human_underwriter_mismatch_llm,
+                mismatch_review_gate,
+            ),
+            (
+                mismatch_review_gate,
+                {
+                    "decline": handle_mismatch_decline,
+                    "escalate": senior_underwriter_prep,
+                    "continue": mismatch_continue,
+                },
+            ),
             (mismatch_continue, cat_vendor_gate),
-
-            (cat_vendor_gate, {"blocked": handle_vendor_blocked, "approved": pii_and_cat_call}),
+            (
+                cat_vendor_gate,
+                {"blocked": handle_vendor_blocked, "approved": pii_and_cat_call},
+            ),
             (pii_and_cat_call, cat_llm, cat_exposure_step_done, risk_llm),
             (risk_llm, pricing_step, pricing_llm, risk_gate),
-
             (risk_gate, human_underwriter_llm, human_underwriter_gate),
-            (human_underwriter_gate, {
-                "approve": handle_approve,
-                "decline": handle_decline,
-                "escalate": senior_underwriter_prep,
-                "override": override_gate,
-            }),
-
+            (
+                human_underwriter_gate,
+                {
+                    "approve": handle_approve,
+                    "decline": handle_decline,
+                    "escalate": senior_underwriter_prep,
+                    "override": override_gate,
+                },
+            ),
             (override_gate, {"clean": accept_override, "contradicts": authority_gate}),
-            (authority_gate, {"within": accept_override, "exceeds": senior_underwriter_prep}),
-
+            (
+                authority_gate,
+                {"within": accept_override, "exceeds": senior_underwriter_prep},
+            ),
             # senior_underwriter_prep is reached from three branches above;
             # each uses its own fresh LlmAgent instance so the graph never
             # reuses one node object across multiple in-edges.
@@ -834,6 +1219,7 @@ def _build_graph() -> Workflow:
 # Public entry point
 # ---------------------------------------------------------------------------
 
+
 def run_workflow(file_path: str) -> dict:
     """Runs the underwriting workflow as a real ADK Workflow graph and
     returns the final decision dict (same shape as v1's run_workflow)."""
@@ -843,7 +1229,9 @@ def run_workflow(file_path: str) -> dict:
         session_service = InMemorySessionService()
         user_id, session_id = "underwriting_system", str(uuid.uuid4())
         await session_service.create_session(
-            app_name="commercial_property_underwriting_adk_v2", user_id=user_id, session_id=session_id
+            app_name="commercial_property_underwriting_adk_v2",
+            user_id=user_id,
+            session_id=session_id,
         )
 
         workflow_instance_id = f"wf_{uuid.uuid4().hex}"
@@ -864,11 +1252,15 @@ def run_workflow(file_path: str) -> dict:
             plugins=plugins,
         )
 
-        message = types.Content(role="user", parts=[types.Part(text=json.dumps({"file_path": file_path}))])
+        message = types.Content(
+            role="user", parts=[types.Part(text=json.dumps({"file_path": file_path}))]
+        )
 
         try:
             final_output = None
-            async for event in runner.run_async(user_id=user_id, session_id=session_id, new_message=message):
+            async for event in runner.run_async(
+                user_id=user_id, session_id=session_id, new_message=message
+            ):
                 if getattr(event, "output", None) is not None:
                     final_output = event.output
 
