@@ -1,0 +1,73 @@
+{
+  "policy_id": "POL-CPUW-CAT3-DATA-001",
+  "tenant_id": "default-tenant",
+  "name": "Data Governance — PII redaction, approved vendor, submission completeness",
+  "description": "Category 3: Before/with external CAT use, require submission completeness, approved cat_exposure_step route, and finalize decision recording vendor_approved + pii_redacted. Observe-mode for the property-underwriting ADK graph (vendor/PII/CAT are one FunctionNode).",
+  "policy_category": "data_governance",
+  "created_by": "governance-team",
+  "compliance_sentence": "Submission must be complete; cat_exposure_step must route approved; finalize must record vendor_approved and pii_redacted; cat_exposure_step must not fail.",
+  "rule_definition_json": {
+    "subject": {
+      "type": "tool",
+      "selector": {
+        "tool_name": "finalize_decision",
+        "capability": "underwriting_decision",
+        "risk_class": "high"
+      }
+    },
+    "trigger": { "event_type": "TOOL_CALL_COMPLETED" },
+    "assertions": [
+      {
+        "assertion_id": "submission-complete-before-decision",
+        "type": "event_exists",
+        "event_type": "TOOL_CALL_COMPLETED",
+        "where": {
+          "tool_name": "submission_intake_step",
+          "status": "success",
+          "result.route": "complete"
+        }
+      },
+      {
+        "assertion_id": "approved-vendor-and-cat-path",
+        "type": "event_exists",
+        "event_type": "TOOL_CALL_COMPLETED",
+        "where": {
+          "tool_name": "cat_exposure_step",
+          "status": "success",
+          "result.route": "approved"
+        }
+      },
+      {
+        "assertion_id": "decision-records-vendor-and-pii-flags",
+        "type": "event_exists",
+        "event_type": "TOOL_CALL_COMPLETED",
+        "where": {
+          "tool_name": "finalize_decision",
+          "status": "success",
+          "result.cat_exposure.vendor_approved": true,
+          "result.cat_exposure.pii_redacted": true
+        }
+      },
+      {
+        "assertion_id": "cat-category-present-on-decision",
+        "type": "attribute_match",
+        "source": "TOOL_CALL_COMPLETED.payload.result.cat_exposure.cat_category",
+        "operator": "!=",
+        "value": null
+      },
+      {
+        "assertion_id": "no-cat-exposure-failure",
+        "type": "event_absence",
+        "event_type": "TOOL_CALL_FAILED",
+        "where": { "tool_name": "cat_exposure_step" }
+      }
+    ],
+    "enforcement": { "mode": "observe", "failure_action": "record_finding" }
+  },
+  "assignment": {
+    "workflow_type": "commercial_property_underwriting:proposal",
+    "business_object_type": "proposal",
+    "environment": "test",
+    "priority": 70
+  }
+}

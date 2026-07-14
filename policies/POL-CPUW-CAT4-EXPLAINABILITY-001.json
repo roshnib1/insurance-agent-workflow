@@ -1,0 +1,77 @@
+{
+  "policy_id": "POL-CPUW-CAT4-EXPLAINABILITY-001",
+  "tenant_id": "default-tenant",
+  "name": "Explainability — evidence, rationale, confidence, and reason required",
+  "description": "Category 4: On finalize_decision, require >=3 decision_evidence items, pricing rationale, stored confidence, and a recommendation reason. Observe-mode for the property-underwriting ADK graph.",
+  "policy_category": "explainability",
+  "created_by": "governance-team",
+  "compliance_sentence": "Every completed decision must store confidence, a non-empty recommendation.reason, >=3 decision_evidence items, and >=1 pricing.rationale item.",
+  "rule_definition_json": {
+    "subject": {
+      "type": "tool",
+      "selector": {
+        "tool_name": "finalize_decision",
+        "capability": "underwriting_decision",
+        "risk_class": "high"
+      }
+    },
+    "trigger": { "event_type": "TOOL_CALL_COMPLETED" },
+    "assertions": [
+      {
+        "assertion_id": "evidence-min-three",
+        "type": "aggregate",
+        "function": "len",
+        "event_type": "TOOL_CALL_COMPLETED",
+        "field": "payload.result.decision_evidence",
+        "where": { "tool_name": "finalize_decision", "status": "success" },
+        "operator": ">=",
+        "value": 3
+      },
+      {
+        "assertion_id": "pricing-rationale-required",
+        "type": "aggregate",
+        "function": "len",
+        "event_type": "TOOL_CALL_COMPLETED",
+        "field": "payload.result.pricing.rationale",
+        "where": { "tool_name": "finalize_decision", "status": "success" },
+        "operator": ">=",
+        "value": 1
+      },
+      {
+        "assertion_id": "confidence-disclosed",
+        "type": "attribute_match",
+        "source": "TOOL_CALL_COMPLETED.payload.result.confidence",
+        "operator": "!=",
+        "value": null
+      },
+      {
+        "assertion_id": "decision-reason-present",
+        "type": "attribute_match",
+        "source": "TOOL_CALL_COMPLETED.payload.result.recommendation.reason",
+        "operator": "!=",
+        "value": null
+      },
+      {
+        "assertion_id": "decision-basis-present",
+        "type": "attribute_match",
+        "source": "TOOL_CALL_COMPLETED.payload.result.recommendation.basis",
+        "operator": "!=",
+        "value": null
+      },
+      {
+        "assertion_id": "ai-summary-present",
+        "type": "attribute_match",
+        "source": "TOOL_CALL_COMPLETED.payload.result.ai_summary",
+        "operator": "!=",
+        "value": null
+      }
+    ],
+    "enforcement": { "mode": "observe", "failure_action": "record_finding" }
+  },
+  "assignment": {
+    "workflow_type": "commercial_property_underwriting:proposal",
+    "business_object_type": "proposal",
+    "environment": "test",
+    "priority": 75
+  }
+}

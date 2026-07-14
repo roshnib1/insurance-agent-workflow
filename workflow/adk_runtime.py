@@ -156,7 +156,22 @@ async def _call_agent_async(agent: LlmAgent, payload: Dict[str, Any]) -> Dict[st
         app_name=_APP_NAME, user_id=user_id, session_id=session_id
     )
 
-    runner = Runner(agent=agent, app_name=_APP_NAME, session_service=_session_service)
+    # Attach nested Assurance hooks so AGENT_RUN_*, MODEL_INVOCATION_*, and
+    # agent TOOL_CALL_* emit into the outer workflow's evidence window. The
+    # outer Runner owns WORKFLOW_RUN_*; nested runners must not re-emit those.
+    try:
+        from workflow.assurance_plugin import nested_agent_plugins
+
+        plugins = nested_agent_plugins()
+    except Exception:  # noqa: BLE001
+        plugins = []
+
+    runner = Runner(
+        agent=agent,
+        app_name=_APP_NAME,
+        session_service=_session_service,
+        plugins=plugins,
+    )
 
     message = types.Content(role="user", parts=[types.Part(text=json.dumps(payload, default=str))])
 
@@ -204,6 +219,31 @@ async def _call_agent_async(agent: LlmAgent, payload: Dict[str, Any]) -> Dict[st
     raise _NoFinalResponse(f"Agent '{agent.name}' produced no final response.")
 
 
+def _run_sync(coro):
+    """Run an async coroutine from sync code, including when already inside
+    an event loop (v2 workflow FunctionNodes run under ADK's async Runner).
+
+    When nesting into a worker thread, copy ContextVars so the active
+    Assurance plugin / workflow context remain visible to nested Runners.
+    """
+    try:
+        asyncio.get_running_loop()
+    except RuntimeError:
+        return asyncio.run(coro)
+
+    # Nested: spin up a private loop on a worker thread.
+    import concurrent.futures
+    import contextvars
+
+    ctx = contextvars.copy_context()
+
+    def _runner():
+        return asyncio.run(coro)
+
+    with concurrent.futures.ThreadPoolExecutor(max_workers=1) as pool:
+        return pool.submit(ctx.run, _runner).result()
+
+
 def call_agent(
     agent: LlmAgent,
     payload: Dict[str, Any],
@@ -225,7 +265,7 @@ def call_agent(
     last_exc: Optional[Exception] = None
     for attempt in range(1, MAX_RETRIES + 1):
         try:
-            result = asyncio.run(_call_agent_async(agent, payload))
+            result = _run_sync(_call_agent_async(agent, payload))
             _emit(progress_callback, "after", agent.name)
             return result
         except _RetryableAgentError as exc:

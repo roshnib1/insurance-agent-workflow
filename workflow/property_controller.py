@@ -66,7 +66,7 @@ from typing import Any, Dict
 from google.adk import Context, Event
 from google.adk.runners import Runner
 from google.adk.sessions import InMemorySessionService
-from google.adk.workflow import Workflow, node
+from google.adk.workflow import Workflow
 from google.genai import types
 
 from agents import (
@@ -86,6 +86,13 @@ from services.pdf_parser import parse_pdf_document
 from tools.communication_tool import draft_email
 from tools.decision_assembly_tool import assemble_final_decision
 from tools.delegated_authority_tool import check_delegated_authority
+from workflow.assurance_plugin import (
+    assurance_node as node,
+    build_assurance_plugin,
+    instrument_function_step,
+    reset_active_assurance_plugin,
+    set_active_assurance_plugin,
+)
 from workflow.governance import governance_policy_check
 from workflow.progress import ProgressTracker
 
@@ -669,11 +676,26 @@ def senior_reject(ctx: Context, node_input):
 def _finalize(ctx: Context, status: str, decision_mode: str, decision_maker: str,
               recommendation: Dict[str, Any], decision_evidence) -> Dict[str, Any]:
     """Deterministic assembly step -- backed by tools/decision_assembly_tool.py.
-    Called directly by every terminal FunctionNode above (not itself a
-    graph node), exactly like workflow/controller.py's (v1) _finalize().
-    The only LLM step here is EvidenceGenerationAgent, which writes the
-    one free-text paragraph in decision.json -- it has no tools, only
-    output_schema, so its own run() calls it via a plain structured turn."""
+    Instrumented with TOOL_CALL_* so finalize_decision appears on the Assurance
+    evidence window (primary policy trigger)."""
+    with instrument_function_step(
+        "finalize_decision",
+        tool_args={
+            "status": status,
+            "decision_mode": decision_mode,
+            "decision_maker": decision_maker,
+        },
+    ) as step:
+        decision = _finalize_impl(
+            ctx, status, decision_mode, decision_maker, recommendation, decision_evidence,
+        )
+        step["result"] = decision
+        return decision
+
+
+def _finalize_impl(ctx: Context, status: str, decision_mode: str, decision_maker: str,
+                   recommendation: Dict[str, Any], decision_evidence) -> Dict[str, Any]:
+    """Inner assembly body (EvidenceGenerationAgent + assemble_final_decision)."""
     applicant = ctx.state["applicant"]
     tracker = _tracker(ctx)
     phase = "PHASE_8_FINAL_DECISION"
@@ -783,18 +805,38 @@ def run_workflow(file_path: str) -> dict:
             app_name="commercial_property_underwriting_adk_v2", user_id=user_id, session_id=session_id
         )
 
+        workflow_instance_id = f"wf_{uuid.uuid4().hex}"
+        plugin = build_assurance_plugin(
+            workflow_type="commercial_property_underwriting",
+            business_object={"type": "proposal", "id": os.path.basename(file_path)},
+            workflow_instance_id=workflow_instance_id,
+            labels={"source": "cli", "controller": "v2", "branch": "property-underwriting"},
+        )
+        plugins = [plugin] if plugin is not None else []
+        plugin_token = set_active_assurance_plugin(plugin)
+
         workflow = _build_graph()
-        runner = Runner(agent=workflow, app_name="commercial_property_underwriting_adk_v2", session_service=session_service)
+        runner = Runner(
+            agent=workflow,
+            app_name="commercial_property_underwriting_adk_v2",
+            session_service=session_service,
+            plugins=plugins,
+        )
 
         message = types.Content(role="user", parts=[types.Part(text=json.dumps({"file_path": file_path}))])
 
-        final_output = None
-        async for event in runner.run_async(user_id=user_id, session_id=session_id, new_message=message):
-            if getattr(event, "output", None) is not None:
-                final_output = event.output
+        try:
+            final_output = None
+            async for event in runner.run_async(user_id=user_id, session_id=session_id, new_message=message):
+                if getattr(event, "output", None) is not None:
+                    final_output = event.output
 
-        if final_output is None:
-            raise RuntimeError("Workflow produced no final decision output.")
-        return final_output
+            if final_output is None:
+                raise RuntimeError("Workflow produced no final decision output.")
+            return final_output
+        finally:
+            reset_active_assurance_plugin(plugin_token)
+            if plugin is not None:
+                await plugin.close()
 
     return asyncio.run(_run())

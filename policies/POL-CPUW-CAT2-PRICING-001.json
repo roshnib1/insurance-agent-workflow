@@ -1,0 +1,78 @@
+{
+  "policy_id": "POL-CPUW-CAT2-PRICING-001",
+  "tenant_id": "default-tenant",
+  "name": "Pricing Governance — premium, deductible, and CAT consistency",
+  "description": "Category 2: On finalize_decision, require a positive indicative premium, a stated deductible, pricing rationale, and CAT exposure fields consistent with the pricing recommendation. Observe-mode for the property-underwriting ADK graph.",
+  "policy_category": "pricing_governance",
+  "created_by": "governance-team",
+  "compliance_sentence": "Finalize must include indicative_premium>0, a deductible string, pricing.rationale, and cat_exposure with vendor_approved when CAT was used.",
+  "rule_definition_json": {
+    "subject": {
+      "type": "tool",
+      "selector": {
+        "tool_name": "finalize_decision",
+        "capability": "underwriting_decision",
+        "risk_class": "high"
+      }
+    },
+    "trigger": { "event_type": "TOOL_CALL_COMPLETED" },
+    "assertions": [
+      {
+        "assertion_id": "premium-floor-positive",
+        "type": "attribute_match",
+        "source": "TOOL_CALL_COMPLETED.payload.result.pricing.indicative_premium",
+        "operator": ">",
+        "value": 0
+      },
+      {
+        "assertion_id": "deductible-disclosed",
+        "type": "attribute_match",
+        "source": "TOOL_CALL_COMPLETED.payload.result.pricing.deductible",
+        "operator": "!=",
+        "value": null
+      },
+      {
+        "assertion_id": "pricing-recommendation-present",
+        "type": "attribute_match",
+        "source": "TOOL_CALL_COMPLETED.payload.result.pricing.recommendation",
+        "operator": "!=",
+        "value": null
+      },
+      {
+        "assertion_id": "pricing-rationale-count",
+        "type": "aggregate",
+        "function": "len",
+        "event_type": "TOOL_CALL_COMPLETED",
+        "field": "payload.result.pricing.rationale",
+        "where": { "tool_name": "finalize_decision", "status": "success" },
+        "operator": ">=",
+        "value": 1
+      },
+      {
+        "assertion_id": "cat-exposure-on-decision",
+        "type": "event_exists",
+        "event_type": "TOOL_CALL_COMPLETED",
+        "where": {
+          "tool_name": "finalize_decision",
+          "status": "success",
+          "result.cat_exposure.vendor_approved": true,
+          "result.cat_exposure.pii_redacted": true
+        }
+      },
+      {
+        "assertion_id": "low-risk-no-loading-language",
+        "type": "attribute_match",
+        "source": "TOOL_CALL_COMPLETED.payload.result.pricing.recommendation",
+        "operator": "contains",
+        "value": "standard"
+      }
+    ],
+    "enforcement": { "mode": "observe", "failure_action": "record_finding" }
+  },
+  "assignment": {
+    "workflow_type": "commercial_property_underwriting:proposal",
+    "business_object_type": "proposal",
+    "environment": "test",
+    "priority": 85
+  }
+}

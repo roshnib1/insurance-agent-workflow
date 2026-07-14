@@ -1,0 +1,124 @@
+{
+  "policy_id": "POL-CPUW-DECISION-CONTROLS-001",
+  "tenant_id": "default-tenant",
+  "name": "Underwriting decision finalization requires mandatory control gates",
+  "description": "Commercial Property Underwriting (property-underwriting graph) business control: finalize_decision may only complete after submission_intake_step, cat_exposure_step (vendor+PII+CAT), human_underwriter_step, and handle_approve have all completed successfully in the same workflow. Adapted for FunctionNode names on the property-underwriting ADK graph.",
+  "policy_category": "underwriting",
+  "created_by": "governance-team",
+  "compliance_sentence": "Before finalize_decision completes successfully, submission_intake_step, cat_exposure_step, human_underwriter_step, and handle_approve must already have completed successfully in the same workflow.",
+  "rule_definition_json": {
+    "subject": {
+      "type": "tool",
+      "selector": {
+        "tool_name": "finalize_decision",
+        "capability": "underwriting_decision",
+        "risk_class": "high"
+      }
+    },
+    "trigger": {
+      "event_type": "TOOL_CALL_COMPLETED"
+    },
+    "assertions": [
+      {
+        "assertion_id": "finalize-completed-success",
+        "type": "event_exists",
+        "event_type": "TOOL_CALL_COMPLETED",
+        "where": {
+          "tool_name": "finalize_decision",
+          "status": "success"
+        }
+      },
+      {
+        "assertion_id": "submission-intake-completed",
+        "type": "event_exists",
+        "event_type": "TOOL_CALL_COMPLETED",
+        "where": {
+          "tool_name": "submission_intake_step",
+          "status": "success"
+        }
+      },
+      {
+        "assertion_id": "cat-exposure-completed",
+        "type": "event_exists",
+        "event_type": "TOOL_CALL_COMPLETED",
+        "where": {
+          "tool_name": "cat_exposure_step",
+          "status": "success"
+        }
+      },
+      {
+        "assertion_id": "human-underwriter-completed",
+        "type": "event_exists",
+        "event_type": "TOOL_CALL_COMPLETED",
+        "where": {
+          "tool_name": "human_underwriter_step",
+          "status": "success"
+        }
+      },
+      {
+        "assertion_id": "handle-approve-completed",
+        "type": "event_exists",
+        "event_type": "TOOL_CALL_COMPLETED",
+        "where": {
+          "tool_name": "handle_approve",
+          "status": "success"
+        }
+      },
+      {
+        "assertion_id": "no-finalize-failure",
+        "type": "event_absence",
+        "event_type": "TOOL_CALL_FAILED",
+        "where": {
+          "tool_name": "finalize_decision"
+        }
+      },
+      {
+        "assertion_id": "workflow-completed",
+        "type": "event_exists",
+        "event_type": "WORKFLOW_RUN_COMPLETED"
+      }
+    ],
+    "enforcement": {
+      "mode": "observe",
+      "failure_action": "record_finding"
+    }
+  },
+  "tools_to_register": [
+    {
+      "tool_id": "tool.finalize_decision",
+      "name": "finalize_decision",
+      "capabilities": ["underwriting_decision"],
+      "risk_class": "high"
+    },
+    {
+      "tool_id": "tool.submission_intake_step",
+      "name": "submission_intake_step",
+      "capabilities": ["intake_control"],
+      "risk_class": "medium"
+    },
+    {
+      "tool_id": "tool.cat_exposure_step",
+      "name": "cat_exposure_step",
+      "capabilities": ["external_vendor_call", "vendor_governance"],
+      "risk_class": "high"
+    },
+    {
+      "tool_id": "tool.human_underwriter_step",
+      "name": "human_underwriter_step",
+      "capabilities": ["underwriting_decision"],
+      "risk_class": "high"
+    },
+    {
+      "tool_id": "tool.handle_approve",
+      "name": "handle_approve",
+      "capabilities": ["underwriting_decision"],
+      "risk_class": "high"
+    }
+  ],
+  "assignment": {
+    "workflow_type": "commercial_property_underwriting:proposal",
+    "business_object_type": "proposal",
+    "environment": "test",
+    "priority": 100
+  }
+}

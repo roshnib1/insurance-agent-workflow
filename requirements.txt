@@ -5,3 +5,7 @@ beautifulsoup4
 pdfplumber
 streamlit
 python-dotenv
+# Operational Assurance (v2 workflow). If not on PyPI, install from the
+# local SDK path instead:
+#   pip install -e "/path/to/sdk-gateway/sdk[adk]"
+assurance-sdk[adk]
