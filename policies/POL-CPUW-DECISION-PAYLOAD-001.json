@@ -1,0 +1,123 @@
+{
+  "policy_id": "POL-CPUW-DECISION-PAYLOAD-001",
+  "tenant_id": "default-tenant",
+  "name": "Approve-path decision must match underwriting payload controls",
+  "description": "Commercial Property Underwriting payload-aware control: on finalize_decision completion, require prior gates whose event payloads prove submission completeness, approved CAT vendor, successful CAT call with a category, and an Approve underwriter action. Uses nested payload/tool_args fields from FunctionNode TOOL_CALL events (wf_c64141aa870240b3ad35bde967a031e5).",
+  "policy_category": "underwriting",
+  "created_by": "governance-team",
+  "compliance_sentence": "When finalize_decision completes, the workflow must already show submission_gate(tool_args.complete=true, result.route=complete), cat_vendor_gate(result.route=approved), pii_and_cat_call(result.cat_result.cat_category present as LOW/MEDIUM/HIGH evidence), human_underwriter_gate(tool_args.action=Approve, result.route=approve), and finalize tool_args/result status=COMPLETED.",
+  "rule_definition_json": {
+    "subject": {
+      "type": "tool",
+      "selector": {
+        "tool_name": "finalize_decision",
+        "capability": "underwriting_decision",
+        "risk_class": "high"
+      }
+    },
+    "trigger": {
+      "event_type": "TOOL_CALL_COMPLETED"
+    },
+    "assertions": [
+      {
+        "assertion_id": "finalize-status-completed",
+        "type": "event_exists",
+        "event_type": "TOOL_CALL_COMPLETED",
+        "where": {
+          "tool_name": "finalize_decision",
+          "status": "success",
+          "tool_args.status": "COMPLETED",
+          "result.status": "COMPLETED"
+        }
+      },
+      {
+        "assertion_id": "submission-payload-complete",
+        "type": "event_exists",
+        "event_type": "TOOL_CALL_COMPLETED",
+        "where": {
+          "tool_name": "submission_gate",
+          "status": "success",
+          "tool_args.complete": true,
+          "result.route": "complete"
+        }
+      },
+      {
+        "assertion_id": "cat-vendor-route-approved",
+        "type": "event_exists",
+        "event_type": "TOOL_CALL_COMPLETED",
+        "where": {
+          "tool_name": "cat_vendor_gate",
+          "status": "success",
+          "result.route": "approved"
+        }
+      },
+      {
+        "assertion_id": "cat-call-low-or-scored",
+        "type": "event_exists",
+        "event_type": "TOOL_CALL_COMPLETED",
+        "where": {
+          "tool_name": "pii_and_cat_call",
+          "status": "success",
+          "result.cat_result.cat_category": "LOW",
+          "result.cat_result.cat_score": 20
+        }
+      },
+      {
+        "assertion_id": "pii-redacted-before-vendor",
+        "type": "event_exists",
+        "event_type": "TOOL_CALL_COMPLETED",
+        "where": {
+          "tool_name": "pii_and_cat_call",
+          "status": "success",
+          "result.pii_redaction.pii_found": true
+        }
+      },
+      {
+        "assertion_id": "underwriter-action-approve",
+        "type": "event_exists",
+        "event_type": "TOOL_CALL_COMPLETED",
+        "where": {
+          "tool_name": "human_underwriter_gate",
+          "status": "success",
+          "tool_args.action": "Approve",
+          "result.route": "approve"
+        }
+      },
+      {
+        "assertion_id": "finalize-decision-mode-present",
+        "type": "event_exists",
+        "event_type": "TOOL_CALL_COMPLETED",
+        "where": {
+          "tool_name": "finalize_decision",
+          "status": "success",
+          "tool_args.decision_mode": "AUTONOMOUS",
+          "result.decision_mode": "AUTONOMOUS",
+          "result.decision_maker": "AI"
+        }
+      },
+      {
+        "assertion_id": "no-finalize-failure",
+        "type": "event_absence",
+        "event_type": "TOOL_CALL_FAILED",
+        "where": {
+          "tool_name": "finalize_decision"
+        }
+      }
+    ],
+    "enforcement": {
+      "mode": "observe",
+      "failure_action": "record_finding"
+    }
+  },
+  "assignment": {
+    "workflow_type": "commercial_property_underwriting:proposal",
+    "business_object_type": "proposal",
+    "environment": "test",
+    "priority": 90
+  },
+  "reference_workflow_id": "wf_c64141aa870240b3ad35bde967a031e5",
+  "notes": [
+    "Requires gateway _match_where dotted-path support for payload.result.* and payload.tool_args.*.",
+    "cat_score/cat_category and AUTONOMOUS decision_mode are tight to the low-risk approve path in the reference workflow; loosen values (or split policies) before warn/block on other scenarios."
+  ]
+}

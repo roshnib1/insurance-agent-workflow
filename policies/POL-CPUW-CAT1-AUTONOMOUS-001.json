@@ -1,0 +1,78 @@
+{
+  "policy_id": "POL-CPUW-CAT1-AUTONOMOUS-001",
+  "tenant_id": "default-tenant",
+  "name": "Autonomous Decision Governance — low-risk approval threshold",
+  "description": "Category 1: When finalize_decision completes in AUTONOMOUS mode, require LOW risk_category and confidence >= 0.90. Observe-mode soak for Commercial Property Underwriting.",
+  "policy_category": "autonomous_decision_governance",
+  "created_by": "governance-team",
+  "compliance_sentence": "IF decision_mode==AUTONOMOUS THEN risk_category==LOW AND confidence>=0.90 on finalize_decision.",
+  "rule_definition_json": {
+    "subject": {
+      "type": "tool",
+      "selector": {
+        "tool_name": "finalize_decision",
+        "capability": "underwriting_decision",
+        "risk_class": "high"
+      }
+    },
+    "trigger": { "event_type": "TOOL_CALL_COMPLETED" },
+    "assertions": [
+      {
+        "assertion_id": "autonomous-finalize-present",
+        "type": "event_exists",
+        "event_type": "TOOL_CALL_COMPLETED",
+        "where": {
+          "tool_name": "finalize_decision",
+          "status": "success",
+          "result.decision_mode": "AUTONOMOUS",
+          "result.decision_maker": "AI"
+        }
+      },
+      {
+        "assertion_id": "autonomous-only-low-risk",
+        "type": "event_exists",
+        "event_type": "TOOL_CALL_COMPLETED",
+        "where": {
+          "tool_name": "finalize_decision",
+          "status": "success",
+          "result.decision_mode": "AUTONOMOUS",
+          "result.risk_category": "LOW"
+        }
+      },
+      {
+        "assertion_id": "autonomous-confidence-threshold",
+        "type": "attribute_match",
+        "source": "TOOL_CALL_COMPLETED.payload.result.confidence",
+        "operator": ">=",
+        "value": 0.9
+      },
+      {
+        "assertion_id": "autonomous-not-high-risk",
+        "type": "event_absence",
+        "event_type": "TOOL_CALL_COMPLETED",
+        "where": {
+          "tool_name": "finalize_decision",
+          "result.decision_mode": "AUTONOMOUS",
+          "result.risk_category": "HIGH"
+        }
+      },
+      {
+        "assertion_id": "recommendation-is-approve",
+        "type": "event_exists",
+        "event_type": "TOOL_CALL_COMPLETED",
+        "where": {
+          "tool_name": "finalize_decision",
+          "status": "success",
+          "result.recommendation.action": "APPROVE"
+        }
+      }
+    ],
+    "enforcement": { "mode": "observe", "failure_action": "record_finding" }
+  },
+  "assignment": {
+    "workflow_type": "commercial_property_underwriting:proposal",
+    "business_object_type": "proposal",
+    "environment": "test",
+    "priority": 80
+  }
+}

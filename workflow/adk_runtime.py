@@ -89,6 +89,24 @@ async def _call_agent_async(agent: LlmAgent, payload: Dict[str, Any]) -> Dict[st
     raise RuntimeError(f"Agent '{agent.name}' produced no final response.")
 
 
+def _run_sync(coro):
+    """Run an async coroutine from sync code, including when already inside
+    an event loop (v2 workflow FunctionNodes run under ADK's async Runner)."""
+    try:
+        asyncio.get_running_loop()
+    except RuntimeError:
+        return asyncio.run(coro)
+
+    # Nested: spin up a private loop on a worker thread.
+    import concurrent.futures
+
+    def _runner():
+        return asyncio.run(coro)
+
+    with concurrent.futures.ThreadPoolExecutor(max_workers=1) as pool:
+        return pool.submit(_runner).result()
+
+
 def call_agent(
     agent: LlmAgent,
     payload: Dict[str, Any],
@@ -98,7 +116,7 @@ def call_agent(
     output. Fires before/after progress events around the call."""
     _emit(progress_callback, "before", agent.name)
     try:
-        result = asyncio.run(_call_agent_async(agent, payload))
+        result = _run_sync(_call_agent_async(agent, payload))
     except Exception as exc:
         _emit(progress_callback, "failed", agent.name, error=str(exc))
         raise

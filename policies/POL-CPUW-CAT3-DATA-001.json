@@ -1,0 +1,86 @@
+{
+  "policy_id": "POL-CPUW-CAT3-DATA-001",
+  "tenant_id": "default-tenant",
+  "name": "Data Governance — PII redaction, approved vendor, submission completeness",
+  "description": "Category 3: Before/with external CAT use, require approved vendor gate, PII handling evidence, and completed submission before finalize. Observe-mode for Commercial Property Underwriting.",
+  "policy_category": "data_governance",
+  "created_by": "governance-team",
+  "compliance_sentence": "Submission must be complete; CAT vendor must be approved; pii_and_cat_call must succeed with redaction evidence; finalize must record vendor_approved and pii_redacted.",
+  "rule_definition_json": {
+    "subject": {
+      "type": "tool",
+      "selector": {
+        "tool_name": "finalize_decision",
+        "capability": "underwriting_decision",
+        "risk_class": "high"
+      }
+    },
+    "trigger": { "event_type": "TOOL_CALL_COMPLETED" },
+    "assertions": [
+      {
+        "assertion_id": "submission-complete-before-decision",
+        "type": "event_exists",
+        "event_type": "TOOL_CALL_COMPLETED",
+        "where": {
+          "tool_name": "submission_gate",
+          "status": "success",
+          "tool_args.complete": true,
+          "result.route": "complete"
+        }
+      },
+      {
+        "assertion_id": "approved-vendor-only",
+        "type": "event_exists",
+        "event_type": "TOOL_CALL_COMPLETED",
+        "where": {
+          "tool_name": "cat_vendor_gate",
+          "status": "success",
+          "result.route": "approved"
+        }
+      },
+      {
+        "assertion_id": "external-cat-call-succeeded",
+        "type": "event_exists",
+        "event_type": "TOOL_CALL_COMPLETED",
+        "where": {
+          "tool_name": "pii_and_cat_call",
+          "status": "success"
+        }
+      },
+      {
+        "assertion_id": "pii-redaction-executed",
+        "type": "event_exists",
+        "event_type": "TOOL_CALL_COMPLETED",
+        "where": {
+          "tool_name": "pii_and_cat_call",
+          "status": "success",
+          "result.pii_redaction.pii_found": true
+        }
+      },
+      {
+        "assertion_id": "decision-records-vendor-and-pii-flags",
+        "type": "event_exists",
+        "event_type": "TOOL_CALL_COMPLETED",
+        "where": {
+          "tool_name": "finalize_decision",
+          "status": "success",
+          "result.cat_exposure.vendor_approved": true,
+          "result.cat_exposure.pii_redacted": true
+        }
+      },
+      {
+        "assertion_id": "no-cat-call-failure",
+        "type": "event_absence",
+        "event_type": "TOOL_CALL_FAILED",
+        "where": { "tool_name": "pii_and_cat_call" }
+      }
+    ],
+    "enforcement": { "mode": "observe", "failure_action": "record_finding" }
+  },
+  "assignment": {
+    "workflow_type": "commercial_property_underwriting:proposal",
+    "business_object_type": "proposal",
+    "environment": "test",
+    "priority": 70
+  }
+}

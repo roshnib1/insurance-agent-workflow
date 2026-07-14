@@ -48,7 +48,7 @@ from google.adk import Context, Event
 from google.adk.agents import LlmAgent
 from google.adk.runners import Runner
 from google.adk.sessions import InMemorySessionService
-from google.adk.workflow import Workflow, node
+from google.adk.workflow import Workflow
 from google.genai import types
 
 from agents import (
@@ -75,6 +75,13 @@ from tools.pii_redaction_tool import redact_pii
 from tools.pricing_tool import calculate_pricing
 from tools.property_risk_scoring_tool import score_property_risk
 from tools.vendor_approval_tool import check_vendor_approval
+from workflow.assurance_plugin import (
+    assurance_node as node,
+    build_assurance_plugin,
+    instrument_function_step,
+    reset_active_assurance_plugin,
+    set_active_assurance_plugin,
+)
 from workflow.governance import governance_policy_check
 from workflow.progress import ProgressTracker
 
@@ -90,11 +97,14 @@ CONFIDENCE_THRESHOLD = 0.75
 
 def _parse(node_input: Any) -> Dict[str, Any]:
     """LlmAgent nodes with output_schema emit either a parsed dict
-    (event.output) or JSON text, depending on ADK version -- normalize
-    either into a dict here."""
+    (event.output), a Pydantic model, or JSON text, depending on ADK
+    version -- normalize either into a dict here."""
     if isinstance(node_input, dict):
         return node_input
-    text = node_input.strip()
+    if hasattr(node_input, "model_dump"):
+        return node_input.model_dump()
+    text = node_input if isinstance(node_input, str) else str(node_input)
+    text = text.strip()
     if text.startswith("```"):
         text = text.strip("`")
         if text.lower().startswith("json"):
@@ -168,7 +178,7 @@ def intake(ctx: Context, node_input: str):
 
 
 @node
-def submission_gate(ctx: Context, node_input: str):
+def submission_gate(ctx: Context, node_input: Any):
     result = _parse(node_input)
     deterministic_missing = ctx.state.get("deterministic_missing", [])
     missing = sorted(set(result.get("missing_fields", [])) | set(deterministic_missing))
@@ -243,7 +253,7 @@ def document_intelligence_step(ctx: Context, node_input):
 
 
 @node
-def document_gate(ctx: Context, node_input: str):
+def document_gate(ctx: Context, node_input: Any):
     result = _parse(node_input)
     deterministic_issues = ctx.state["mismatch_scan"].get("issues", [])
     issues = list(result.get("issues", []))
@@ -287,7 +297,7 @@ def governance_and_mandatory_review(ctx: Context, node_input):
 
 
 @node
-def mismatch_review_gate(ctx: Context, node_input: str):
+def mismatch_review_gate(ctx: Context, node_input: Any):
     review = _parse(node_input)
     ctx.state["agents_executed"] += 1
     ctx.state["human_reviews"] = ctx.state.get("human_reviews", 0) + 1
@@ -403,7 +413,7 @@ def pii_and_cat_call(ctx: Context, node_input):
 
 
 @node
-def cat_exposure_step_done(ctx: Context, node_input: str):
+def cat_exposure_step_done(ctx: Context, node_input: Any):
     result = _parse(node_input)
     ctx.state["agents_executed"] += 1
     ctx.state["cat_exposure"] = result
@@ -433,7 +443,7 @@ def cat_exposure_step_done(ctx: Context, node_input: str):
 # ---------------------------------------------------------------------------
 
 @node
-def pricing_step(ctx: Context, node_input: str):
+def pricing_step(ctx: Context, node_input: Any):
     result = _parse(node_input)
     ctx.state["agents_executed"] += 1
     ctx.state["risk_summary"] = {
@@ -464,7 +474,7 @@ def pricing_step(ctx: Context, node_input: str):
 
 
 @node
-def risk_gate(ctx: Context, node_input: str):
+def risk_gate(ctx: Context, node_input: Any):
     result = _parse(node_input)
     ctx.state["agents_executed"] += 1
     ctx.state["pricing"] = {
@@ -499,7 +509,7 @@ def risk_gate(ctx: Context, node_input: str):
 # ---------------------------------------------------------------------------
 
 @node
-def human_underwriter_gate(ctx: Context, node_input: str):
+def human_underwriter_gate(ctx: Context, node_input: Any):
     result = _parse(node_input)
     ctx.state["agents_executed"] += 1
     ctx.state["human_reviews"] = ctx.state.get("human_reviews", 0) + 1
@@ -621,7 +631,7 @@ def senior_underwriter_prep(ctx: Context, node_input):
 
 
 @node
-def senior_gate(ctx: Context, node_input: str):
+def senior_gate(ctx: Context, node_input: Any):
     result = _parse(node_input)
     ctx.state["agents_executed"] += 1
     ctx.state["human_reviews"] = ctx.state.get("human_reviews", 0) + 1
@@ -690,6 +700,17 @@ def _finalize(ctx: Context, status: str, decision_mode: str, decision_maker: str
     """Deterministic step -- backed by tools/decision_assembly_tool.py.
     Called directly by every terminal FunctionNode above (not itself a
     graph node) exactly like adk_controller.py's _finalize()."""
+    with instrument_function_step(
+        "finalize_decision",
+        tool_args={"status": status, "decision_mode": decision_mode, "decision_maker": decision_maker},
+    ) as step:
+        decision = _finalize_impl(ctx, status, decision_mode, decision_maker, recommendation, decision_evidence)
+        step["result"] = decision
+        return decision
+
+
+def _finalize_impl(ctx: Context, status: str, decision_mode: str, decision_maker: str,
+                   recommendation: Dict[str, Any], decision_evidence) -> Dict[str, Any]:
     applicant = ctx.state["applicant"]
     tracker = _tracker(ctx)
 
@@ -825,18 +846,38 @@ def run_workflow(file_path: str) -> dict:
             app_name="commercial_property_underwriting_adk_v2", user_id=user_id, session_id=session_id
         )
 
+        workflow_instance_id = f"wf_{uuid.uuid4().hex}"
+        plugin = build_assurance_plugin(
+            workflow_type="commercial_property_underwriting",
+            business_object={"type": "proposal", "id": os.path.basename(file_path)},
+            workflow_instance_id=workflow_instance_id,
+            labels={"source": "cli", "controller": "v2"},
+        )
+        plugins = [plugin] if plugin is not None else []
+        plugin_token = set_active_assurance_plugin(plugin)
+
         workflow = _build_graph()
-        runner = Runner(agent=workflow, app_name="commercial_property_underwriting_adk_v2", session_service=session_service)
+        runner = Runner(
+            agent=workflow,
+            app_name="commercial_property_underwriting_adk_v2",
+            session_service=session_service,
+            plugins=plugins,
+        )
 
         message = types.Content(role="user", parts=[types.Part(text=json.dumps({"file_path": file_path}))])
 
-        final_output = None
-        async for event in runner.run_async(user_id=user_id, session_id=session_id, new_message=message):
-            if getattr(event, "output", None) is not None:
-                final_output = event.output
+        try:
+            final_output = None
+            async for event in runner.run_async(user_id=user_id, session_id=session_id, new_message=message):
+                if getattr(event, "output", None) is not None:
+                    final_output = event.output
 
-        if final_output is None:
-            raise RuntimeError("Workflow produced no final decision output.")
-        return final_output
+            if final_output is None:
+                raise RuntimeError("Workflow produced no final decision output.")
+            return final_output
+        finally:
+            reset_active_assurance_plugin(plugin_token)
+            if plugin is not None:
+                await plugin.close()
 
     return asyncio.run(_run())

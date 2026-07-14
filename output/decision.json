@@ -1,59 +1,53 @@
 {
-  "application_id": "CPI/2026/00512",
-  "scenario": "proposal_high_risk",
-  "status": "CONDITIONALLY_APPROVED",
+  "application_id": "CPI/2026/00417",
+  "scenario": "proposal_low_risk",
+  "status": "COMPLETED",
   "current_phase": "PHASE_8_FINAL_DECISION",
-  "decision_mode": "SENIOR_UNDERWRITER",
-  "decision_maker": "Senior Underwriter",
-  "risk_category": "HIGH",
-  "risk_score": 83,
-  "confidence": 0.95,
+  "decision_mode": "AUTONOMOUS",
+  "decision_maker": "AI",
+  "risk_category": "LOW",
+  "risk_score": 6,
+  "confidence": 0.9,
   "cat_exposure": {
     "vendor": "GeoRisk CAT Analytics",
-    "cat_score": 85,
-    "cat_category": "HIGH",
-    "flood_points": 40,
-    "earthquake_points": 20,
-    "cyclone_prone": true,
-    "wildfire_exposed": true,
+    "cat_score": 20,
+    "cat_category": "LOW",
+    "flood_points": 10,
+    "earthquake_points": 10,
+    "cyclone_prone": false,
+    "wildfire_exposed": false,
     "vendor_approved": true,
     "pii_redacted": true
   },
   "pricing": {
-    "recommendation": "HIGH risk with material hazard -- 25% loading applied on top of the standard high-risk rate.",
-    "indicative_premium": 11162500.0,
-    "deductible": "INR 50,00,000 per occurrence (proposed by broker)",
+    "recommendation": "LOW risk -- standard rate, no loading.",
+    "indicative_premium": 647500.0,
+    "deductible": "INR 5,00,000 per occurrence",
     "rationale": [
-      "The risk is classified as HIGH category with material hazards identified.",
-      "A 25% risk loading has been applied to the base rate of 0.95 per 1000 to account for the increased exposure.",
-      "The premium is commensurate with the substantial TIV of 9.4 billion and the elevated risk profile."
+      "The property is categorized as LOW risk.",
+      "The calculation uses the standard rate as no material risks were identified.",
+      "No additional loading was applied, reflecting the favorable risk profile."
     ]
   },
   "recommendation": {
     "action": "APPROVE",
-    "basis": "The risk is approved subject to stringent risk mitigation conditions. While the TIV and hazard profile (flammable solvents, exothermic reactions) are significant, the primary concerns regarding ignition sources (aged wiring) and suppression (lack of sprinklers) can be managed through mandatory pre-inception audits and a structured improvement roadmap. The 25% loading is a starting point, but the increased deductible for CAT perils is required to address the elevated flood vulnerability.",
-    "confidence": 0.95,
-    "conditions": [
-      "Mandatory comprehensive electrical audit and certified rewiring of the process area must be completed and documented prior to policy inception.",
-      "Submission of a formal Fire Safety Improvement Plan, specifically including a binding timeline for the installation of an automatic sprinkler system in process and storage areas.",
-      "Requirement for an upgraded onsite drainage/flood mitigation system to address documented waterlogging issues.",
-      "Implementation of a documented Preventive Maintenance Program (PMP) for all high-temperature equipment and boilers, with quarterly inspection reports submitted to the insurer.",
-      "Increase the deductible for Flood and Natural Catastrophe perils to INR 75,000,000 to better align with the high-risk CAT profile and poor drainage conditions."
-    ],
-    "reason": "The risk is approved subject to stringent risk mitigation conditions. While the TIV and hazard profile (flammable solvents, exothermic reactions) are significant, the primary concerns regarding ignition sources (aged wiring) and suppression (lack of sprinklers) can be managed through mandatory pre-inception audits and a structured improvement roadmap. The 25% loading is a starting point, but the increased deductible for CAT perils is required to address the elevated flood vulnerability."
+    "basis": "LOW risk -- standard rate, no loading.",
+    "confidence": 0.9,
+    "conditions": [],
+    "reason": "The risk is assessed as low with no material hazards or CAT exposure concerns. The pricing recommendation is accepted."
   },
   "decision_evidence": [
-    "Significant industrial hazards including bulk storage of 480 KL of solvents, resins, and acids, alongside exothermic chemical reactions.",
-    "Presence of aging electrical wiring in the process area, increasing the risk of ignition.",
-    "High CAT exposure profile driven by significant flood risk and susceptibility to cyclones.",
-    "Critical safety gap identified regarding the sprinkler system, reducing mitigation capabilities during a fire event.",
-    "High-temperature equipment and heavy machinery (reactors, boilers) increase the baseline operational hazard level."
+    "CAT exposure: The property is located in an area with a low probability of flood and earthquake events.",
+    "No declared hazards were identified.",
+    "There are no safety gaps noted.",
+    "No prior claims history was observed."
   ],
   "audit_trail": [
     "Submission received and parsed.",
     "Submission validated as complete.",
     "No disclosure mismatch found.",
-    "PII redacted before CAT vendor call."
+    "PII redacted before CAT vendor call.",
+    "Risk assessed: score=6, category=LOW, confidence=0.9."
   ],
   "approval_lineage": [
     {
@@ -66,11 +60,11 @@
     },
     {
       "actor": "CATExposureAgent",
-      "action": "HIGH"
+      "action": "LOW"
     },
     {
       "actor": "RiskSummaryAgent",
-      "action": "HIGH"
+      "action": "LOW"
     },
     {
       "actor": "PricingAgent",
@@ -78,445 +72,204 @@
     },
     {
       "actor": "HumanUnderwriterAgent",
-      "action": "Escalate"
-    },
-    {
-      "actor": "SeniorUnderwriterAgent",
-      "action": "APPROVE"
+      "action": "Approve"
     }
   ],
   "governance_history": [],
   "workflow_metrics": {
-    "agents_executed": 8,
+    "agents_executed": 7,
     "decision_gates": 10,
-    "human_reviews": 2,
+    "human_reviews": 1,
     "governance_checks": 0
   },
-  "ai_summary": "Suryodaya Petrochem Industries Pvt. Ltd., a chemical manufacturer with a TIV of INR 9.4 billion, has been conditionally approved for a new industrial property policy following a Senior Underwriter review. The risk is classified as high due to significant operational hazards, including the bulk storage of 480 KL of flammable solvents and exothermic chemical processes, coupled with critical safety gaps such as the absence of automated sprinkler systems and aged electrical wiring. Additionally, the facility faces substantial CAT exposure, specifically high flood risk due to its proximity to the Khari River and poor drainage. To mitigate these exposures, approval is contingent upon a mandatory electrical audit and rewiring, a formal fire safety improvement plan for sprinkler installation, and an increased deductible of INR 75,000,000 for flood and natural catastrophe perils. A 25% risk loading has been applied to the base rate to account for the elevated hazard profile.",
+  "ai_summary": "This new business submission for Nandini Techpark Solutions Pvt. Ltd. (Proposal # CPI/2026/00417) has been approved autonomously. The property, a Grade-A IT office campus, presents a LOW overall risk profile with minimal CAT exposure to floods and earthquakes in Zone C and Zone II respectively. Key positive factors include a comprehensive fire protection system, a fully compliant sprinkler system, advanced CCTV surveillance, and robust security measures. The applicant has no prior claims history and has demonstrated proactive risk mitigation through regular safety audits and drills. Consequently, the pricing reflects a standard rate with no additional loadings.",
   "communication": {
-    "emails_generated": 1,
-    "drafts": [
-      {
-        "email_id": "email_002",
-        "status": "DRAFT_NOT_SENT",
-        "reason": "The risk is approved subject to stringent risk mitigation conditions. While the TIV and hazard profile (flammable solvents, exothermic reactions) are significant, the primary concerns regarding ignition sources (aged wiring) and suppression (lack of sprinklers) can be managed through mandatory pre-inception audits and a structured improvement roadmap. The 25% loading is a starting point, but the increased deductible for CAT perils is required to address the elevated flood vulnerability.",
-        "recipient_role": "Broker",
-        "subject": "Proposal CPI/2026/00512 \u2014 Conditional Approval",
-        "file": "C:\\Users\\roshni\\Downloads\\insurance_agent_adk\\underwriting_adk\\output\\emails\\email_002.json"
-      }
-    ]
+    "emails_generated": 0,
+    "drafts": []
   },
   "workflow": {
-    "workflow_id": "1aab64c8-f25b-4c97-96a8-958daac23d5c",
-    "started_at": "2026-07-12T03:20:02.016973+00:00",
-    "completed_at": "2026-07-12T03:21:04.330836+00:00",
-    "duration_seconds": 62.314,
+    "workflow_id": "8db5a738-137a-4f45-864c-dde46ca6d381",
+    "started_at": "2026-07-13T15:00:41.334807+00:00",
+    "completed_at": "2026-07-13T15:00:54.990038+00:00",
+    "duration_seconds": 13.655,
     "workflow_version": "1.0"
   },
   "applicant": {
-    "business_name": "Suryodaya Petrochem Industries Pvt. Ltd.",
-    "broker_name": "Vikram Risk & Insurance Advisors LLP",
-    "primary_property_address": "Plot No. 412-414, GIDC Industrial Estate, Vatva, Ahmedabad - 382445",
-    "total_insured_value": 9400000000.0,
-    "occupancy_type": "Chemical Manufacturing / High Hazard"
+    "business_name": "Nandini Techpark Solutions Pvt. Ltd.",
+    "broker_name": "Sagar Prakash Insurance Brokers Pvt. Ltd.",
+    "primary_property_address": "Tower B, Nandini Techpark, Outer Ring Road, Marathahalli, Bengaluru - 560103",
+    "total_insured_value": 1850000000.0,
+    "occupancy_type": "IT Office / Low Hazard"
   },
   "documents": [],
   "execution_timeline": [
     {
-      "timestamp": 1783826402.0169735,
+      "timestamp": 1783954841.302836,
       "phase": "PHASE_1_SUBMISSION_INTAKE",
       "step": "parse_submission",
       "event": "started"
     },
     {
-      "timestamp": 1783826402.0381675,
+      "timestamp": 1783954841.3347805,
       "phase": "PHASE_1_SUBMISSION_INTAKE",
       "step": "parse_submission",
       "event": "completed"
     },
     {
-      "timestamp": 1783826402.0381675,
-      "phase": "PHASE_1_SUBMISSION_INTAKE",
-      "step": "SubmissionIntakeAgent",
-      "event": "started"
-    },
-    {
-      "timestamp": 1783826402.0459895,
-      "phase": "PHASE_1_SUBMISSION_INTAKE",
-      "step": "SubmissionIntakeAgent",
-      "event": "started"
-    },
-    {
-      "timestamp": 1783826410.585356,
-      "phase": "PHASE_1_SUBMISSION_INTAKE",
-      "step": "SubmissionIntakeAgent",
-      "event": "completed"
-    },
-    {
-      "timestamp": 1783826410.586478,
-      "phase": "PHASE_1_SUBMISSION_INTAKE",
-      "step": "SubmissionIntakeAgent",
-      "event": "completed"
-    },
-    {
-      "timestamp": 1783826410.5873635,
+      "timestamp": 1783954845.723441,
       "phase": "PHASE_1_SUBMISSION_INTAKE",
       "step": "Decision1_SubmissionComplete",
       "event": "gate_decision",
       "route": "True"
     },
     {
-      "timestamp": 1783826410.5873635,
-      "phase": "PHASE_2_DOCUMENT_INTELLIGENCE",
-      "step": "document_linker",
-      "event": "started"
-    },
-    {
-      "timestamp": 1783826410.6213806,
-      "phase": "PHASE_2_DOCUMENT_INTELLIGENCE",
-      "step": "document_linker",
-      "event": "completed"
-    },
-    {
-      "timestamp": 1783826410.6213806,
+      "timestamp": 1783954845.7544034,
       "phase": "PHASE_2_DOCUMENT_INTELLIGENCE",
       "step": "hazard_detection_tool",
       "event": "started",
       "fields_checked": 8
     },
     {
-      "timestamp": 1783826410.6222806,
+      "timestamp": 1783954845.7544224,
       "phase": "PHASE_2_DOCUMENT_INTELLIGENCE",
       "step": "hazard_detection_tool",
       "event": "completed",
-      "hazard_count": 7
+      "hazard_count": 0
     },
     {
-      "timestamp": 1783826410.6222806,
+      "timestamp": 1783954845.7544348,
       "phase": "PHASE_2_DOCUMENT_INTELLIGENCE",
       "step": "mismatch_detection_tool",
       "event": "started",
       "linked_document_count": 0
     },
     {
-      "timestamp": 1783826410.6232884,
+      "timestamp": 1783954845.7544434,
       "phase": "PHASE_2_DOCUMENT_INTELLIGENCE",
       "step": "mismatch_detection_tool",
       "event": "completed",
       "issue_count": 0
     },
     {
-      "timestamp": 1783826410.6232884,
-      "phase": "PHASE_2_DOCUMENT_INTELLIGENCE",
-      "step": "DocumentIntelligenceAgent",
-      "event": "started"
-    },
-    {
-      "timestamp": 1783826410.6232884,
-      "phase": "PHASE_2_DOCUMENT_INTELLIGENCE",
-      "step": "DocumentIntelligenceAgent",
-      "event": "started"
-    },
-    {
-      "timestamp": 1783826416.7863588,
-      "phase": "PHASE_2_DOCUMENT_INTELLIGENCE",
-      "step": "DocumentIntelligenceAgent",
-      "event": "completed"
-    },
-    {
-      "timestamp": 1783826416.7923615,
-      "phase": "PHASE_2_DOCUMENT_INTELLIGENCE",
-      "step": "DocumentIntelligenceAgent",
-      "event": "completed"
-    },
-    {
-      "timestamp": 1783826416.7923615,
+      "timestamp": 1783954847.0912917,
       "phase": "PHASE_2_DOCUMENT_INTELLIGENCE",
       "step": "Decision2_DisclosureMismatch",
       "event": "gate_decision",
       "route": "False"
     },
     {
-      "timestamp": 1783826416.794442,
+      "timestamp": 1783954847.093887,
       "phase": "PHASE_3_CAT_EXPOSURE",
       "step": "vendor_approval_tool",
       "event": "started",
       "vendor": "GeoRisk CAT Analytics"
     },
     {
-      "timestamp": 1783826416.794442,
+      "timestamp": 1783954847.0939534,
       "phase": "PHASE_3_CAT_EXPOSURE",
       "step": "vendor_approval_tool",
       "event": "completed",
       "approved": true
     },
     {
-      "timestamp": 1783826416.794442,
+      "timestamp": 1783954847.0939662,
       "phase": "PHASE_3_CAT_EXPOSURE",
       "step": "Decision3_VendorApproved",
       "event": "gate_decision",
       "route": "True"
     },
     {
-      "timestamp": 1783826416.794442,
+      "timestamp": 1783954847.0970247,
       "phase": "PHASE_3_CAT_EXPOSURE",
       "step": "pii_redaction_tool",
       "event": "started",
       "field_count": 79
     },
     {
-      "timestamp": 1783826416.794442,
+      "timestamp": 1783954847.0970955,
       "phase": "PHASE_3_CAT_EXPOSURE",
       "step": "pii_redaction_tool",
       "event": "completed",
       "redacted_count": 6
     },
     {
-      "timestamp": 1783826416.794442,
+      "timestamp": 1783954847.0971117,
       "phase": "PHASE_3_CAT_EXPOSURE",
       "step": "Decision4_PayloadContainsPII",
       "event": "gate_decision",
       "route": "True"
     },
     {
-      "timestamp": 1783826416.7964482,
+      "timestamp": 1783954847.097159,
       "phase": "PHASE_3_CAT_EXPOSURE",
       "step": "cat_vendor_tool",
       "event": "started",
       "vendor": "GeoRisk CAT Analytics"
     },
     {
-      "timestamp": 1783826416.7964482,
+      "timestamp": 1783954847.0986242,
       "phase": "PHASE_3_CAT_EXPOSURE",
       "step": "cat_vendor_tool",
       "event": "completed",
-      "cat_score": 85,
-      "cat_category": "HIGH"
+      "cat_score": 20,
+      "cat_category": "LOW"
     },
     {
-      "timestamp": 1783826416.8009672,
-      "phase": "PHASE_3_CAT_EXPOSURE",
-      "step": "CATExposureAgent",
-      "event": "started"
-    },
-    {
-      "timestamp": 1783826416.8009672,
-      "phase": "PHASE_3_CAT_EXPOSURE",
-      "step": "CATExposureAgent",
-      "event": "started"
-    },
-    {
-      "timestamp": 1783826421.782325,
-      "phase": "PHASE_3_CAT_EXPOSURE",
-      "step": "CATExposureAgent",
-      "event": "completed"
-    },
-    {
-      "timestamp": 1783826421.782325,
-      "phase": "PHASE_3_CAT_EXPOSURE",
-      "step": "CATExposureAgent",
-      "event": "completed"
-    },
-    {
-      "timestamp": 1783826421.782325,
+      "timestamp": 1783954848.5981998,
       "phase": "PHASE_4_RISK_ASSESSMENT",
       "step": "property_risk_scoring_tool",
       "event": "started",
-      "hazard_count": 7,
+      "hazard_count": 0,
       "mismatch_count": 0
     },
     {
-      "timestamp": 1783826421.782325,
+      "timestamp": 1783954848.5982533,
       "phase": "PHASE_4_RISK_ASSESSMENT",
       "step": "property_risk_scoring_tool",
       "event": "completed",
-      "risk_score": 83,
-      "risk_category": "HIGH"
+      "risk_score": 6,
+      "risk_category": "LOW"
     },
     {
-      "timestamp": 1783826421.7843437,
-      "phase": "PHASE_4_RISK_ASSESSMENT",
-      "step": "RiskSummaryAgent",
-      "event": "started"
-    },
-    {
-      "timestamp": 1783826421.7843437,
-      "phase": "PHASE_4_RISK_ASSESSMENT",
-      "step": "RiskSummaryAgent",
-      "event": "started"
-    },
-    {
-      "timestamp": 1783826429.1363916,
-      "phase": "PHASE_4_RISK_ASSESSMENT",
-      "step": "RiskSummaryAgent",
-      "event": "completed"
-    },
-    {
-      "timestamp": 1783826429.1363916,
-      "phase": "PHASE_4_RISK_ASSESSMENT",
-      "step": "RiskSummaryAgent",
-      "event": "completed"
-    },
-    {
-      "timestamp": 1783826429.1363916,
+      "timestamp": 1783954849.8035283,
       "phase": "PHASE_4_RISK_ASSESSMENT",
       "step": "pricing_tool",
       "event": "started",
-      "risk_category": "HIGH",
-      "material_risk": true
+      "risk_category": "LOW",
+      "material_risk": false
     },
     {
-      "timestamp": 1783826429.1363916,
+      "timestamp": 1783954849.8035727,
       "phase": "PHASE_4_RISK_ASSESSMENT",
       "step": "pricing_tool",
       "event": "completed",
-      "indicative_premium": 11162500.0
+      "indicative_premium": 647500.0
     },
     {
-      "timestamp": 1783826429.1363916,
-      "phase": "PHASE_4_RISK_ASSESSMENT",
-      "step": "PricingAgent",
-      "event": "started"
-    },
-    {
-      "timestamp": 1783826429.1363916,
-      "phase": "PHASE_4_RISK_ASSESSMENT",
-      "step": "PricingAgent",
-      "event": "started"
-    },
-    {
-      "timestamp": 1783826436.902729,
-      "phase": "PHASE_4_RISK_ASSESSMENT",
-      "step": "PricingAgent",
-      "event": "completed"
-    },
-    {
-      "timestamp": 1783826436.902729,
-      "phase": "PHASE_4_RISK_ASSESSMENT",
-      "step": "PricingAgent",
-      "event": "completed"
-    },
-    {
-      "timestamp": 1783826436.902729,
+      "timestamp": 1783954850.815198,
       "phase": "PHASE_4_RISK_ASSESSMENT",
       "step": "Decision5_MaterialHazard",
-      "event": "gate_decision",
-      "route": "True"
-    },
-    {
-      "timestamp": 1783826436.902729,
-      "phase": "PHASE_4_RISK_ASSESSMENT",
-      "step": "Decision6_LowConfidence",
       "event": "gate_decision",
       "route": "False"
     },
     {
-      "timestamp": 1783826436.902729,
-      "phase": "PHASE_5_HUMAN_UNDERWRITER",
-      "step": "HumanUnderwriterAgent",
-      "event": "started"
-    },
-    {
-      "timestamp": 1783826436.902729,
-      "phase": "PHASE_5_HUMAN_UNDERWRITER",
-      "step": "HumanUnderwriterAgent",
-      "event": "started"
-    },
-    {
-      "timestamp": 1783826452.6525602,
-      "phase": "PHASE_5_HUMAN_UNDERWRITER",
-      "step": "HumanUnderwriterAgent",
-      "event": "completed"
-    },
-    {
-      "timestamp": 1783826452.6525602,
-      "phase": "PHASE_5_HUMAN_UNDERWRITER",
-      "step": "HumanUnderwriterAgent",
-      "event": "completed"
-    },
-    {
-      "timestamp": 1783826452.6525602,
+      "timestamp": 1783954853.0937936,
       "phase": "PHASE_5_HUMAN_UNDERWRITER",
       "step": "Decision7_UnderwriterAction",
       "event": "gate_decision",
-      "route": "Escalate"
+      "route": "Approve"
     },
     {
-      "timestamp": 1783826452.6525602,
-      "phase": "PHASE_7_SENIOR_UNDERWRITER",
-      "step": "SeniorUnderwriterAgent",
-      "event": "started"
-    },
-    {
-      "timestamp": 1783826452.6525602,
-      "phase": "PHASE_7_SENIOR_UNDERWRITER",
-      "step": "SeniorUnderwriterAgent",
-      "event": "started"
-    },
-    {
-      "timestamp": 1783826457.6854131,
-      "phase": "PHASE_7_SENIOR_UNDERWRITER",
-      "step": "SeniorUnderwriterAgent",
-      "event": "completed"
-    },
-    {
-      "timestamp": 1783826457.6890264,
-      "phase": "PHASE_7_SENIOR_UNDERWRITER",
-      "step": "SeniorUnderwriterAgent",
-      "event": "completed"
-    },
-    {
-      "timestamp": 1783826457.6890264,
-      "phase": "PHASE_7_SENIOR_UNDERWRITER",
-      "step": "Decision10_SeniorApprove",
-      "event": "gate_decision",
-      "route": "True"
-    },
-    {
-      "timestamp": 1783826457.6890264,
-      "phase": "PHASE_7_SENIOR_UNDERWRITER",
-      "step": "communication_tool",
-      "event": "started",
-      "trigger": "conditional_approval",
-      "proposal_number": "CPI/2026/00512"
-    },
-    {
-      "timestamp": 1783826457.6910336,
-      "phase": "PHASE_7_SENIOR_UNDERWRITER",
-      "step": "communication_tool",
-      "event": "completed",
-      "email_id": "email_002",
-      "recipient_role": "Broker"
-    },
-    {
-      "timestamp": 1783826457.6930401,
+      "timestamp": 1783954853.0950952,
       "phase": "PHASE_8_FINAL_DECISION",
       "step": "EvidenceGenerationAgent",
       "event": "started"
     },
     {
-      "timestamp": 1783826457.6930401,
-      "phase": "PHASE_8_FINAL_DECISION",
-      "step": "EvidenceGenerationAgent",
-      "event": "started"
-    },
-    {
-      "timestamp": 1783826464.3308363,
+      "timestamp": 1783954854.9898844,
       "phase": "PHASE_8_FINAL_DECISION",
       "step": "EvidenceGenerationAgent",
       "event": "completed"
-    },
-    {
-      "timestamp": 1783826464.3308363,
-      "phase": "PHASE_8_FINAL_DECISION",
-      "step": "EvidenceGenerationAgent",
-      "event": "completed"
-    },
-    {
-      "timestamp": 1783826464.3308363,
-      "phase": "PHASE_8_FINAL_DECISION",
-      "step": "decision_assembly_tool",
-      "event": "started"
     }
   ]
 }

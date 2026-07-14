@@ -7,7 +7,7 @@
   "decision_maker": "AI",
   "risk_category": "LOW",
   "risk_score": 6,
-  "confidence": 1.0,
+  "confidence": 0.9,
   "cat_exposure": {
     "vendor": "GeoRisk CAT Analytics",
     "cat_score": 20,
@@ -20,34 +20,34 @@
     "pii_redacted": true
   },
   "pricing": {
-    "deductible": "INR 5,00,000 per occurrence",
+    "recommendation": "LOW risk -- standard rate, no loading.",
     "indicative_premium": 647500.0,
+    "deductible": "INR 5,00,000 per occurrence",
     "rationale": [
-      "The risk is classified as LOW with no identified material risks.",
-      "The premium is derived from the base rate of 0.35 per 1,000 TIV without any additional risk loading applied.",
-      "The pricing is consistent with the standard rate for this risk category."
-    ],
-    "recommendation": "LOW risk -- standard rate, no loading."
+      "The property is categorized as LOW risk.",
+      "The calculation uses the standard rate as no material risks were identified.",
+      "No additional loading was applied, reflecting the favorable risk profile."
+    ]
   },
   "recommendation": {
     "action": "APPROVE",
     "basis": "LOW risk -- standard rate, no loading.",
-    "confidence": 1.0,
+    "confidence": 0.9,
     "conditions": [],
-    "reason": "The risk is a high-quality, Grade-A commercial IT office building with very low hazard profile and minimal CAT exposure (Score: 20, Low Risk). All safety systems (NFPA-13 compliant sprinklers, smoke detection, and wet risers) are in place, and the lack of hazardous materials or processes further reduces the risk. The pricing is consistent with the low-risk classification, and there are no disclosure mismatches or material concerns identified in the assessment."
+    "reason": "The risk is assessed as low with no material hazards or CAT exposure concerns. The pricing recommendation is accepted."
   },
   "decision_evidence": [
-    "Minimal risk score of 6, placing the account in the Low risk category.",
-    "CAT exposure is the only contributing factor, with a low score of 6.",
-    "GeoRisk CAT Analytics indicates low exposure to flood and earthquake perils.",
-    "No active hazards, safety gaps, or mismatch issues were detected in the scan.",
-    "No material risks or claims history concerns were identified."
+    "CAT exposure: The property is located in an area with a low probability of flood and earthquake events.",
+    "No declared hazards were identified.",
+    "There are no safety gaps noted.",
+    "No prior claims history was observed."
   ],
   "audit_trail": [
     "Submission received and parsed.",
     "Submission validated as complete.",
     "No disclosure mismatch found.",
-    "PII redacted before CAT vendor call."
+    "PII redacted before CAT vendor call.",
+    "Risk assessed: score=6, category=LOW, confidence=0.9."
   ],
   "approval_lineage": [
     {
@@ -82,16 +82,16 @@
     "human_reviews": 1,
     "governance_checks": 0
   },
-  "ai_summary": "Nandini Techpark Solutions Pvt. Ltd., an IT services provider, has been approved for a new business policy with a Total Insured Value (TIV) of INR 185 Crore. The decision to approve at a standard rate with no additional loading was driven by the risk's classification as Low, supported by a Grade-A RCC commercial building construction and an excellent safety profile, including NFPA-13 compliant sprinklers and quarterly fire drills. CAT exposure is minimal, with a GeoRisk score of 20 and low vulnerability to flood and earthquake perils in the Bengaluru region. Given the lack of hazardous occupancy, zero historical claims, and robust fire protection systems, the risk presents a high-quality profile for the Enterprise Commercial Property Shield product.",
+  "ai_summary": "This new business submission for Nandini Techpark Solutions Pvt. Ltd. (Proposal # CPI/2026/00417) has been approved autonomously. The property, a Grade-A IT office campus, presents a LOW overall risk profile with minimal CAT exposure to floods and earthquakes in Zone C and Zone II respectively. Key positive factors include a comprehensive fire protection system, a fully compliant sprinkler system, advanced CCTV surveillance, and robust security measures. The applicant has no prior claims history and has demonstrated proactive risk mitigation through regular safety audits and drills. Consequently, the pricing reflects a standard rate with no additional loadings.",
   "communication": {
     "emails_generated": 0,
     "drafts": []
   },
   "workflow": {
-    "workflow_id": "0fed457b-4fdf-4df5-b44b-a98503b6bf6a",
-    "started_at": "2026-07-12T03:04:21.074399+00:00",
-    "completed_at": "2026-07-12T03:04:54.430001+00:00",
-    "duration_seconds": 33.356,
+    "workflow_id": "8db5a738-137a-4f45-864c-dde46ca6d381",
+    "started_at": "2026-07-13T15:00:41.334807+00:00",
+    "completed_at": "2026-07-13T15:00:54.990038+00:00",
+    "duration_seconds": 13.655,
     "workflow_version": "1.0"
   },
   "applicant": {
@@ -104,170 +104,110 @@
   "documents": [],
   "execution_timeline": [
     {
-      "timestamp": 1783825461.0743992,
+      "timestamp": 1783954841.302836,
       "phase": "PHASE_1_SUBMISSION_INTAKE",
       "step": "parse_submission",
       "event": "started"
     },
     {
-      "timestamp": 1783825461.1110797,
+      "timestamp": 1783954841.3347805,
       "phase": "PHASE_1_SUBMISSION_INTAKE",
       "step": "parse_submission",
       "event": "completed"
     },
     {
-      "timestamp": 1783825461.1110797,
-      "phase": "PHASE_1_SUBMISSION_INTAKE",
-      "step": "SubmissionIntakeAgent",
-      "event": "started"
-    },
-    {
-      "timestamp": 1783825461.115084,
-      "phase": "PHASE_1_SUBMISSION_INTAKE",
-      "step": "SubmissionIntakeAgent",
-      "event": "started"
-    },
-    {
-      "timestamp": 1783825468.6897194,
-      "phase": "PHASE_1_SUBMISSION_INTAKE",
-      "step": "SubmissionIntakeAgent",
-      "event": "completed"
-    },
-    {
-      "timestamp": 1783825468.6897194,
-      "phase": "PHASE_1_SUBMISSION_INTAKE",
-      "step": "SubmissionIntakeAgent",
-      "event": "completed"
-    },
-    {
-      "timestamp": 1783825468.6897194,
+      "timestamp": 1783954845.723441,
       "phase": "PHASE_1_SUBMISSION_INTAKE",
       "step": "Decision1_SubmissionComplete",
       "event": "gate_decision",
       "route": "True"
     },
     {
-      "timestamp": 1783825468.6897194,
-      "phase": "PHASE_2_DOCUMENT_INTELLIGENCE",
-      "step": "document_linker",
-      "event": "started"
-    },
-    {
-      "timestamp": 1783825468.7250357,
-      "phase": "PHASE_2_DOCUMENT_INTELLIGENCE",
-      "step": "document_linker",
-      "event": "completed"
-    },
-    {
-      "timestamp": 1783825468.7259364,
+      "timestamp": 1783954845.7544034,
       "phase": "PHASE_2_DOCUMENT_INTELLIGENCE",
       "step": "hazard_detection_tool",
       "event": "started",
       "fields_checked": 8
     },
     {
-      "timestamp": 1783825468.7259364,
+      "timestamp": 1783954845.7544224,
       "phase": "PHASE_2_DOCUMENT_INTELLIGENCE",
       "step": "hazard_detection_tool",
       "event": "completed",
       "hazard_count": 0
     },
     {
-      "timestamp": 1783825468.7259364,
+      "timestamp": 1783954845.7544348,
       "phase": "PHASE_2_DOCUMENT_INTELLIGENCE",
       "step": "mismatch_detection_tool",
       "event": "started",
       "linked_document_count": 0
     },
     {
-      "timestamp": 1783825468.7259364,
+      "timestamp": 1783954845.7544434,
       "phase": "PHASE_2_DOCUMENT_INTELLIGENCE",
       "step": "mismatch_detection_tool",
       "event": "completed",
       "issue_count": 0
     },
     {
-      "timestamp": 1783825468.7259364,
-      "phase": "PHASE_2_DOCUMENT_INTELLIGENCE",
-      "step": "DocumentIntelligenceAgent",
-      "event": "started"
-    },
-    {
-      "timestamp": 1783825468.7259364,
-      "phase": "PHASE_2_DOCUMENT_INTELLIGENCE",
-      "step": "DocumentIntelligenceAgent",
-      "event": "started"
-    },
-    {
-      "timestamp": 1783825477.0476937,
-      "phase": "PHASE_2_DOCUMENT_INTELLIGENCE",
-      "step": "DocumentIntelligenceAgent",
-      "event": "completed"
-    },
-    {
-      "timestamp": 1783825477.0476937,
-      "phase": "PHASE_2_DOCUMENT_INTELLIGENCE",
-      "step": "DocumentIntelligenceAgent",
-      "event": "completed"
-    },
-    {
-      "timestamp": 1783825477.0476937,
+      "timestamp": 1783954847.0912917,
       "phase": "PHASE_2_DOCUMENT_INTELLIGENCE",
       "step": "Decision2_DisclosureMismatch",
       "event": "gate_decision",
       "route": "False"
     },
     {
-      "timestamp": 1783825477.0476937,
+      "timestamp": 1783954847.093887,
       "phase": "PHASE_3_CAT_EXPOSURE",
       "step": "vendor_approval_tool",
       "event": "started",
       "vendor": "GeoRisk CAT Analytics"
     },
     {
-      "timestamp": 1783825477.0476937,
+      "timestamp": 1783954847.0939534,
       "phase": "PHASE_3_CAT_EXPOSURE",
       "step": "vendor_approval_tool",
       "event": "completed",
       "approved": true
     },
     {
-      "timestamp": 1783825477.0476937,
+      "timestamp": 1783954847.0939662,
       "phase": "PHASE_3_CAT_EXPOSURE",
       "step": "Decision3_VendorApproved",
       "event": "gate_decision",
       "route": "True"
     },
     {
-      "timestamp": 1783825477.0476937,
+      "timestamp": 1783954847.0970247,
       "phase": "PHASE_3_CAT_EXPOSURE",
       "step": "pii_redaction_tool",
       "event": "started",
       "field_count": 79
     },
     {
-      "timestamp": 1783825477.0476937,
+      "timestamp": 1783954847.0970955,
       "phase": "PHASE_3_CAT_EXPOSURE",
       "step": "pii_redaction_tool",
       "event": "completed",
       "redacted_count": 6
     },
     {
-      "timestamp": 1783825477.0476937,
+      "timestamp": 1783954847.0971117,
       "phase": "PHASE_3_CAT_EXPOSURE",
       "step": "Decision4_PayloadContainsPII",
       "event": "gate_decision",
       "route": "True"
     },
     {
-      "timestamp": 1783825477.0476937,
+      "timestamp": 1783954847.097159,
       "phase": "PHASE_3_CAT_EXPOSURE",
       "step": "cat_vendor_tool",
       "event": "started",
       "vendor": "GeoRisk CAT Analytics"
     },
     {
-      "timestamp": 1783825477.0476937,
+      "timestamp": 1783954847.0986242,
       "phase": "PHASE_3_CAT_EXPOSURE",
       "step": "cat_vendor_tool",
       "event": "completed",
@@ -275,31 +215,7 @@
       "cat_category": "LOW"
     },
     {
-      "timestamp": 1783825477.0476937,
-      "phase": "PHASE_3_CAT_EXPOSURE",
-      "step": "CATExposureAgent",
-      "event": "started"
-    },
-    {
-      "timestamp": 1783825477.0476937,
-      "phase": "PHASE_3_CAT_EXPOSURE",
-      "step": "CATExposureAgent",
-      "event": "started"
-    },
-    {
-      "timestamp": 1783825478.815777,
-      "phase": "PHASE_3_CAT_EXPOSURE",
-      "step": "CATExposureAgent",
-      "event": "completed"
-    },
-    {
-      "timestamp": 1783825478.815777,
-      "phase": "PHASE_3_CAT_EXPOSURE",
-      "step": "CATExposureAgent",
-      "event": "completed"
-    },
-    {
-      "timestamp": 1783825478.815777,
+      "timestamp": 1783954848.5981998,
       "phase": "PHASE_4_RISK_ASSESSMENT",
       "step": "property_risk_scoring_tool",
       "event": "started",
@@ -307,7 +223,7 @@
       "mismatch_count": 0
     },
     {
-      "timestamp": 1783825478.815777,
+      "timestamp": 1783954848.5982533,
       "phase": "PHASE_4_RISK_ASSESSMENT",
       "step": "property_risk_scoring_tool",
       "event": "completed",
@@ -315,31 +231,7 @@
       "risk_category": "LOW"
     },
     {
-      "timestamp": 1783825478.815777,
-      "phase": "PHASE_4_RISK_ASSESSMENT",
-      "step": "RiskSummaryAgent",
-      "event": "started"
-    },
-    {
-      "timestamp": 1783825478.815777,
-      "phase": "PHASE_4_RISK_ASSESSMENT",
-      "step": "RiskSummaryAgent",
-      "event": "started"
-    },
-    {
-      "timestamp": 1783825483.7762828,
-      "phase": "PHASE_4_RISK_ASSESSMENT",
-      "step": "RiskSummaryAgent",
-      "event": "completed"
-    },
-    {
-      "timestamp": 1783825483.7762828,
-      "phase": "PHASE_4_RISK_ASSESSMENT",
-      "step": "RiskSummaryAgent",
-      "event": "completed"
-    },
-    {
-      "timestamp": 1783825483.7762828,
+      "timestamp": 1783954849.8035283,
       "phase": "PHASE_4_RISK_ASSESSMENT",
       "step": "pricing_tool",
       "event": "started",
@@ -347,103 +239,37 @@
       "material_risk": false
     },
     {
-      "timestamp": 1783825483.7762828,
+      "timestamp": 1783954849.8035727,
       "phase": "PHASE_4_RISK_ASSESSMENT",
       "step": "pricing_tool",
       "event": "completed",
       "indicative_premium": 647500.0
     },
     {
-      "timestamp": 1783825483.7762828,
-      "phase": "PHASE_4_RISK_ASSESSMENT",
-      "step": "PricingAgent",
-      "event": "started"
-    },
-    {
-      "timestamp": 1783825483.7762828,
-      "phase": "PHASE_4_RISK_ASSESSMENT",
-      "step": "PricingAgent",
-      "event": "started"
-    },
-    {
-      "timestamp": 1783825487.2339225,
-      "phase": "PHASE_4_RISK_ASSESSMENT",
-      "step": "PricingAgent",
-      "event": "completed"
-    },
-    {
-      "timestamp": 1783825487.2339225,
-      "phase": "PHASE_4_RISK_ASSESSMENT",
-      "step": "PricingAgent",
-      "event": "completed"
-    },
-    {
-      "timestamp": 1783825487.2339225,
+      "timestamp": 1783954850.815198,
       "phase": "PHASE_4_RISK_ASSESSMENT",
       "step": "Decision5_MaterialHazard",
       "event": "gate_decision",
       "route": "False"
     },
     {
-      "timestamp": 1783825487.2339225,
-      "phase": "PHASE_5_HUMAN_UNDERWRITER",
-      "step": "HumanUnderwriterAgent",
-      "event": "started"
-    },
-    {
-      "timestamp": 1783825487.2339225,
-      "phase": "PHASE_5_HUMAN_UNDERWRITER",
-      "step": "HumanUnderwriterAgent",
-      "event": "started"
-    },
-    {
-      "timestamp": 1783825491.232435,
-      "phase": "PHASE_5_HUMAN_UNDERWRITER",
-      "step": "HumanUnderwriterAgent",
-      "event": "completed"
-    },
-    {
-      "timestamp": 1783825491.232435,
-      "phase": "PHASE_5_HUMAN_UNDERWRITER",
-      "step": "HumanUnderwriterAgent",
-      "event": "completed"
-    },
-    {
-      "timestamp": 1783825491.232435,
+      "timestamp": 1783954853.0937936,
       "phase": "PHASE_5_HUMAN_UNDERWRITER",
       "step": "Decision7_UnderwriterAction",
       "event": "gate_decision",
       "route": "Approve"
     },
     {
-      "timestamp": 1783825491.232435,
+      "timestamp": 1783954853.0950952,
       "phase": "PHASE_8_FINAL_DECISION",
       "step": "EvidenceGenerationAgent",
       "event": "started"
     },
     {
-      "timestamp": 1783825491.232435,
-      "phase": "PHASE_8_FINAL_DECISION",
-      "step": "EvidenceGenerationAgent",
-      "event": "started"
-    },
-    {
-      "timestamp": 1783825494.430002,
+      "timestamp": 1783954854.9898844,
       "phase": "PHASE_8_FINAL_DECISION",
       "step": "EvidenceGenerationAgent",
       "event": "completed"
-    },
-    {
-      "timestamp": 1783825494.430002,
-      "phase": "PHASE_8_FINAL_DECISION",
-      "step": "EvidenceGenerationAgent",
-      "event": "completed"
-    },
-    {
-      "timestamp": 1783825494.430002,
-      "phase": "PHASE_8_FINAL_DECISION",
-      "step": "decision_assembly_tool",
-      "event": "started"
     }
   ]
 }
