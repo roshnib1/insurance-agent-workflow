@@ -1,0 +1,13 @@
+{
+  "email_id": "email_016",
+  "created_at": "2026-07-14T12:58:23.155342+00:00",
+  "status": "DRAFT_NOT_SENT",
+  "recipient_role": "Broker",
+  "recipient_name": "Vikram Risk & Insurance Advisors LLP",
+  "recipient_email": "vikram.risk.insurance.advisors.llp@vikramriskinsurancea.example",
+  "subject": "Additional Information Required \u2014 Proposal CPI/2026/00512",
+  "body": "Proposal Number: CPI/2026/00512\nInsured: Suryodaya Petrochem Industries Pvt. Ltd.\nBroker: Vikram Risk & Insurance Advisors LLP\n\nDear Vikram Risk & Insurance Advisors LLP,\n\nThe submission for Suryodaya Petrochem Industries Pvt. Ltd. (Proposal CPI/2026/00512) cannot proceed to underwriting review until the following mandatory items are provided:\n  - Fire Protection System\n\nRequired Action: Provide the missing fields and resubmit.\n\nRegards,\nUnderwriting Team, Commercial Property Division",
+  "reason": "Missing mandatory fields: Fire Protection System",
+  "related_application": "CPI/2026/00512",
+  "workflow_phase": "PHASE_1_SUBMISSION_INTAKE"
+}

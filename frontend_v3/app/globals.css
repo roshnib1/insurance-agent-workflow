@@ -1,0 +1,242 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ==========================================================================
+   Design tokens
+   ------------------------------------------------------------------------
+   This is a live-telemetry surface for an AI underwriting workflow, not a
+   marketing page, so the palette is split into two registers:
+
+     - "Chrome"  -> the app shell (panels, header, cards). Dark, quiet,
+                    control-room register. This is where a human reads and
+                    clicks.
+     - "Canvas"  -> the workflow graph itself. A bright, white, dot-gridded
+                    surface with dark node "chips" on top -- closer to a
+                    lightbox / architecture diagram than the surrounding
+                    control chrome, so the graph itself reads clearly and
+                    the running/active glow has somewhere to stand out.
+
+   Status colors map 1:1 to workflow semantics and are reused everywhere
+   (node state, gate branches, event console, badges) so meaning never has
+   to be re-learned across the app.
+   ========================================================================== */
+:root {
+  /* Chrome (dark control-room register) */
+  --color-app-bg: #0a0d13;
+  --color-surface: #12151d;
+  --color-surface-sunken: #1a1e29;
+  --color-border: #262b38;
+  --color-border-strong: #363e50;
+  --color-ink: #edeff5;
+  --color-ink-muted: #9aa2b8;
+  --color-ink-faint: #656e83;
+
+  /* Canvas (workflow graph backdrop -- bright, node chips are dark) */
+  --color-canvas: #ffffff;
+  --color-canvas-raised: #fafbfc;
+  --color-canvas-dot: #e7eaf1;
+  --color-canvas-border: #d7dbe3;
+  --color-canvas-ink: #10131c;
+  --color-canvas-ink-muted: #5b6578;
+
+  /* Signal / status semantics */
+  --color-wire: #4c8dff;         /* primary accent, "running" */
+  --color-wire-soft: rgba(76, 141, 255, 0.16);
+  --color-success: #2fbf6a;      /* completed / YES branch */
+  --color-success-soft: rgba(47, 191, 106, 0.16);
+  --color-warning: #e8a13a;      /* waiting */
+  --color-warning-soft: rgba(232, 161, 58, 0.16);
+  --color-alert: #ff7a45;        /* NO branch / human-review glow */
+  --color-alert-soft: rgba(255, 122, 69, 0.16);
+  --color-danger: #ff5470;       /* failed / rejected */
+  --color-danger-soft: rgba(255, 84, 112, 0.16);
+  --color-decision: #a855f7;     /* terminal "Decision" node glow */
+  --color-decision-soft: rgba(168, 85, 247, 0.16);
+  --color-waiting-soft: #eef0f4;
+  --glow-blue: 0 0 0 1px rgba(76, 141, 255, 0.55), 0 0 0 6px rgba(76, 141, 255, 0.14), 0 12px 32px rgba(76, 141, 255, 0.3);
+  --shadow-node: 0 1px 3px rgba(15, 21, 36, 0.08), 0 10px 28px rgba(15, 21, 36, 0.07);
+
+  --radius-card: 0.875rem;
+  --radius-chip: 0.5rem;
+
+  --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.24), 0 4px 24px rgba(0, 0, 0, 0.28);
+  --shadow-drawer: -8px 0 32px rgba(0, 0, 0, 0.4);
+}
+
+* {
+  border-color: var(--color-border);
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  background: var(--color-app-bg);
+  color: var(--color-ink);
+  font-feature-settings: "cv11", "ss01";
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: var(--color-wire-soft);
+  color: var(--color-ink);
+}
+
+/* Utility face for telemetry, timestamps, ids, callback traces */
+.font-mono-data {
+  font-family: var(--font-mono), ui-monospace, SFMono-Regular, monospace;
+  font-feature-settings: "tnum";
+  font-variant-numeric: tabular-nums;
+}
+
+/* Dot-grid backdrop for the workflow canvas -- bright, so dark node chips
+   and their glow read clearly on top of it. */
+.canvas-grid {
+  background-color: var(--color-canvas);
+  background-image: radial-gradient(var(--color-canvas-dot) 1.5px, transparent 1.5px);
+  background-size: 22px 22px;
+  background-position: -11px -11px;
+}
+
+/* Slim, quiet scrollbars for the event console / drawers */
+.scrollbar-thin {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-border-strong) transparent;
+}
+
+.scrollbar-thin::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background-color: var(--color-border-strong);
+  border-radius: 999px;
+}
+
+.scrollbar-thin-dark {
+  scrollbar-width: thin;
+  scrollbar-color: #34405c transparent;
+}
+
+.scrollbar-thin-dark::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.scrollbar-thin-dark::-webkit-scrollbar-thumb {
+  background-color: #34405c;
+  border-radius: 999px;
+}
+
+/* React Flow chrome reset + animated "flowing" edge for active/main paths */
+.react-flow__attribution {
+  display: none;
+}
+
+@keyframes edge-flow {
+  to {
+    stroke-dashoffset: -20;
+  }
+}
+
+.edge-flow-animated {
+  stroke-dasharray: 6 6;
+  animation: edge-flow 0.7s linear infinite;
+}
+
+/* Strong, unmissable glow for the node that's currently executing --
+   pulses both the ring and a soft blurred halo so "running" reads at a
+   glance even at a zoomed-out fitView scale. */
+@keyframes node-glow {
+  0%,
+  100% {
+    opacity: 0.55;
+    transform: scale(1);
+    filter: blur(0px);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.14);
+    filter: blur(1px);
+  }
+}
+
+/* ==========================================================================
+   Node state animation -- glow, pulse, breathing, scale for the "running"
+   node (impossible to miss), plus a one-shot flash + checkmark pop on
+   completion. Used by WorkflowNode.tsx / DecisionNode.tsx.
+   ========================================================================== */
+
+@keyframes node-pulse-blue {
+  0%, 100% { box-shadow: 0 0 0 1px rgba(76, 141, 255, 0.55), 0 0 0 6px rgba(76, 141, 255, 0.14), 0 12px 32px rgba(76, 141, 255, 0.3); }
+  50% { box-shadow: 0 0 0 1px rgba(76, 141, 255, 0.8), 0 0 0 10px rgba(76, 141, 255, 0.2), 0 16px 40px rgba(76, 141, 255, 0.38); }
+}
+
+@keyframes node-breathe {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.02); }
+}
+
+@keyframes node-border-sweep {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 200% 50%; }
+}
+
+.node-running {
+  animation: node-pulse-blue 1.8s ease-in-out infinite, node-breathe 2.2s ease-in-out infinite;
+  border-color: var(--color-wire) !important;
+}
+
+.node-running::before {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: inherit;
+  padding: 2px;
+  background: linear-gradient(120deg, var(--color-wire), #a8c8ff, var(--color-wire));
+  background-size: 200% 200%;
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  animation: node-border-sweep 2.4s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes node-complete-flash {
+  0% { box-shadow: 0 0 0 0 rgba(47, 191, 106, 0.5); }
+  60% { box-shadow: 0 0 0 16px rgba(47, 191, 106, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(47, 191, 106, 0); }
+}
+
+.node-completed-flash {
+  animation: node-complete-flash 0.7s ease-out 1;
+}
+
+@keyframes checkmark-pop {
+  0% { transform: scale(0.4); opacity: 0; }
+  60% { transform: scale(1.15); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.node-checkmark-pop {
+  animation: checkmark-pop 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}

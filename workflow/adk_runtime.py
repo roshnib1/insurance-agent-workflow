@@ -20,6 +20,7 @@ convention every tool in tools/ already uses (see tools/_common.py::emit).
 import asyncio
 import json
 import re
+import threading
 import time
 import uuid
 from typing import Any, Callable, Dict, Optional
@@ -204,6 +205,34 @@ async def _call_agent_async(agent: LlmAgent, payload: Dict[str, Any]) -> Dict[st
     raise _NoFinalResponse(f"Agent '{agent.name}' produced no final response.")
 
 
+def _run_coroutine_sync(coro: Any) -> Any:
+    """Run a coroutine from either sync or already-running event-loop contexts."""
+    try:
+        loop = asyncio.get_running_loop()
+    except RuntimeError:
+        return asyncio.run(coro)
+
+    if loop.is_running():
+        result: Dict[str, Any] = {}
+        error: Optional[BaseException] = None
+
+        def runner() -> None:
+            nonlocal error
+            try:
+                result["value"] = asyncio.run(coro)
+            except BaseException as exc:  # pragma: no cover - exercised in runtime
+                error = exc
+
+        thread = threading.Thread(target=runner, daemon=True)
+        thread.start()
+        thread.join()
+        if error is not None:
+            raise error
+        return result["value"]
+
+    return asyncio.run(coro)
+
+
 def call_agent(
     agent: LlmAgent,
     payload: Dict[str, Any],
@@ -225,7 +254,7 @@ def call_agent(
     last_exc: Optional[Exception] = None
     for attempt in range(1, MAX_RETRIES + 1):
         try:
-            result = asyncio.run(_call_agent_async(agent, payload))
+            result = _run_coroutine_sync(_call_agent_async(agent, payload))
             _emit(progress_callback, "after", agent.name)
             return result
         except _RetryableAgentError as exc:

@@ -287,6 +287,48 @@ def run_workflow(file_path: str, tracker: Optional[ProgressTracker] = None) -> D
         if senior_signoff_required:
             state.log("Material hazard with confidence below threshold -- senior underwriter signoff will be required.")
 
+    is_clean_case = (not material_risk) and (not doc_intel["disclosure_mismatch"]) and risk_summary.get("confidence", 0) >= CONFIDENCE_THRESHOLD
+
+    # ======================================================================
+    # STP (Straight-Through Processing) bypass
+    # ======================================================================
+    # FIX: A clean case (no material hazard, no disclosure mismatch,
+    # confidence at/above threshold) used to run through PHASE 5 -- Human
+    # Underwriter exactly like every other case (the mocked
+    # HumanUnderwriterAgent was called, state.human_reviews was
+    # incremented, and "HumanUnderwriterAgent" was appended to
+    # approval_lineage) and only AFTERWARD got relabeled
+    # decision_mode="AUTONOMOUS"/decision_maker="AI" for the final JSON.
+    # That's self-contradictory: workflow_metrics.human_reviews and
+    # approval_lineage said a human step happened, while decision_mode said
+    # it didn't -- and it defeats the actual purpose of Straight-Through
+    # Processing (routing every case through human review regardless of
+    # risk removes the "straight-through" part; see the original spec's
+    # own framing of proposal_low_risk.html as "a Straight Through
+    # Processing (STP) candidate").
+    #
+    # A clean case now skips Phase 5 (and the agent call) entirely and is
+    # approved directly, so decision_mode/decision_maker, human_reviews,
+    # and approval_lineage all honestly agree that no human step occurred.
+    # Phase 5 now only runs for cases that actually need judgment: any
+    # material hazard, any disclosure mismatch, or confidence below
+    # threshold.
+    if is_clean_case:
+        state.current_phase = "PHASE_5_HUMAN_UNDERWRITER"
+        stp_reason = (
+            "Straight-through processing: no material hazard, no disclosure mismatch, and risk "
+            f"assessment confidence ({risk_summary.get('confidence')}) at or above the "
+            f"{CONFIDENCE_THRESHOLD} threshold. Approved without human underwriter review."
+        )
+        tracker.gate_decision(state.current_phase, "Decision7_UnderwriterAction", "Approve (STP)")
+        return _finalize(
+            state, application_id, status="COMPLETED", decision_mode="AUTONOMOUS", decision_maker="AI",
+            recommendation={"action": "APPROVE", "basis": pricing["recommendation"], "confidence": risk_summary.get("confidence"),
+                             "conditions": [], "reason": stp_reason},
+            decision_evidence=risk_summary.get("reasoning", []),
+            tracker=tracker,
+        )
+
     # ======================================================================
     # PHASE 5 -- Human Underwriter
     # ======================================================================
@@ -301,16 +343,13 @@ def run_workflow(file_path: str, tracker: Optional[ProgressTracker] = None) -> D
     state.human_actions.append(human_underwriter_result)
     state.record_lineage("HumanUnderwriterAgent", human_underwriter_result["action"])
 
-    is_clean_case = (not material_risk) and (not doc_intel["disclosure_mismatch"]) and risk_summary.get("confidence", 0) >= CONFIDENCE_THRESHOLD
-
     # ---- Decision 7: Approve / Decline / Override / Escalate? ----
     action = human_underwriter_result["action"]
     tracker.gate_decision(state.current_phase, "Decision7_UnderwriterAction", action)
 
     if action == "Approve":
-        decision_mode, decision_maker = ("AUTONOMOUS", "AI") if is_clean_case else ("HUMAN_REVIEW", "Human Underwriter")
         return _finalize(
-            state, application_id, status="COMPLETED", decision_mode=decision_mode, decision_maker=decision_maker,
+            state, application_id, status="COMPLETED", decision_mode="HUMAN_REVIEW", decision_maker="Human Underwriter",
             recommendation={"action": "APPROVE", "basis": pricing["recommendation"], "confidence": risk_summary.get("confidence"),
                              "conditions": [], "reason": human_underwriter_result["reason"]},
             decision_evidence=risk_summary.get("reasoning", []),

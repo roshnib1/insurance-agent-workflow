@@ -20,8 +20,8 @@
     "indicative_premium": 647500.0,
     "deductible": "INR 5,00,000 per occurrence",
     "rationale": [
-      "The client's low risk category and absence of material risk result in a standard base rate without any additional risk loading.",
-      "The indicative premium of INR 647,500 is appropriate given the TIV and the calculated base rate of INR 0.35 per 1000 sum insured."
+      "The client's risk profile is LOW, which qualifies them for the standard base rate per 1000 of 0.35. No additional risk loading was applied.",
+      "The premium is calculated as 0.35 per 1000 of the Total Insured Value (TIV) of 1,850,000,000 INR."
     ]
   },
   "recommendation": {
@@ -29,18 +29,20 @@
     "basis": "LOW risk -- standard rate, no loading.",
     "confidence": 0.95,
     "conditions": [],
-    "reason": "The risk profile is low with no material hazards or concerns. The recommended premium aligns with the risk."
+    "reason": "The risk is acceptable at the recommended price based on the low-risk profile and comprehensive safety measures."
   },
   "decision_evidence": [
-    "The deterministic risk score is 6, which falls into the 'LOW' risk category.",
-    "The primary contributor to the score is the CAT exposure, accounting for 6 points.",
-    "There are no identified hazards, safety gaps, or previous claims contributing to the risk score."
+    "No specific hazards were identified at the property.",
+    "No safety gaps were found during the assessment.",
+    "The property has no history of previous claims.",
+    "The only contributing factor to the risk score is Catastrophe (CAT) exposure, accounting for 6 points."
   ],
   "audit_trail": [
     "Submission received and parsed.",
     "Submission validated as complete.",
     "No disclosure mismatch found.",
-    "PII redacted before CAT vendor call."
+    "PII redacted before CAT vendor call.",
+    "Risk assessed: score=6, category=LOW, confidence=0.95."
   ],
   "approval_lineage": [
     {
@@ -75,16 +77,16 @@
     "human_reviews": 1,
     "governance_checks": 0
   },
-  "ai_summary": "The application for Nandini Techpark Solutions Pvt. Ltd., an IT office campus requesting Commercial Property - Fire & Special Perils coverage with a Total Insured Value of INR 185,00,00,000, was autonomously approved. The decision was driven by the exceptionally low risk profile, characterized by excellent fire protection systems (wet riser, hydrants, 100% NFPA-13 compliant sprinklers, addressable smoke detection), robust security measures, a favorable location with low CAT exposure (Zone C Flood, Zone II Earthquake, Non-Cyclone), and a perfect claims history. The indicative premium of INR 6,47,500 reflects the standard rate applied to this low-risk class, without any additional loadings.",
+  "ai_summary": "The AI has autonomously approved a new business application for Nandini Techpark Solutions Pvt. Ltd., an IT office campus in Bengaluru, for an Enterprise Commercial Property Shield policy with an INR 1.85 billion Total Insured Value. The decision was driven by the applicant's low-risk profile, substantiated by comprehensive safety measures including robust fire protection and 24x7 security, the commercial property being a Grade-A construction, and a clean claims history. The GeoRisk CAT Analytics vendor also confirmed a low CAT exposure, contributing to the standard rate pricing and the overall positive assessment.",
   "communication": {
     "emails_generated": 0,
     "drafts": []
   },
   "workflow": {
-    "workflow_id": "9bdb946c-a0a4-49e1-b1ce-1cc3e4a6cac5",
-    "started_at": "2026-07-13T15:07:34.646101+00:00",
-    "completed_at": "2026-07-13T15:08:06.293894+00:00",
-    "duration_seconds": 31.648,
+    "workflow_id": "c5069a5f-3ba2-4e2a-aa16-8042d11cb5c2",
+    "started_at": "2026-07-15T06:56:42.536902+00:00",
+    "completed_at": "2026-07-15T06:57:07.952243+00:00",
+    "duration_seconds": 25.415,
     "workflow_version": "1.0"
   },
   "applicant": {
@@ -97,31 +99,31 @@
   "documents": [],
   "execution_timeline": [
     {
-      "timestamp": 1783955254.6461012,
+      "timestamp": 1784098602.3868916,
       "phase": "PHASE_1_SUBMISSION_INTAKE",
       "step": "parse_submission",
       "event": "started"
     },
     {
-      "timestamp": 1783955254.6742384,
+      "timestamp": 1784098602.5369024,
       "phase": "PHASE_1_SUBMISSION_INTAKE",
       "step": "parse_submission",
       "event": "completed"
     },
     {
-      "timestamp": 1783955254.6752522,
+      "timestamp": 1784098602.5369024,
       "phase": "PHASE_1_SUBMISSION_INTAKE",
       "step": "SubmissionIntakeAgent",
       "event": "started"
     },
     {
-      "timestamp": 1783955254.6796567,
+      "timestamp": 1784098602.5539246,
       "phase": "PHASE_1_SUBMISSION_INTAKE",
       "step": "SubmissionIntakeAgent",
       "event": "started"
     },
     {
-      "timestamp": "2026-07-13T15:07:40.384663+00:00",
+      "timestamp": "2026-07-15T06:56:50.836376+00:00",
       "phase": "PHASE_1_SUBMISSION_INTAKE",
       "step": "agent",
       "event": "started",
@@ -129,7 +131,7 @@
       "field_count": 79
     },
     {
-      "timestamp": "2026-07-13T15:07:40.384663+00:00",
+      "timestamp": "2026-07-15T06:56:50.836376+00:00",
       "phase": "PHASE_1_SUBMISSION_INTAKE",
       "step": "agent",
       "event": "completed",
@@ -138,50 +140,50 @@
       "missing_count": 0
     },
     {
-      "timestamp": 1783955261.273103,
+      "timestamp": 1784098611.7030778,
       "phase": "PHASE_1_SUBMISSION_INTAKE",
       "step": "SubmissionIntakeAgent",
       "event": "completed"
     },
     {
-      "timestamp": 1783955261.273103,
+      "timestamp": 1784098611.7030778,
       "phase": "PHASE_1_SUBMISSION_INTAKE",
       "step": "SubmissionIntakeAgent",
       "event": "completed"
     },
     {
-      "timestamp": 1783955261.273103,
+      "timestamp": 1784098611.7030778,
       "phase": "PHASE_1_SUBMISSION_INTAKE",
       "step": "Decision1_SubmissionComplete",
       "event": "gate_decision",
       "route": "True"
     },
     {
-      "timestamp": 1783955261.273103,
+      "timestamp": 1784098611.7030778,
       "phase": "PHASE_2_DOCUMENT_INTELLIGENCE",
       "step": "document_linker",
       "event": "started"
     },
     {
-      "timestamp": 1783955261.2841442,
+      "timestamp": 1784098611.812354,
       "phase": "PHASE_2_DOCUMENT_INTELLIGENCE",
       "step": "document_linker",
       "event": "completed"
     },
     {
-      "timestamp": 1783955261.2841442,
+      "timestamp": 1784098611.812354,
       "phase": "PHASE_2_DOCUMENT_INTELLIGENCE",
       "step": "DocumentIntelligenceAgent",
       "event": "started"
     },
     {
-      "timestamp": 1783955261.2851443,
+      "timestamp": 1784098611.812354,
       "phase": "PHASE_2_DOCUMENT_INTELLIGENCE",
       "step": "DocumentIntelligenceAgent",
       "event": "started"
     },
     {
-      "timestamp": "2026-07-13T15:07:42.816848+00:00",
+      "timestamp": "2026-07-15T06:56:53.189153+00:00",
       "phase": "PHASE_2_DOCUMENT_INTELLIGENCE",
       "step": "agent",
       "event": "started",
@@ -189,7 +191,7 @@
       "fields_checked": 8
     },
     {
-      "timestamp": "2026-07-13T15:07:42.816848+00:00",
+      "timestamp": "2026-07-15T06:56:53.189153+00:00",
       "phase": "PHASE_2_DOCUMENT_INTELLIGENCE",
       "step": "agent",
       "event": "completed",
@@ -197,7 +199,7 @@
       "hazard_count": 0
     },
     {
-      "timestamp": "2026-07-13T15:07:42.817779+00:00",
+      "timestamp": "2026-07-15T06:56:53.189153+00:00",
       "phase": "PHASE_2_DOCUMENT_INTELLIGENCE",
       "step": "agent",
       "event": "started",
@@ -205,7 +207,7 @@
       "linked_document_count": 0
     },
     {
-      "timestamp": "2026-07-13T15:07:42.817779+00:00",
+      "timestamp": "2026-07-15T06:56:53.189153+00:00",
       "phase": "PHASE_2_DOCUMENT_INTELLIGENCE",
       "step": "agent",
       "event": "completed",
@@ -213,38 +215,38 @@
       "issue_count": 0
     },
     {
-      "timestamp": 1783955264.4370694,
+      "timestamp": 1784098614.73617,
       "phase": "PHASE_2_DOCUMENT_INTELLIGENCE",
       "step": "DocumentIntelligenceAgent",
       "event": "completed"
     },
     {
-      "timestamp": 1783955264.4370694,
+      "timestamp": 1784098614.73617,
       "phase": "PHASE_2_DOCUMENT_INTELLIGENCE",
       "step": "DocumentIntelligenceAgent",
       "event": "completed"
     },
     {
-      "timestamp": 1783955264.4370694,
+      "timestamp": 1784098614.73617,
       "phase": "PHASE_2_DOCUMENT_INTELLIGENCE",
       "step": "Decision2_DisclosureMismatch",
       "event": "gate_decision",
       "route": "False"
     },
     {
-      "timestamp": 1783955264.4370694,
+      "timestamp": 1784098614.73617,
       "phase": "PHASE_3_CAT_EXPOSURE",
       "step": "CATExposureAgent",
       "event": "started"
     },
     {
-      "timestamp": 1783955264.4370694,
+      "timestamp": 1784098614.73617,
       "phase": "PHASE_3_CAT_EXPOSURE",
       "step": "CATExposureAgent",
       "event": "started"
     },
     {
-      "timestamp": "2026-07-13T15:07:46.459804+00:00",
+      "timestamp": "2026-07-15T06:56:56.169487+00:00",
       "phase": "PHASE_3_CAT_EXPOSURE",
       "step": "agent",
       "event": "started",
@@ -252,7 +254,7 @@
       "vendor": "GeoRisk CAT Analytics"
     },
     {
-      "timestamp": "2026-07-13T15:07:46.459804+00:00",
+      "timestamp": "2026-07-15T06:56:56.169487+00:00",
       "phase": "PHASE_3_CAT_EXPOSURE",
       "step": "agent",
       "event": "completed",
@@ -260,7 +262,7 @@
       "approved": true
     },
     {
-      "timestamp": "2026-07-13T15:07:48.299153+00:00",
+      "timestamp": "2026-07-15T06:56:56.935906+00:00",
       "phase": "PHASE_3_CAT_EXPOSURE",
       "step": "agent",
       "event": "started",
@@ -268,7 +270,7 @@
       "field_count": 79
     },
     {
-      "timestamp": "2026-07-13T15:07:48.299153+00:00",
+      "timestamp": "2026-07-15T06:56:56.935906+00:00",
       "phase": "PHASE_3_CAT_EXPOSURE",
       "step": "agent",
       "event": "completed",
@@ -276,7 +278,7 @@
       "redacted_count": 6
     },
     {
-      "timestamp": "2026-07-13T15:07:50.193866+00:00",
+      "timestamp": "2026-07-15T06:56:57.769409+00:00",
       "phase": "PHASE_3_CAT_EXPOSURE",
       "step": "agent",
       "event": "started",
@@ -284,7 +286,7 @@
       "vendor": "GeoRisk CAT Analytics"
     },
     {
-      "timestamp": "2026-07-13T15:07:50.193866+00:00",
+      "timestamp": "2026-07-15T06:56:57.769409+00:00",
       "phase": "PHASE_3_CAT_EXPOSURE",
       "step": "agent",
       "event": "completed",
@@ -293,45 +295,45 @@
       "cat_category": "LOW"
     },
     {
-      "timestamp": 1783955272.13907,
+      "timestamp": 1784098619.2025473,
       "phase": "PHASE_3_CAT_EXPOSURE",
       "step": "CATExposureAgent",
       "event": "completed"
     },
     {
-      "timestamp": 1783955272.140346,
+      "timestamp": 1784098619.2025473,
       "phase": "PHASE_3_CAT_EXPOSURE",
       "step": "CATExposureAgent",
       "event": "completed"
     },
     {
-      "timestamp": 1783955272.140346,
+      "timestamp": 1784098619.2025473,
       "phase": "PHASE_3_CAT_EXPOSURE",
       "step": "Decision3_VendorApproved",
       "event": "gate_decision",
       "route": "True"
     },
     {
-      "timestamp": 1783955272.140346,
+      "timestamp": 1784098619.2025473,
       "phase": "PHASE_3_CAT_EXPOSURE",
       "step": "Decision4_PayloadContainsPII",
       "event": "gate_decision",
       "route": "True"
     },
     {
-      "timestamp": 1783955272.140346,
+      "timestamp": 1784098619.2107604,
       "phase": "PHASE_4_RISK_ASSESSMENT",
       "step": "RiskSummaryAgent",
       "event": "started"
     },
     {
-      "timestamp": 1783955272.140346,
+      "timestamp": 1784098619.2107604,
       "phase": "PHASE_4_RISK_ASSESSMENT",
       "step": "RiskSummaryAgent",
       "event": "started"
     },
     {
-      "timestamp": "2026-07-13T15:07:53.059183+00:00",
+      "timestamp": "2026-07-15T06:57:00.420002+00:00",
       "phase": "PHASE_4_RISK_ASSESSMENT",
       "step": "agent",
       "event": "started",
@@ -340,7 +342,7 @@
       "mismatch_count": 0
     },
     {
-      "timestamp": "2026-07-13T15:07:53.060690+00:00",
+      "timestamp": "2026-07-15T06:57:00.420002+00:00",
       "phase": "PHASE_4_RISK_ASSESSMENT",
       "step": "agent",
       "event": "completed",
@@ -349,31 +351,31 @@
       "risk_category": "LOW"
     },
     {
-      "timestamp": 1783955274.7212288,
+      "timestamp": 1784098621.9884586,
       "phase": "PHASE_4_RISK_ASSESSMENT",
       "step": "RiskSummaryAgent",
       "event": "completed"
     },
     {
-      "timestamp": 1783955274.7212288,
+      "timestamp": 1784098621.9884586,
       "phase": "PHASE_4_RISK_ASSESSMENT",
       "step": "RiskSummaryAgent",
       "event": "completed"
     },
     {
-      "timestamp": 1783955274.7212288,
+      "timestamp": 1784098621.9884586,
       "phase": "PHASE_4_RISK_ASSESSMENT",
       "step": "PricingAgent",
       "event": "started"
     },
     {
-      "timestamp": 1783955274.7212288,
+      "timestamp": 1784098621.9884586,
       "phase": "PHASE_4_RISK_ASSESSMENT",
       "step": "PricingAgent",
       "event": "started"
     },
     {
-      "timestamp": "2026-07-13T15:07:55.979158+00:00",
+      "timestamp": "2026-07-15T06:57:02.868257+00:00",
       "phase": "PHASE_4_RISK_ASSESSMENT",
       "step": "agent",
       "event": "started",
@@ -382,7 +384,7 @@
       "material_risk": false
     },
     {
-      "timestamp": "2026-07-13T15:07:55.979158+00:00",
+      "timestamp": "2026-07-15T06:57:02.868257+00:00",
       "phase": "PHASE_4_RISK_ASSESSMENT",
       "step": "agent",
       "event": "completed",
@@ -390,81 +392,81 @@
       "indicative_premium": 647500.0
     },
     {
-      "timestamp": 1783955277.505914,
+      "timestamp": 1784098624.3689065,
       "phase": "PHASE_4_RISK_ASSESSMENT",
       "step": "PricingAgent",
       "event": "completed"
     },
     {
-      "timestamp": 1783955277.5069244,
+      "timestamp": 1784098624.3689065,
       "phase": "PHASE_4_RISK_ASSESSMENT",
       "step": "PricingAgent",
       "event": "completed"
     },
     {
-      "timestamp": 1783955277.5069244,
+      "timestamp": 1784098624.3689065,
       "phase": "PHASE_4_RISK_ASSESSMENT",
       "step": "Decision5_MaterialHazard",
       "event": "gate_decision",
       "route": "False"
     },
     {
-      "timestamp": 1783955277.5069244,
+      "timestamp": 1784098624.3689065,
       "phase": "PHASE_5_HUMAN_UNDERWRITER",
       "step": "HumanUnderwriterAgent",
       "event": "started"
     },
     {
-      "timestamp": 1783955277.5069244,
+      "timestamp": 1784098624.3689065,
       "phase": "PHASE_5_HUMAN_UNDERWRITER",
       "step": "HumanUnderwriterAgent",
       "event": "started"
     },
     {
-      "timestamp": 1783955284.2608755,
+      "timestamp": 1784098626.1865945,
       "phase": "PHASE_5_HUMAN_UNDERWRITER",
       "step": "HumanUnderwriterAgent",
       "event": "completed"
     },
     {
-      "timestamp": 1783955284.2608755,
+      "timestamp": 1784098626.1865945,
       "phase": "PHASE_5_HUMAN_UNDERWRITER",
       "step": "HumanUnderwriterAgent",
       "event": "completed"
     },
     {
-      "timestamp": 1783955284.2608755,
+      "timestamp": 1784098626.1865945,
       "phase": "PHASE_5_HUMAN_UNDERWRITER",
       "step": "Decision7_UnderwriterAction",
       "event": "gate_decision",
       "route": "Approve"
     },
     {
-      "timestamp": 1783955284.2608755,
+      "timestamp": 1784098626.1865945,
       "phase": "PHASE_8_FINAL_DECISION",
       "step": "EvidenceGenerationAgent",
       "event": "started"
     },
     {
-      "timestamp": 1783955284.2608755,
+      "timestamp": 1784098626.1865945,
       "phase": "PHASE_8_FINAL_DECISION",
       "step": "EvidenceGenerationAgent",
       "event": "started"
     },
     {
-      "timestamp": 1783955286.292886,
+      "timestamp": 1784098627.952243,
       "phase": "PHASE_8_FINAL_DECISION",
       "step": "EvidenceGenerationAgent",
       "event": "completed"
     },
     {
-      "timestamp": 1783955286.292886,
+      "timestamp": 1784098627.952243,
       "phase": "PHASE_8_FINAL_DECISION",
       "step": "EvidenceGenerationAgent",
       "event": "completed"
     },
     {
-      "timestamp": 1783955286.292886,
+      "timestamp": 1784098627.952243,
       "phase": "PHASE_8_FINAL_DECISION",
       "step": "decision_assembly_tool",
       "event": "started"

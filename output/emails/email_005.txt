@@ -1,0 +1,26 @@
+Subject: Additional Information Required — Proposal UNKNOWN
+To: Om Shanti Insurance Broking Pvt. Ltd. <om.shanti.insurance.broking.pvt.ltd@omshantiinsurancebro.example> (Broker)
+Status: DRAFT_NOT_SENT
+
+Proposal Number: UNKNOWN
+Insured: the applicant
+Broker: Om Shanti Insurance Broking Pvt. Ltd.
+
+Dear Om Shanti Insurance Broking Pvt. Ltd.,
+
+The submission for the applicant (Proposal UNKNOWN) cannot proceed to underwriting review until the following mandatory items are provided:
+  - Building Type
+  - Business Name
+  - Construction Material
+  - Earthquake Zone
+  - Flood Zone
+  - Occupancy Type
+  - Primary Property Address
+  - Proposal Number
+  - Requested Sum Insured
+  - Total Insured Value (TIV)
+
+Required Action: Provide the missing fields and resubmit.
+
+Regards,
+Underwriting Team, Commercial Property Division

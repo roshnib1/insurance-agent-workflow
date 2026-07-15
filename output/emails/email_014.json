@@ -1,0 +1,13 @@
+{
+  "email_id": "email_014",
+  "created_at": "2026-07-14T12:47:23.330908+00:00",
+  "status": "DRAFT_NOT_SENT",
+  "recipient_role": "Broker",
+  "recipient_name": "Vikram Risk & Insurance Advisors LLP",
+  "recipient_email": "vikram.risk.insurance.advisors.llp@vikramriskinsurancea.example",
+  "subject": "Proposal CPI/2026/00512 \u2014 Conditional Approval",
+  "body": "Proposal Number: CPI/2026/00512\nInsured: Suryodaya Petrochem Industries Pvt. Ltd.\nBroker: Vikram Risk & Insurance Advisors LLP\n\nDear Vikram Risk & Insurance Advisors LLP,\n\nWe are pleased to confirm conditional approval of Proposal CPI/2026/00512 for Suryodaya Petrochem Industries Pvt. Ltd., subject to the following conditions:\n  - Client to submit a detailed fire safety audit report from an approved third-party agency within 90 days. This must include recommendations for upgrading the fire protection system, especially in process and storage areas.\n  - Client to provide a timeline and plan for addressing the aged wiring in the process area within 60 days. This should include a commitment to upgrade the electrical system to current safety standards.\n  - Client to present a comprehensive flood mitigation plan, including details on drainage improvements and any proposed structural enhancements, within 120 days.\n  - Installation of automatic sprinkler systems in process and storage areas, with a detailed project plan submitted within 180 days and completion within 1 year.\n  - Enhanced security measures, including interior CCTV coverage for critical process and storage areas, to be completed within 90 days.\n\nRegards,\nUnderwriting Team, Commercial Property Division",
+  "reason": "The risk presents material hazards (chemical manufacturing, flammable liquids, aged wiring) and high CAT exposure (flood zone A with historical events). The human underwriter identified these severe risks, and the case was escalated for review. Although the TIV exceeds my standard delegated authority, as a senior underwriter, I have the final authority to approve, reject, or request further review the case. The proposed 25% premium loading reflects the significant risks involved. Given the high-hazard industry and the identified deficiencies, additional risk mitigation measures are necessary to ensure the insurability of this account.",
+  "related_application": "CPI/2026/00512",
+  "workflow_phase": "PHASE_8_FINAL_DECISION"
+}
