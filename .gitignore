@@ -29,6 +29,11 @@ logs/
 *.log
 
 
+# Generated files
+output/
+data/
+
+
 # Streamlit cache
 .streamlit/secrets.toml
 
