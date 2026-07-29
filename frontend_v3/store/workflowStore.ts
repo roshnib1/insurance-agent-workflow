@@ -79,7 +79,7 @@ export const useWorkflowStore = create<WorkflowStoreState>((set, get) => ({
     set({ samplesLoading: true });
     try {
       const { samples } = await getSampleCases();
-      set({ samples, samplesLoading: false, selectedSample: get().selectedSample ?? samples[0] ?? null });
+      set({ samples, samplesLoading: false });
     } catch {
       // Leave samples empty; the Run panel already handles an empty list gracefully.
       set({ samplesLoading: false });

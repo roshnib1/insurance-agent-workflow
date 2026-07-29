@@ -1,0 +1,13 @@
+{
+  "email_id": "email_023",
+  "created_at": "2026-07-29T09:33:46.348010+00:00",
+  "status": "DRAFT_NOT_SENT",
+  "recipient_role": "Broker",
+  "recipient_name": "Vikram Risk & Insurance Advisors LLP",
+  "recipient_email": "vikram.risk.insurance.advisors.llp@vikramriskinsurancea.example",
+  "subject": "Proposal CPI/2026/00512 \u2014 Underwriting Decision",
+  "body": "Proposal Number: CPI/2026/00512\nInsured: Suryodaya Petrochem Industries Pvt. Ltd.\nBroker: Vikram Risk & Insurance Advisors LLP\n\nDear Vikram Risk & Insurance Advisors LLP,\n\nAfter underwriting review, Proposal CPI/2026/00512 for Suryodaya Petrochem Industries Pvt. Ltd. has not been approved.\nReason: Excessive inherent material hazards and risk without adequate mitigation, high CAT exposure, and poor loss history make this an unacceptable risk.\n\nRegards,\nUnderwriting Team, Commercial Property Division",
+  "reason": "Excessive inherent material hazards and risk without adequate mitigation, high CAT exposure, and poor loss history make this an unacceptable risk.",
+  "related_application": "CPI/2026/00512",
+  "workflow_phase": "PHASE_8_FINAL_DECISION"
+}

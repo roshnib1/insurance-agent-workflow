@@ -13,7 +13,7 @@
   "recommendation": {
     "action": "REQUEST_MORE_INFORMATION",
     "basis": "Incomplete submission",
-    "confidence": 0.9,
+    "confidence": 1.0,
     "conditions": [],
     "reason": "Missing mandatory fields."
   },
@@ -48,25 +48,25 @@
     "human_reviews": 0,
     "governance_checks": 0
   },
-  "ai_summary": "The submission for Meenakshi Textile Mills Pvt. Ltd., a New Business application for Enterprise Commercial Property Shield, has been stopped as incomplete. The proposal lacks critical mandatory information including the Annual Revenue, Registered Address, Fire Protection System details, Flammable Materials information, Hazardous Processes, and a completed Safety Audit, preventing a comprehensive risk assessment. The human underwriter has accordingly recommended requesting more information.",
+  "ai_summary": "The request for Enterprise Commercial Property Shield for Meenakshi Textile Mills Pvt. Ltd. was stopped as incomplete by a Human Underwriter due to missing mandatory fields. Key missing information included the Registered Address, Annual Revenue, Fire Protection System details, Flammable Materials specifics, and if a Safety Audit was conducted. This textile manufacturing company, established in 1987 in Coimbatore, has an RCC Frame with Asbestos Sheet Roofing building, uses partial sprinkler systems, and is located in a moderate flood and earthquake zone, with one historical flood event in the last 10 years. The Total Insured Value is INR 62 crore, and the client is seeking Fire & Special Perils, Business Interruption, and Machinery Breakdown Cover.",
   "communication": {
     "emails_generated": 1,
     "drafts": [
       {
-        "email_id": "email_018",
+        "email_id": "email_024",
         "status": "DRAFT_NOT_SENT",
         "reason": "Missing mandatory fields: Annual Revenue, Deductible, Electrical Hazards, Fire Protection System, Flammable Materials, Hazardous Processes, Last Safety Inspection Date, Natural Catastrophe Cover, Primary Property Address, Registered Address, Requested Sum Insured, Risk Mitigation Measures",
         "recipient_role": "Broker",
         "subject": "Additional Information Required \u2014 Proposal CPI/2026/00538",
-        "file": "C:\\Users\\roshni\\Downloads\\insurance_agent_adk\\workflow_agent\\output\\emails\\email_018.json"
+        "file": "C:\\Users\\roshni\\Downloads\\insurance_agent_adk\\workflow_agent\\output\\emails\\email_024.json"
       }
     ]
   },
   "workflow": {
-    "workflow_id": "50d044b1-2c74-4b9d-8246-8f6fe8522fcc",
-    "started_at": "2026-07-15T06:57:34.816906+00:00",
-    "completed_at": "2026-07-15T06:57:45.634026+00:00",
-    "duration_seconds": 10.817,
+    "workflow_id": "b2c9ea56-040a-44ae-9196-ac39efc99afd",
+    "started_at": "2026-07-29T09:35:52.926282+00:00",
+    "completed_at": "2026-07-29T09:35:57.428083+00:00",
+    "duration_seconds": 4.502,
     "workflow_version": "1.0"
   },
   "applicant": {
@@ -79,31 +79,31 @@
   "documents": [],
   "execution_timeline": [
     {
-      "timestamp": 1784098654.7517967,
+      "timestamp": 1785317752.7925787,
       "phase": "PHASE_1_SUBMISSION_INTAKE",
       "step": "parse_submission",
       "event": "started"
     },
     {
-      "timestamp": 1784098654.8169067,
+      "timestamp": 1785317752.9262824,
       "phase": "PHASE_1_SUBMISSION_INTAKE",
       "step": "parse_submission",
       "event": "completed"
     },
     {
-      "timestamp": 1784098654.8179703,
+      "timestamp": 1785317752.9313347,
       "phase": "PHASE_1_SUBMISSION_INTAKE",
       "step": "SubmissionIntakeAgent",
       "event": "started"
     },
     {
-      "timestamp": 1784098654.8189137,
+      "timestamp": 1785317752.9333537,
       "phase": "PHASE_1_SUBMISSION_INTAKE",
       "step": "SubmissionIntakeAgent",
       "event": "started"
     },
     {
-      "timestamp": "2026-07-15T06:57:36.017693+00:00",
+      "timestamp": "2026-07-29T09:35:53.980221+00:00",
       "phase": "PHASE_1_SUBMISSION_INTAKE",
       "step": "agent",
       "event": "started",
@@ -111,7 +111,7 @@
       "field_count": 79
     },
     {
-      "timestamp": "2026-07-15T06:57:36.017693+00:00",
+      "timestamp": "2026-07-29T09:35:53.980221+00:00",
       "phase": "PHASE_1_SUBMISSION_INTAKE",
       "step": "agent",
       "event": "completed",
@@ -120,26 +120,26 @@
       "missing_count": 2
     },
     {
-      "timestamp": 1784098663.9168947,
+      "timestamp": 1785317755.2751124,
       "phase": "PHASE_1_SUBMISSION_INTAKE",
       "step": "SubmissionIntakeAgent",
       "event": "completed"
     },
     {
-      "timestamp": 1784098663.9168947,
+      "timestamp": 1785317755.2751124,
       "phase": "PHASE_1_SUBMISSION_INTAKE",
       "step": "SubmissionIntakeAgent",
       "event": "completed"
     },
     {
-      "timestamp": 1784098663.9168947,
+      "timestamp": 1785317755.2751124,
       "phase": "PHASE_1_SUBMISSION_INTAKE",
       "step": "Decision1_SubmissionComplete",
       "event": "gate_decision",
       "route": "False"
     },
     {
-      "timestamp": 1784098663.9168947,
+      "timestamp": 1785317755.2751124,
       "phase": "PHASE_1_SUBMISSION_INTAKE",
       "step": "communication_tool",
       "event": "started",
@@ -147,39 +147,39 @@
       "proposal_number": "CPI/2026/00538"
     },
     {
-      "timestamp": 1784098663.9337173,
+      "timestamp": 1785317755.2858982,
       "phase": "PHASE_1_SUBMISSION_INTAKE",
       "step": "communication_tool",
       "event": "completed",
-      "email_id": "email_018",
+      "email_id": "email_024",
       "recipient_role": "Broker"
     },
     {
-      "timestamp": 1784098663.9337173,
+      "timestamp": 1785317755.2858982,
       "phase": "PHASE_8_FINAL_DECISION",
       "step": "EvidenceGenerationAgent",
       "event": "started"
     },
     {
-      "timestamp": 1784098663.9337173,
+      "timestamp": 1785317755.2858982,
       "phase": "PHASE_8_FINAL_DECISION",
       "step": "EvidenceGenerationAgent",
       "event": "started"
     },
     {
-      "timestamp": 1784098665.6334336,
+      "timestamp": 1785317757.4280837,
       "phase": "PHASE_8_FINAL_DECISION",
       "step": "EvidenceGenerationAgent",
       "event": "completed"
     },
     {
-      "timestamp": 1784098665.6334336,
+      "timestamp": 1785317757.4280837,
       "phase": "PHASE_8_FINAL_DECISION",
       "step": "EvidenceGenerationAgent",
       "event": "completed"
     },
     {
-      "timestamp": 1784098665.6340263,
+      "timestamp": 1785317757.4280837,
       "phase": "PHASE_8_FINAL_DECISION",
       "step": "decision_assembly_tool",
       "event": "started"

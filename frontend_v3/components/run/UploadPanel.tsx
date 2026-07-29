@@ -38,7 +38,7 @@ export default function UploadPanel({
         setDragging(false);
         if (!disabled) handleFiles(e.dataTransfer.files);
       }}
-      className="flex cursor-pointer flex-col items-center gap-1.5 rounded-lg border border-dashed px-3 py-5 text-center transition"
+      className="flex cursor-pointer flex-col items-center gap-1 rounded-lg border border-dashed px-3 py-2.5 text-center transition"
       style={{
         borderColor: isDragging ? "var(--color-wire)" : "var(--color-border-strong)",
         background: isDragging ? "var(--color-wire-soft)" : "var(--color-surface-sunken)",
@@ -46,11 +46,14 @@ export default function UploadPanel({
         cursor: disabled ? "not-allowed" : "pointer",
       }}
     >
-      <UploadCloud className="h-5 w-5 text-[var(--color-ink-muted)]" strokeWidth={1.5} />
+      <UploadCloud className="h-3 w-5 text-[var(--color-ink-muted)]"strokeWidth={1.5}/>
       <p className="text-[12px] font-medium text-[var(--color-ink)]">
-        {fileName ?? "Drop HTML or PDF, or click to browse"}
+        {fileName ?? "Drop proposal form or click to browse"}
       </p>
       <p className="text-[10.5px] text-[var(--color-ink-faint)]">.html, .htm, .pdf</p>
+      <p className="mt-1 text-[10px] text-[var(--color-ink-muted)]">
+        Supports only Commercial Property Proposal Forms (ACORD 141).
+      </p>
       <input
         ref={inputRef}
         type="file"

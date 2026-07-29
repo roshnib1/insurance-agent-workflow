@@ -13,7 +13,7 @@
   "recommendation": {
     "action": "REQUEST_MORE_INFORMATION",
     "basis": "Incomplete submission",
-    "confidence": 0.9,
+    "confidence": 1.0,
     "conditions": [],
     "reason": "Missing mandatory fields."
   },
@@ -46,25 +46,25 @@
     "human_reviews": 0,
     "governance_checks": 0
   },
-  "ai_summary": "The case for Bhosari Precision Engineering Pvt. Ltd. (Proposal Ref: CPI/2026/00561) was stopped due to an incomplete submission, necessitating a human underwriter's review and a request for more information. The decision was driven by missing mandatory fields in the application.",
+  "ai_summary": "The case for Bhosari Precision Engineering Pvt. Ltd., submitted through Om Shanti Insurance Broking Pvt. Ltd. under proposal CPI/2026/00561, was stopped due to an incomplete submission. The human underwriter determined that mandatory fields were missing, necessitating a request for more information before further processing could occur.",
   "communication": {
     "emails_generated": 1,
     "drafts": [
       {
-        "email_id": "email_008",
+        "email_id": "email_021",
         "status": "DRAFT_NOT_SENT",
         "reason": "Missing mandatory fields: Building Type, Business Name, Construction Material, Earthquake Zone, Flood Zone, Occupancy Type, Primary Property Address, Proposal Number, Requested Sum Insured, Total Insured Value (TIV)",
         "recipient_role": "Broker",
         "subject": "Additional Information Required \u2014 Proposal UNKNOWN",
-        "file": "C:\\Users\\roshni\\Downloads\\insurance_agent_adk\\workflow_agent\\output\\emails\\email_008.json"
+        "file": "C:\\Users\\roshni\\Downloads\\insurance_agent_adk\\workflow_agent\\output\\emails\\email_021.json"
       }
     ]
   },
   "workflow": {
-    "workflow_id": "612195ac-f4be-4603-857b-0d1591777bcd",
-    "started_at": "2026-07-14T07:11:35.742154+00:00",
-    "completed_at": "2026-07-14T07:11:39.498818+00:00",
-    "duration_seconds": 3.757,
+    "workflow_id": "dba3cec2-e75c-4abd-88b0-614dbce6fb46",
+    "started_at": "2026-07-29T09:31:07.911660+00:00",
+    "completed_at": "2026-07-29T09:31:39.600078+00:00",
+    "duration_seconds": 31.688,
     "workflow_version": "1.0"
   },
   "applicant": {
@@ -77,31 +77,31 @@
   "documents": [],
   "execution_timeline": [
     {
-      "timestamp": 1784013095.7361953,
+      "timestamp": 1785317467.847713,
       "phase": "PHASE_1_SUBMISSION_INTAKE",
       "step": "parse_submission",
       "event": "started"
     },
     {
-      "timestamp": 1784013095.7421546,
+      "timestamp": 1785317467.91166,
       "phase": "PHASE_1_SUBMISSION_INTAKE",
       "step": "parse_submission",
       "event": "completed"
     },
     {
-      "timestamp": 1784013095.7421546,
+      "timestamp": 1785317467.91166,
       "phase": "PHASE_1_SUBMISSION_INTAKE",
       "step": "SubmissionIntakeAgent",
       "event": "started"
     },
     {
-      "timestamp": 1784013095.7421546,
+      "timestamp": 1785317467.9322982,
       "phase": "PHASE_1_SUBMISSION_INTAKE",
       "step": "SubmissionIntakeAgent",
       "event": "started"
     },
     {
-      "timestamp": "2026-07-14T07:11:36.666892+00:00",
+      "timestamp": "2026-07-29T09:31:25.392398+00:00",
       "phase": "PHASE_1_SUBMISSION_INTAKE",
       "step": "agent",
       "event": "started",
@@ -109,7 +109,7 @@
       "field_count": 8
     },
     {
-      "timestamp": "2026-07-14T07:11:36.666892+00:00",
+      "timestamp": "2026-07-29T09:31:25.392398+00:00",
       "phase": "PHASE_1_SUBMISSION_INTAKE",
       "step": "agent",
       "event": "completed",
@@ -118,26 +118,26 @@
       "missing_count": 10
     },
     {
-      "timestamp": 1784013097.9567282,
+      "timestamp": 1785317486.848921,
       "phase": "PHASE_1_SUBMISSION_INTAKE",
       "step": "SubmissionIntakeAgent",
       "event": "completed"
     },
     {
-      "timestamp": 1784013097.9567282,
+      "timestamp": 1785317486.848921,
       "phase": "PHASE_1_SUBMISSION_INTAKE",
       "step": "SubmissionIntakeAgent",
       "event": "completed"
     },
     {
-      "timestamp": 1784013097.9567282,
+      "timestamp": 1785317486.848921,
       "phase": "PHASE_1_SUBMISSION_INTAKE",
       "step": "Decision1_SubmissionComplete",
       "event": "gate_decision",
       "route": "False"
     },
     {
-      "timestamp": 1784013097.9567282,
+      "timestamp": 1785317486.848921,
       "phase": "PHASE_1_SUBMISSION_INTAKE",
       "step": "communication_tool",
       "event": "started",
@@ -145,39 +145,39 @@
       "proposal_number": null
     },
     {
-      "timestamp": 1784013097.960442,
+      "timestamp": 1785317486.8598838,
       "phase": "PHASE_1_SUBMISSION_INTAKE",
       "step": "communication_tool",
       "event": "completed",
-      "email_id": "email_008",
+      "email_id": "email_021",
       "recipient_role": "Broker"
     },
     {
-      "timestamp": 1784013097.960442,
+      "timestamp": 1785317486.8598838,
       "phase": "PHASE_8_FINAL_DECISION",
       "step": "EvidenceGenerationAgent",
       "event": "started"
     },
     {
-      "timestamp": 1784013097.965506,
+      "timestamp": 1785317486.8598838,
       "phase": "PHASE_8_FINAL_DECISION",
       "step": "EvidenceGenerationAgent",
       "event": "started"
     },
     {
-      "timestamp": 1784013099.4988184,
+      "timestamp": 1785317499.6000788,
       "phase": "PHASE_8_FINAL_DECISION",
       "step": "EvidenceGenerationAgent",
       "event": "completed"
     },
     {
-      "timestamp": 1784013099.4988184,
+      "timestamp": 1785317499.6000788,
       "phase": "PHASE_8_FINAL_DECISION",
       "step": "EvidenceGenerationAgent",
       "event": "completed"
     },
     {
-      "timestamp": 1784013099.4988184,
+      "timestamp": 1785317499.6000788,
       "phase": "PHASE_8_FINAL_DECISION",
       "step": "decision_assembly_tool",
       "event": "started"
