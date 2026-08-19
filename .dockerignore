@@ -1,0 +1,14 @@
+.env
+.venv
+venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+output/
+logs/
+data/uploads/
+frontend/
+.git/
+.gitignore
+*.md
+tests/

@@ -30,8 +30,9 @@ logs/
 
 
 # Generated files
-output/
 data/
+output/
+logs/
 
 
 # Streamlit cache
